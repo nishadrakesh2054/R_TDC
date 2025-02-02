@@ -1,0 +1,60 @@
+.progrsm {
+  //   background-color: rgba(0, 73, 190, 1);
+  background: linear-gradient(
+      rgba(39, 65, 118, 0.7),
+      /* rgba(0, 73, 190, 1) with 70% opacity */ rgba(39, 65, 118, 0.7)
+    ),
+    url("../../assets/evenst/events.jpg") center/cover no-repeat;
+  padding-top: 5rem;
+  padding-bottom: 6rem;
+  margin-top: -12rem;
+
+  .pro-container {
+    z-index: 1001;
+    position: relative;
+    .academy-proheam-card {
+      height: 16rem;
+      position: relative;
+      padding-left: 2rem;
+      padding-right: 2rem;
+      img {
+        width: 100%;
+        object-fit: cover;
+        height: 100%;
+        filter: brightness(0.7);
+      }
+      .box-deg-text {
+        position: absolute;
+        // border: 1px solid #fff;
+        // background: #000;
+        top: 40%;
+        padding: 1rem;
+        // right: -5%;
+        width: 90%;
+        z-index: 100;
+
+        p {
+          color: #fff;
+          font-weight: 500;
+          font-size: 24px;
+          margin-bottom: 0;
+          text-transform: uppercase;
+          text-decoration: none;
+          font-family: "Antonio" !important;
+        }
+      }
+      @media (max-width: 1024px) {
+        margin-bottom: 3rem;
+        .box-deg-text {
+          right: auto;
+        }
+      }
+      @media (max-width: 768px) {
+        margin-bottom: 3rem;
+        .box-deg-text {
+          right: auto;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+.special-camps {
+  padding-top: 15rem;
+  padding-bottom: 5rem;
+
+  background: linear-gradient(
+      rgba(39, 65, 118, 0.7),
+      /* rgba(0, 73, 190, 1) with 70% opacity */ rgba(39, 65, 118, 0.7)
+    ),
+    url("../../../assets/specialCamp/spw1.jpg") center/cover no-repeat;
+
+  h1 {
+    text-align: center;
+    color: #fec802;
+    letter-spacing: 0.5rem;
+    font-weight: 800;
+  }
+  p {
+    margin-bottom: 0;
+    color: #fff;
+    text-align: center;
+  }
+}

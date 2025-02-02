@@ -1,0 +1,47 @@
+.speacial-camp-card {
+  background: #000;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  margin-top: 5rem;
+  a {
+    text-decoration: none;
+  }
+  .ind-cards {
+    padding-left: 2rem;
+    padding-right: 2rem;
+    background: transparent;
+    .imga-car-ind {
+      height: 20rem;
+      img {
+        width: 100%;
+        object-fit: cover;
+        height: 100%;
+        border-radius: 0;
+      }
+    }
+    .card-ind-body {
+      //   background: rgba(39, 65, 118, 0.7254901961);
+
+      h3 {
+        color: #fec802;
+        text-align: left;
+        // letter-spacing: 0.6rem;
+        text-decoration: none;
+      }
+      p {
+        text-align: left;
+        text-decoration: none;
+      }
+    }
+  }
+  button {
+    margin-left: 2rem;
+    margin-right: 2rem;
+    background: #fec802;
+    border: none;
+    display: flex;
+    &:hover {
+      background: #fec802;
+    }
+  }
+}

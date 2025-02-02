@@ -1,0 +1,36 @@
+.page-not-found {
+  padding-top: 10rem;
+  background: #000;
+  height: 70vh;
+  .not-found {
+    background-color: rgba(0, 73, 190, 1);
+    padding: 5rem;
+    @media (max-width: 768px) {
+      padding: 0.5rem;
+    }
+    p {
+      font-size: 80px;
+      font-weight: 900;
+      letter-spacing: 0.5rem;
+      text-align: center;
+      color: #fec802;
+      margin-bottom: 0;
+    }
+    h1 {
+      font-weight: 800;
+      text-align: center;
+      color: #fff;
+      text-transform: uppercase;
+      margin-bottom: 0;
+    }
+    .btn-goback {
+      display: flex;
+      justify-content: center;
+      margin-top: 2rem;
+      button {
+        background: #fec802;
+        border-color: #fec802;
+      }
+    }
+  }
+}

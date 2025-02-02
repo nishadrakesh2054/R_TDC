@@ -1,0 +1,104 @@
+.league-top-container {
+  background-image: url("../../assets/contact//contactHead.jpg");
+  background-size: cover;
+  background-position: center;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 350px;
+  margin-bottom: 2rem;
+}
+
+.league-title {
+  font-size: 3rem;
+  font-weight: bold;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.results {
+  overflow: hidden;
+}
+.team-card {
+  transition: transform 0.3s ease;
+}
+
+.team-card:hover {
+  transform: translateY(-10px);
+}
+
+.team-logo {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Styling the player card container */
+.player-card {
+  border: 0 solid transparent !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  background-color: green !important;
+}
+
+.player-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.player-img {
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  height: auto !important;
+  object-fit: cover !important;
+
+  transition: transform 0.3s ease;
+}
+
+.player-card:hover .player-img {
+  transform: scale(1.01);
+}
+
+.card-body {
+  padding: 1rem;
+  background-color: white;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.card-text {
+  font-size: 1rem;
+  font-weight: medium !important;
+  color: #000000;
+  margin-bottom: 0.3rem;
+}
+
+.card-text strong {
+  color: #2465aa;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.player-card:hover .card-body {
+  background-color: #f1f1f1;
+}
+
+.player-card .player-img {
+  border-radius: 25% 0;
+}

@@ -1,0 +1,27 @@
+.indi-pri-card {
+  margin-top: 5rem;
+  a {
+    text-decoration: none;
+  }
+  .ind-cards {
+    background: transparent;
+    .imga-car-ind {
+      height: 20rem;
+      img {
+        width: 100%;
+        object-fit: cover;
+        height: 100%;
+      }
+    }
+    .card-ind-body {
+      background: #0049be;
+
+      h3 {
+        color: #fff;
+        text-align: center;
+        letter-spacing: 0.6rem;
+        text-transform: uppercase;
+      }
+    }
+  }
+}

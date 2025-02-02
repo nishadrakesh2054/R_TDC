@@ -1,0 +1,22 @@
+.model-notice {
+  .modal-dialog {
+    right: 3%;
+    position: absolute;
+    bottom: 0 !important;
+    @media (max-width: 768px) {
+      position: relative;
+    }
+    .modal-content {
+      .modal-header {
+        background: transparent;
+      }
+      .noti-model-body {
+        text-align: center;
+        button {
+          background: #fec802;
+          border-color: #fec802;
+        }
+      }
+    }
+  }
+}

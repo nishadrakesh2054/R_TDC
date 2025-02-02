@@ -1,0 +1,139 @@
+.fixtures {
+  margin-bottom: 5rem;
+ 
+}
+.fixtures-date-title {
+    font-size: 1.2rem; 
+    font-weight:medium; /* Make the text bold */
+    color: #464102; /* Use a striking color */
+    text-transform: uppercase; /* Convert text to uppercase */
+    text-align: start; /* Center the text */
+    padding: 10px; /* Add padding for spacing */
+    background: linear-gradient(90deg, #fffdfd, #b5d7ff); 
+    border-radius: 5px; /* Round the corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+
+  }
+  
+.fixtures-table {
+  border-radius: 8px;
+  border: 1px solid rgb(178, 205, 255) !important;
+}
+
+.fixtures-table th {
+  color: white;
+  text-align: center;
+  padding: 12px;
+}
+
+.fixtures-table td {
+  text-align: center;
+  vertical-align: middle;
+  padding: 1rem;
+}
+
+.team-match {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.team-name {
+  color: #003fa6;
+}
+
+.matchtime {
+  font-weight: bold;
+  color: rgb(204, 204, 204);
+}
+
+.match-date {
+  color: #6c757d;
+}
+.match-location {
+  color: #51575c;
+}
+
+@media (max-width: 768px) {
+  .team-match {
+    font-size: 0.9rem;
+    font-weight: medium;
+  }
+  .fixtures-table {
+    font-size: 0.8rem;
+  }
+}
+
+
+
+// results pages
+.team-stats-table th,
+.team-stats-table td {
+  text-align: center;
+}
+
+.team-stats-table th {
+  background-color: #f0f0f0;
+  font-weight: bold;
+  border: 1px solid rgb(178, 205, 255) !important;
+
+}
+
+.team-stats-table td {
+  padding: 12px;
+}
+
+
+
+// tables pages desing
+/* Add this to your SCSS file */
+.team-stats-table th,
+.team-stats-table td {
+  text-align: center;
+
+}
+
+.team-stats-table th {
+  background-color: #f8f9fa;
+  font-weight: bold;
+  border: 1px solid rgb(178, 205, 255) ;
+
+}
+
+.team-stats-table td {
+  padding: 12px;
+  border: 1px solid rgb(178, 205, 255) !important;
+
+}
+
+.table-section {
+  margin-top: 2rem;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+
+// new pages desing
+/* Add this to your SCSS file */
+
+  
+  .news-section .card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+  }
+  
+  .news-section .card-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  .news-section .card-text {
+    font-size: 0.95rem;
+  }
+  
+  .news-section .news-date {
+    font-size: 0.8rem;
+    color: #777;
+    margin-top: 10px;
+  }
+  

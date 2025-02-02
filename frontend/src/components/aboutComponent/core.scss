@@ -1,0 +1,67 @@
+.core-team {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+  .core {
+    h1 {
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+  }
+  .cor-team-bg {
+    margin-top: 5rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    display: flex;
+    gap: 2rem;
+    justify-content: space-around;
+    p {
+      span {
+        color: #fec802;
+      }
+    }
+    .img-col {
+      padding: 0;
+
+      .img-side {
+        width: 10rem;
+        background-color: rgba(0, 73, 190, 1);
+
+        img {
+          //   width: 65%;
+          //   //   position: absolute;
+          //   bottom: -5%;
+          //   right: 20%;
+          width: 100%;
+        }
+        .mdphoto {
+          width: 100%;
+          padding-top: 2rem;
+          padding-right: 3rem;
+        }
+      }
+      p,
+      h4 {
+        text-align: center;
+        margin-bottom: 0;
+        color: #fff;
+      }
+    }
+    @media (max-width: 1200px) {
+      flex-wrap: wrap;
+      //   flex-direction: column-reverse;
+      .img-col {
+        .img-side {
+          //   width: auto;
+        }
+      }
+    }
+    @media (max-width: 768px) {
+      padding: 1rem;
+      .img-col {
+        .img-side {
+          width: auto;
+        }
+      }
+    }
+  }
+}

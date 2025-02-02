@@ -1,0 +1,22 @@
+button {
+  border-radius: 4px !important;
+  border: none;
+  color: rgba(0, 73, 190, 1) !important;
+  font-weight: 600 !important;
+}
+button:hover {
+  background: rgba(254, 200, 2, 1) !important;
+}
+
+p,
+a,
+input {
+  font-family: "Inter" !important;
+  font-weight: 300 !important;
+}
+
+h1,
+h2,
+h3 {
+  font-family: "Antonio";
+}

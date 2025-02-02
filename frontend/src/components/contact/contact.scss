@@ -1,0 +1,69 @@
+.contact {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+  background: rgba(0, 73, 190, 1);
+
+  .con-container {
+    .con-row {
+      margin-bottom: 5rem;
+    }
+    h1 {
+      color: #fec802;
+      font-size: 56px;
+      //   letter-spacing: 1rem;
+      font-weight: 700;
+      @media (max-width: 768px) {
+        // letter-spacing: 0.5;
+        font-size: 48px;
+      }
+      @media (max-width: 375px) {
+        font-size: 45px;
+        letter-spacing: normal;
+      }
+    }
+    .conta-dets {
+      margin-top: 2rem;
+      p {
+        color: #fff;
+        margin-bottom: 1rem;
+        font-size: 20px;
+        display: flex;
+        gap: 0.8rem;
+      }
+      .social-c {
+        display: flex;
+        gap: 1rem;
+        a {
+          color: #fff;
+        }
+      }
+    }
+  }
+  .map-embade {
+    border-top: 1px solid #fff;
+    padding-top: 5rem;
+  }
+}
+
+.contai-form {
+  .form-label {
+    color: #fff;
+  }
+  input,
+  .form-control {
+    background-color: transparent;
+    color: #fff;
+    border-radius: 0%;
+  }
+  button {
+    background-color: #fec802;
+    border: none;
+    padding-left: 3rem;
+    padding-right: 3rem;
+    &:hover {
+      background-color: #fec802;
+      border: 1px solid #fec802;
+      color: #fec802;
+    }
+  }
+}

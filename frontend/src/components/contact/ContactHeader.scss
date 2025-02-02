@@ -1,0 +1,52 @@
+.evenst-ger-c {
+  display: flex;
+  justify-content: space-between;
+  background-color: rgba(0, 73, 190, 0);
+  //   padding: 5rem;
+  margin-bottom: 5rem;
+  .events-side-img {
+    flex: 2;
+    img {
+      width: 100%;
+      object-fit: cover;
+      height: 100%;
+    }
+  }
+  .text-side-events {
+    flex: 1;
+
+    background: #000;
+    padding: 3rem;
+    h3 {
+      color: #fec802;
+      text-transform: uppercase;
+      //   font-weight: 800;
+      //   letter-spacing: 0.5rem;
+    }
+    p {
+      color: #fff;
+    }
+    .socials-list {
+      display: flex;
+      gap: 1rem;
+      a {
+        text-decoration: none;
+        color: #fff;
+      }
+    }
+  }
+  @media (max-width: 1000px) {
+    flex-wrap: wrap;
+    padding: 1rem;
+    .events-side-img {
+      flex: auto;
+    }
+    .text-side-events {
+      flex: auto;
+      padding: 1rem;
+      h1 {
+        letter-spacing: normal;
+      }
+    }
+  }
+}

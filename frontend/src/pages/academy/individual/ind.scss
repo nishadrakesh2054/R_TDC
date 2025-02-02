@@ -1,0 +1,20 @@
+.individual-program {
+  padding-top: 10rem;
+  //   padding-bottom: 5rem;
+
+  background: linear-gradient(
+      rgba(39, 65, 118, 0.7),
+      /* rgba(0, 73, 190, 1) with 70% opacity */ rgba(39, 65, 118, 0.7)
+    ),
+    url("../../../assets/academy/individual.jpg") center/cover no-repeat;
+
+  h1 {
+    margin-top: 5rem;
+    text-transform: uppercase;
+    color: #fec802;
+    text-align: center;
+    margin-bottom: 0;
+    font-weight: 700;
+    letter-spacing: 0.5rem;
+  }
+}

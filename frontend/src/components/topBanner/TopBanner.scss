@@ -1,0 +1,86 @@
+.top-banner {
+  background: linear-gradient(45deg, #0049be, #fec802);
+  //   padding: 40px 0;
+  text-align: center;
+  color: white;
+  height: 5rem;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1030;
+  background-size: 200% 200%;
+  animation: gradient-rotate 5s infinite ease; /* Add animation */
+}
+
+/* Define the keyframes for the rotating gradient animation */
+@keyframes gradient-rotate {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+.countdown-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.countdown-container h1 {
+  font-size: 20px;
+  margin-bottom: 0px;
+  font-family: inter !important;
+  font-weight: bold;
+  @media (max-width: 1000px) {
+    display: none;
+  }
+}
+
+.countdown {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  align-items: center;
+}
+
+.time-box {
+  //   background-color: rgba(255, 255, 255, 0.2);
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+  .time {
+    font-size: 26px;
+    font-weight: 800;
+    display: block;
+  }
+  p {
+    margin: 0;
+    font-size: 11px;
+  }
+  h1 {
+    font-size: 25px;
+    font-weight: 800;
+  }
+  @media (max-width: 768px) {
+    .time {
+      font-size: 18px;
+      p {
+        font-size: 9px;
+      }
+    }
+  }
+}
+
+.label {
+  font-size: 0.5rem;
+  margin-top: 5px;
+  text-transform: uppercase;
+}

@@ -1,0 +1,94 @@
+.register-page {
+	background: #686868;
+	padding-top: 15rem;
+	padding-bottom: 5rem;
+	.logo-text-thunder {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 3rem;
+		flex-wrap: wrap;
+		.logo-thunder {
+			width: 8rem;
+			img {
+				width: 100%;
+			}
+			@media (max-width: 768px) {
+				width: 7rem;
+			}
+		}
+		.text-thi {
+			h1 {
+				text-align: center;
+				color: #fec802;
+				text-transform: uppercase;
+				margin-bottom: 0;
+			}
+			h2 {
+				text-align: center;
+				text-transform: uppercase;
+				color: #fff;
+				margin-bottom: 0;
+			}
+		}
+		@media (max-width: 768px) {
+			gap: 1rem;
+		}
+	}
+
+	.from-regis {
+		margin-top: 3rem;
+		.form-regise {
+			border: 1px solid #fec802;
+			border-radius: 4px;
+			padding: 5rem;
+			.form-label {
+				color: #fff;
+			}
+			input,
+			.form-control,
+			.form-select {
+				background-color: transparent;
+				color: #fff;
+				border-radius: 0%;
+				option {
+					color: #fff;
+					background-color: rgba(0, 73, 190, 1);
+					border-radius: 0%;
+					border: none;
+				}
+			}
+			button {
+				background-color: #fff;
+				border: none;
+				padding-left: 3rem;
+				padding-right: 3rem;
+				border-radius: 0% !important;
+
+				&:hover {
+					background-color: rgba(0, 73, 190, 1);
+					border: none;
+					color: #fec802;
+				}
+			}
+			.download-btn-registertaion-from {
+				border-radius: 0% !important;
+				text-transform: uppercase;
+			}
+			.paynow-btn {
+				background-color: #fec802;
+			}
+			p {
+				color: #fff;
+				margin-top: 3rem;
+				margin-bottom: 0rem;
+			}
+			@media (max-width: 768px) {
+				padding: 1rem;
+			}
+		}
+	}
+	@media (max-width: 768px) {
+		padding-top: 10rem;
+	}
+}

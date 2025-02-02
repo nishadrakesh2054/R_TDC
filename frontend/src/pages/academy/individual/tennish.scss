@@ -1,0 +1,33 @@
+.tennish {
+  padding-top: 15rem;
+  padding-bottom: 5rem;
+
+  background: linear-gradient(
+      rgba(0, 0, 0, 0.7),
+      /* rgba(0, 73, 190, 1) with 70% opacity */ rgba(0, 0, 0, 0.7)
+    ),
+    url("../../../assets/academy/tennisbg.jpg") center/cover no-repeat;
+
+  .tennis-aca-heading-conta {
+    background: #0049be;
+
+    padding: 5rem;
+
+    p,
+    h1 {
+      margin-bottom: 0;
+      color: #fff;
+      //   margin: 0;
+    }
+    h1 {
+      margin-bottom: 3rem;
+      //   letter-spacing: 0.6rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+    @media (max-width: 768px) {
+      padding: 1rem;
+      padding-bottom: 3rem;
+    }
+  }
+}

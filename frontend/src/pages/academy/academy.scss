@@ -1,0 +1,18 @@
+.academy {
+  padding-top: 15rem;
+  padding-bottom: 5rem;
+
+  background: linear-gradient(
+      rgba(0, 0, 0, 0.7),
+      /* rgba(0, 73, 190, 1) with 70% opacity */ rgba(0, 0, 0, 0.7)
+    ),
+    url("../../assets/academy/tennisbg.jpg") center/cover no-repeat;
+
+  h1,
+  p {
+    color: #fff;
+  }
+  h1 {
+    text-transform: uppercase;
+  }
+}

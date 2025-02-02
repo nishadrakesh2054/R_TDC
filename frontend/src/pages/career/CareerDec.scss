@@ -1,0 +1,62 @@
+.career-dec {
+	background-image: url("../../assets/career/posting-career.jpg");
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+}
+.career-dec-container {
+	padding-top: 10rem;
+	padding-bottom: 4rem;
+}
+
+.career-dec-card {
+	border: none;
+	border-radius: 10px;
+	background-color: rgba(0, 85, 255, 0.8) !important;
+
+	.career-title {
+		font-weight: 700;
+		color: #fff;
+	}
+
+	.career-details {
+		p {
+			font-size: 1rem;
+			margin-bottom: 0.5rem;
+		}
+	}
+
+	.career-description {
+		margin-top: 1rem;
+		color: #fff;
+
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6 {
+			margin-top: 1rem;
+			margin-bottom: 0.5rem;
+			font-weight: 600;
+			color: #fff;
+		}
+
+		p {
+			margin-bottom: 1rem;
+			color: #fff;
+		}
+
+		ul,
+		ol {
+			margin-bottom: 1rem;
+			padding-left: 2rem;
+			color: #fff;
+		}
+
+		li {
+			margin-bottom: 0.5rem;
+			color: #fff;
+		}
+	}
+}

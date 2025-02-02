@@ -1,0 +1,73 @@
+.sq-pro-car {
+  display: flex;
+  margin-top: 5rem;
+  padding-bottom: 5rem;
+  a {
+    text-decoration: none;
+  }
+  .ind-cards {
+    background: transparent;
+    .imga-car-ind {
+      height: 20rem;
+      img {
+        width: 100%;
+        object-fit: cover;
+        height: 100%;
+      }
+    }
+    .card-ind-body {
+      background: #0049be;
+
+      h3 {
+        color: #fff;
+        text-align: center;
+        // letter-spacing: 0.6rem;
+        text-transform: uppercase;
+      }
+    }
+  }
+
+  .imge-side {
+    flex: 1;
+    width: 100%;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+  .text-site {
+    padding: 2rem;
+    background-color: rgba(0, 73, 190, 1);
+
+    flex: 1;
+    h2,
+    h1 {
+      color: #fff;
+      //   letter-spacing: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    p {
+      color: #fff;
+      margin-top: 2rem;
+    }
+    h1 {
+      color: #fec802;
+    }
+    button {
+      background: #fec802;
+      border-color: #fec802;
+    }
+  }
+  @media (max-width: 786px) {
+    flex-wrap: wrap;
+    .imge-side {
+      flex: auto;
+    }
+    .text-site {
+      flex: auto;
+    }
+  }
+}

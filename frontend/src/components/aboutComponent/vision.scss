@@ -1,0 +1,36 @@
+.vision-mission {
+  background: #000;
+  padding-top: 3.8rem;
+  padding-bottom: 5rem;
+
+  .visi-mis {
+    // gap: 1rem;
+    .vision,
+    .mission {
+      h1 {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+      p {
+        margin-bottom: 0 !important;
+        font-weight: 300;
+        margin-top: 1.8rem;
+      }
+    }
+    .vision {
+      padding-right: 3rem;
+      @media (max-width: 768px) {
+        padding-right: calc(var(--bs-gutter-x) * 0.5);
+        padding-left: calc(var(--bs-gutter-x) * 0.5);
+      }
+    }
+    .mission {
+      padding-left: 3rem;
+      @media (max-width: 768px) {
+        padding-right: calc(var(--bs-gutter-x) * 0.5);
+        padding-left: calc(var(--bs-gutter-x) * 0.5);
+      }
+    }
+  }
+}

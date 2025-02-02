@@ -1,0 +1,45 @@
+.paertners {
+  background: #000;
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+  h1 {
+    text-align: center;
+    color: #fec802;
+    font-size: 56px;
+    // letter-spacing: 1rem;
+    font-weight: 700;
+    margin-bottom: 5rem;
+    @media (max-width: 768px) {
+      //   letter-spacing: 0.5;
+      font-size: 48px;
+    }
+    @media (max-width: 375px) {
+      font-size: 45px;
+      letter-spacing: normal;
+    }
+  }
+  .partenrs-link {
+    display: flex;
+    justify-content: space-evenly;
+
+    align-items: center;
+    .part-img-link {
+      width: 10rem;
+
+      img {
+        width: 100%;
+        object-fit: cover;
+      }
+    }
+    .games-logo {
+      width: 6.5rem;
+    }
+    @media (max-width: 768px) {
+      flex-wrap: wrap;
+      gap: 5rem;
+      .games-logo {
+        // width: 4rem;
+      }
+    }
+  }
+}

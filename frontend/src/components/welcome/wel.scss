@@ -1,0 +1,46 @@
+.welcome-message {
+  background: rgba(0, 73, 190, 1);
+
+  padding-top: 5rem;
+  padding-bottom: 13rem;
+  position: relative;
+  z-index: 100;
+
+  .wel-container {
+    h1 {
+      font-size: 40px;
+      font-weight: 700;
+      text-transform: uppercase;
+      text-align: center;
+      color: #fff;
+
+      span {
+        color: #fec802;
+        font-size: 60px;
+        // letter-spacing: 0.5rem;
+
+        @media (max-width: 768px) {
+          font-size: 40px;
+          letter-spacing: 0.5rem;
+        }
+        @media (max-width: 375px) {
+          font-size: 35px;
+          letter-spacing: normal;
+        }
+      }
+      @media (max-width: 768px) {
+        font-size: 35px;
+      }
+      @media (max-width: 375px) {
+        font-size: 30px;
+      }
+    }
+    p {
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 18px;
+      color: #fff;
+      margin-bottom: 0;
+    }
+  }
+}

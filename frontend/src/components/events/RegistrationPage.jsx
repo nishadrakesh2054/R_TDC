@@ -42,7 +42,7 @@ const RegistrationPage = () => {
       setLoading(true);
       setError(null);
       try {
-        const response = await axios.get("/api/games");
+        const response = await axios.get("http://localhost:3000/api/games");
         setGames(response.data);
       } catch (err) {
         setError(
@@ -105,7 +105,6 @@ const RegistrationPage = () => {
       setFormError("Please download the registration form before submitting.");
       return;
     }
-
     setIsSubmitting(true);
     setFormError(null);
     setSuccessMessage("");
@@ -124,12 +123,11 @@ const RegistrationPage = () => {
       ...formData,
       game: selectedGame.id,
     };
-    // sessionStorage.setItem("formData", JSON.stringify(filteredFormData));
-    // sessionStorage.setItem("fee", fee);
+   
     try {
-      //   console.log(filteredFormData);
+     ;
       const preCheckResponse = await axios.post(
-        "/api/pre-check-registration/",
+        "http://localhost:3000/api/pre-check-registration/",
         filteredFormData,
         {
           headers: {
@@ -169,10 +167,12 @@ const RegistrationPage = () => {
     }
   };
 
-  const filteredGames = games?.filter((game) => game.type === formData.type);
-  const uniqueGameNames = Array.from(
-    new Set(filteredGames.map((game) => game.name))
-  );
+  const filteredGames = Array.isArray(games)
+  ? games.filter((game) => game.type === formData.type)
+  : [];
+const uniqueGameNames = Array.from(
+  new Set(filteredGames.map((game) => game.name))
+);
   const categoriesForSelectedGame = filteredGames?.filter(
     (game) => game.name === displayGame
   );
@@ -352,12 +352,7 @@ const RegistrationPage = () => {
                 )}
               </Button>
 
-              {/* <p>
-                Note: Please find the attached players' list form. We kindly ask
-                you to download, fill it out, and submit it via email or in
-                person, along with the birth certificate for each player, before
-                the registration deadline.
-              </p> */}
+             
             </Form>
           )}
         </div>

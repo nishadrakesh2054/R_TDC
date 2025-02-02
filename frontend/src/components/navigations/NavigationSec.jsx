@@ -130,14 +130,14 @@ const NavigationSec = () => {
                   >
                     Thunderbolts Cup
                   </NavLink>
-                  {/* <NavDropdown.Divider />
+                  <NavDropdown.Divider />
                   <NavLink
                     activeclassname="active"
                     to="/events/footballleague"
                     onClick={handleClose}
                   >
                     Football League
-                  </NavLink> */}
+                  </NavLink>
                 </NavDropdown>
 
                 <NavLink
@@ -154,6 +154,7 @@ const NavigationSec = () => {
                 >
                   Contact
                 </NavLink>
+                
                 <NavLink
                   to="/register-thunderbolts-cup"
                   onClick={handleClose}

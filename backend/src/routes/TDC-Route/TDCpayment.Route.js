@@ -3,10 +3,10 @@
 import crypto from "crypto";
 import express from "express";
 import Joi from "joi";
-import sequelize from "../db/index.js";
-import { sendRegistrationSuccessEmail } from "../middleware/sendRegistrationSuccessEmail.js";
+import sequelize from "../../db/index.js";
+import { sendRegistrationSuccessEmail } from "../../middleware/sendRegistrationSuccessEmail.js";
 import { TDCGame, TDCParticipation, TDCSchool } from "../../models/init.Model.js";
-import { createRegistrationPayment } from "../middleware/updateRegistrationPayment.js";
+import { createRegistrationPayment } from "../../middleware/updateRegistrationPayment.js";
 
 
 const router = express.Router();

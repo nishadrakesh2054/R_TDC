@@ -1,5 +1,4 @@
 import express from "express";
-import { Game } from "../models/init.Model.js";
 import { TDCGame } from "../../models/init.Model.js";
 
 const router = express.Router();

@@ -1,6 +1,6 @@
 import express from "express";
 import Joi from "joi";
-import { sendRegistrationSuccessEmail } from "../middleware/sendRegistrationSuccessEmail.js";
+import { sendRegistrationSuccessEmail } from "../../middleware/sendRegistrationSuccessEmail.js";
 import { TDCGame, TDCParticipation, TDCSchool } from "../../models/init.Model.js";
 const router = express.Router();
 

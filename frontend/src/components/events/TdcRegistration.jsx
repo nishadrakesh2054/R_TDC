@@ -23,9 +23,7 @@ const RegistrationPage = () => {
     game: "",
     numberOfParticipants: 1,
     email: "",
-
-
-    address: "",	
+    address: "",
     emergencyContactname: "",
     emergencyContactrelation: "",
     dob: "",
@@ -48,10 +46,9 @@ const RegistrationPage = () => {
       setLoading(true);
       setError(null);
       try {
-        const response = await axios.get("/api/games");
+        const response = await axios.get("http://localhost:3000/api/tdcgames");
         setGames(response.data);
       } catch (err) {
-        console.error("Error fetching the games:", err);
         setError(
           "There was an error fetching the games. Please try again later."
         );
@@ -173,7 +170,9 @@ const RegistrationPage = () => {
     }
   };
 
-  const filteredGames = games?.filter((game) => game.type === formData.type);
+  const filteredGames = Array.isArray(games)
+    ? games.filter((game) => game.type === formData.type)
+    : [];
   const uniqueGameNames = Array.from(
     new Set(filteredGames.map((game) => game.name))
   );
@@ -247,7 +246,11 @@ const RegistrationPage = () => {
                     required
                   />
                 </Form.Group>
-                <Form.Group as={Col} controlId="formGridAddress" className="mb-3">
+                <Form.Group
+                  as={Col}
+                  controlId="formGridAddress"
+                  className="mb-3"
+                >
                   <Form.Label>ADDRESS</Form.Label>
                   <Form.Control
                     type="address"
@@ -260,7 +263,11 @@ const RegistrationPage = () => {
               </Row>
 
               <Row xs={1} md={3}>
-                <Form.Group as={Col} controlId="formGridEmpPerName" className="mb-3">
+                <Form.Group
+                  as={Col}
+                  controlId="formGridEmpPerName"
+                  className="mb-3"
+                >
                   <Form.Label>EMERGENCY CONTACT PERSON NAME</Form.Label>
                   <Form.Control
                     type="emergencyContactname"
@@ -271,7 +278,11 @@ const RegistrationPage = () => {
                   />
                 </Form.Group>
 
-                <Form.Group as={Col} controlId="formGridEmpPerRelation" className="mb-3">
+                <Form.Group
+                  as={Col}
+                  controlId="formGridEmpPerRelation"
+                  className="mb-3"
+                >
                   <Form.Label>EMERGENCY CONTACT PERSON RELATION</Form.Label>
                   <Form.Control
                     type="emergencyContactrelation"

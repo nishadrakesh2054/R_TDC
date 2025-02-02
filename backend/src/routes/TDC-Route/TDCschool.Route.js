@@ -1,5 +1,5 @@
 import express from "express";
-import { TDCSchool } from "../../models/init.Model";
+import { TDCSchool } from "../../models/init.Model.js";
 
 
 const router = express.Router();
@@ -12,3 +12,5 @@ router.get("/tdc-schools", async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
+
+export default router;

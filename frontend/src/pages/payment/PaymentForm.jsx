@@ -11,7 +11,7 @@ const PaymentForm = () => {
 	const [error, setError] = useState(null);
 
 	const location = useLocation();
-	const { filteredFormData, fee } = location.state; // Receive form data and fee
+	const { filteredFormData, fee } = location.state; 
 
 	// console.log("formData:", filteredFormData, "fee:", fee);
 
@@ -47,7 +47,7 @@ const PaymentForm = () => {
 
 		try {
 			// Send data to backend to generate DV hash
-			const response = await axios.post("/api/generate-hash", {
+			const response = await axios.post("http://localhost:3000/api/generate-hash", {
 				md: MD,
 				prn: PRN,
 				amt: AMT,

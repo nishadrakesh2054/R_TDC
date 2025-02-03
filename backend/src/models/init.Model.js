@@ -27,7 +27,7 @@ import Application from "./application.Model.js";
 
 import TDCRegistrationPayment from "./TDCmodel/TDCregistrationPayment.Model.js";
 import TDCGame from "./TDCmodel/TDCgame.Model.js";
-import TDCSchool from "./TDCmodel/TDCschool.Model.js";
+import TDCSchool from "./TDCmodel/TDCSchool.Model.js";
 import TDCParticipation from "./TDCmodel/TDCparticipation.Model.js";
 
 

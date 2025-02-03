@@ -5,9 +5,12 @@ import express from "express";
 import Joi from "joi";
 import sequelize from "../../db/index.js";
 import { sendRegistrationSuccessEmail } from "../../middleware/sendRegistrationSuccessEmail.js";
-import { TDCGame, TDCParticipation, TDCSchool } from "../../models/init.Model.js";
+import {
+  TDCGame,
+  TDCParticipation,
+  TDCSchool,
+} from "../../models/init.Model.js";
 import { createRegistrationPayment } from "../../middleware/updateRegistrationPayment.js";
-
 
 const router = express.Router();
 
@@ -30,6 +33,29 @@ const registrationSchema = Joi.object({
     "number.base": "Please select a valid game.",
     "any.required": "TDCGame ID is required.",
   }),
+
+  address: Joi.string().required().messages({
+    "string.empty": "Please provide a valid address.",
+  }),
+  emergencyContactname: Joi.string().min(3).max(255).required(),
+
+  emergencyContactrelation: Joi.string().min(3).max(255).required(),
+
+  emergencyContactNo: Joi.string()
+    .pattern(/^\d+$/)
+    .min(10)
+    .max(15)
+    .optional()
+    .messages({
+      "string.pattern.base":
+        "Please provide a valid emergency contact number (digits only).",
+      "string.min": "Emergency contact number must be at least 10 digits long.",
+      "string.max": "Emergency contact number must be at most 15 digits long.",
+    }),
+  dob: Joi.date().required().messages({
+    "date.base": "Please provide a valid date of birth.",
+  }),
+
   numberOfParticipants: Joi.number()
     .min(1)
     .optional()
@@ -125,6 +151,27 @@ router.post("/tdcpre-check-registration", async (req, res) => {
         "string.min": "Contact number must be at least 10 digits long.",
         "string.max": "Contact number must be at most 15 digits long.",
       }),
+    address: Joi.string().required().messages({
+      "string.empty": "Please provide a valid address.",
+    }),
+    emergencyContactname: Joi.string().min(3).max(255).required(),
+    emergencyContactrelation: Joi.string().min(3).max(255).required(),
+    emergencyContactNo: Joi.string()
+      .pattern(/^\d+$/)
+      .min(10)
+      .max(15)
+      .optional()
+      .messages({
+        "string.pattern.base":
+          "Please provide a valid emergency contact number (digits only).",
+        "string.min":
+          "Emergency contact number must be at least 10 digits long.",
+        "string.max":
+          "Emergency contact number must be at most 15 digits long.",
+      }),
+    dob: Joi.date().required().messages({
+      "date.base": "Please provide a valid date of birth.",
+    }),
     email: Joi.string().email().required().messages({
       "string.email": "Please provide a valid email address.",
     }),

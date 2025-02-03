@@ -132,7 +132,7 @@ const RegistrationPage = () => {
     try {
       //   console.log(filteredFormData);
       const preCheckResponse = await axios.post(
-        "/api/pre-check-registration/",
+        "http://localhost:3000/api/tdcpre-check-registration/",
         filteredFormData,
         {
           headers: {

@@ -19,12 +19,12 @@ const TennisAcademy = lazy(() =>
   import("./pages/academy/individual/TennisAcademy")
 );
 const Contact = lazy(() => import("./pages/contact/ContactUs"));
-// const TdcRegistrationPage = lazy(() =>
-//   import("./components/events/TdcRegistration")
-// );
-const RegistrationPage = lazy(() =>
-  import("./components/events/RegistrationPage")
+const TdcRegistrationPage = lazy(() =>
+  import("./components/events/TdcRegistration")
 );
+// const RegistrationPage = lazy(() =>
+//   import("./components/events/RegistrationPage")
+// );
 const Gallery = lazy(() => import("./pages/gallery/Gallery"));
 const SpecialCamp = lazy(() =>
   import("./pages/academy/specialCamp/SpecialCamp")
@@ -72,15 +72,15 @@ function App() {
           <Route path="/e-sports" element={<Esports />} />
           <Route path="/events/thunderboltscup" element={<Events />} />
           <Route path="/events/footballleague/*" element={<FootballLeague />} />
-          {/* 
+          
           <Route
             path="/register-thunderbolts-cup"
             element={<TdcRegistrationPage/>}
-          /> */}
-          <Route
+          />
+          {/* <Route
             path="/register-thunderbolts-cup"
             element={<RegistrationPage />}
-          />
+          /> */}
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/payment-response" element={<PaymentResponse />} />

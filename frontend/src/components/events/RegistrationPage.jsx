@@ -165,6 +165,10 @@ const RegistrationPage = () => {
     } finally {
       setIsSubmitting(false);
     }
+
+
+
+ 
   };
 
   const filteredGames = Array.isArray(games)

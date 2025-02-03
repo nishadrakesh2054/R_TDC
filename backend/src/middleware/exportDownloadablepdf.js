@@ -18,6 +18,7 @@ const createSafePath = (filename) => {
 // Use createSafePath for all PDF paths
 export const FOOTBALL_U_12_BOYS = createSafePath("FOOTBALL_U_12_BOYS.pdf");
 export const FOOTBALL_U_16_BOYS = createSafePath("FOOTBALL_U_16_BOYS.pdf");
+
 export const BASKETBALL_U_16_BOYS = createSafePath("BASKETBALL_U_16_BOYS.pdf");
 export const BASKETBALL_U_18_BOYS = createSafePath("BASKETBALL_U_18_BOYS.pdf");
 export const BASKETBALL_U_18_GIRLS = createSafePath(

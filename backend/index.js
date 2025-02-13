@@ -27,12 +27,10 @@ import gameFixture from "./src/routes/fixture.Route.js";
 import ResultFixture from "./src/routes/fixture.Route.js";
 
 import TDCGame from "./src/routes/TDC-Route/TDCgame.Route.js";
- import TDCparticipation from "./src/routes/TDC-Route/TDCparticipation.Route.js";
+import TDCparticipation from "./src/routes/TDC-Route/TDCparticipation.Route.js";
 import TDCPayment from "./src/routes/TDC-Route/TDCpayment.Route.js";
 import TDCPDFGenerater from "./src/routes/TDC-Route/TDCpdfGenerator.Router.js";
- import TDCschool from "./src/routes/TDC-Route/TDCschool.Route.js";
-
-
+import TDCschool from "./src/routes/TDC-Route/TDCschool.Route.js";
 
 const app = express();
 os.tmpdir = () => "D:\\temp";
@@ -45,6 +43,9 @@ const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
 // CORS setup
 const allowedOrigins = [
+  "*",
+  "https://172.16.5.205",
+  "http://172.16.5.205",
   "http://localhost:3000",
   "http://localhost:5173",
   "http://localhost:5174",
@@ -105,10 +106,10 @@ app.use("/api", gameFixture);
 app.use("/api", ResultFixture);
 
 // TDC routes defines
- app.use("/api", TDCschool);
+app.use("/api", TDCschool);
 app.use("/api", TDCparticipation);
 app.use("/api", TDCPayment);
- app.use("/api", TDCPDFGenerater);
+app.use("/api", TDCPDFGenerater);
 app.use("/api", TDCGame);
 
 app.get("/api/test", (req, res) => {
@@ -128,7 +129,7 @@ const port = process.env.PORT || 3000;
 
 const startServer = async () => {
   try {
-    await sequelize.sync({ alter: false });
+    await sequelize.sync({ alter: true });
     app.listen(port, () => {
       console.log(`Server running on port ${port}`);
     });

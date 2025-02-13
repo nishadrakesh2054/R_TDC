@@ -1,4 +1,4 @@
-// payment.Route.js
+
 
 import crypto from "crypto";
 import express from "express";
@@ -294,13 +294,6 @@ router.post("/verify-payment", async (req, res) => {
           ? selectedGame.fee * numberOfParticipants
           : selectedGame.fee;
 
-      //   if (parsedPaidAmount !== finalFee) {
-      //     await transaction.rollback();
-      //     return res.status(400).json({
-      //       verified: false,
-      //       message: "Paid amount does not match the calculated fee.",
-      //     });
-      //   }
 
       const participation = await Participation.create(
         {

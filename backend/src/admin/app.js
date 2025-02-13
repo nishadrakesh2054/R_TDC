@@ -36,6 +36,7 @@ import {
   playerResource,
   GameFixtureResource,
   TDCmanualReg,
+  FootballManualRegistrationResource,
 } from "./models.Resource.js";
 import { componentLoader } from "./components.js";
 import { TDCparticipationResource } from "./TDCparticipation.Resouces.js";
@@ -127,6 +128,7 @@ const admin = new AdminJS({
     gameGroupResource,
     applicationResource,
     careerResource,
+    FootballManualRegistrationResource,
 
     TDCmanualReg,
 

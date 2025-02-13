@@ -147,13 +147,41 @@ const NavigationSec = () => {
                 >
                   Gallery
                 </NavLink>
-                <NavLink
+                {/* <NavLink
                   activeclassname="active"
                   to="/contact"
                   onClick={handleClose}
                 >
                   Contact
-                </NavLink>
+                </NavLink> */}
+
+
+
+
+                <NavDropdown
+                  title=" Course"
+                  id={`offcanvasNavbarDropdown-expand-md`}
+                >
+                  <NavLink
+                    activeclassname="active"
+                    to="/football-course"
+                    onClick={handleClose}
+                  >
+                 Football
+                  </NavLink>
+                  <NavDropdown.Divider />
+                  <NavLink
+                    activeclassname="active"
+                    to="/contact"
+                    onClick={handleClose}
+                  >
+                  Contact
+                  </NavLink>
+                </NavDropdown>
+
+
+
+
                 
                 <NavLink
                   to="/register-thunderbolts-cup"

@@ -11,6 +11,7 @@ import Academy from "./pages/academy/Academy";
 import Career from "./pages/career/Career";
 import CareerDec from "./pages/career/CareerDec";
 import FootballLeague from "./components/Rfootball/FootballLeague";
+import Course from "./pages/course/Course";
 
 const SwimmingAcademy = lazy(() =>
   import("./pages/academy/individual/SwimmingAcademy")
@@ -83,6 +84,8 @@ function App() {
           /> */}
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/contact" element={<Contact />} />
+
+          <Route path="//football-course" element={<Course />} />
           <Route path="/payment-response" element={<PaymentResponse />} />
           <Route path="/payment-form" element={<PaymentForm />} />
 

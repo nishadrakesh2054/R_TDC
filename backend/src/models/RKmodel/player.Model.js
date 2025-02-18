@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../../db/index.js";
-import Team from "../RKmodelDetails/team.Model.js";
+import Team from "./team.Model.js";
 
 const Player = sequelize.define(
   "Player",
@@ -65,7 +65,7 @@ const Player = sequelize.define(
     },
   },
   {
-    tableName: "players",
+    tableName: "football_players",
     timestamps: true,
   }
 );

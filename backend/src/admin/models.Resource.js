@@ -15,17 +15,15 @@ import {
 import { generateCertificates } from "./certificateGenerator.js";
 import { Components, componentLoader } from "./components.js"; // Import your component loader
 import fs from "fs";
-
 import TDCmanualRegistration from "../models/TDCmodel/TDCmanaulRegistration.Model.js";
 
 import Fixture from "../models/RKmodel/dateFixtures.Model.js";
 import ResultFixture from "../models/RKmodel/resultFixture.Model.js";
 import GameFixture from "../models/RKmodel/gameFixture.Model.js";
 import TableFixture from "../models/RKmodel/tableFixture.Model.js";
-import gameTeam from "../models/RKmodelDetails/team.Model.js";
-import Player from "../models/RKmodelDetails/player.Model.js";
-
-import FootballManualRegistration from "../models/TDCfootball/Registration.Model.js";
+import gameTeam from "../models/RKmodel/team.Model.js";
+import Player from "../models/RKmodel/player.Model.js";
+import FootballManualRegistration from "../models/RKmodel/Registration.Model.js";
 
 // Register AdminJS adapter
 AdminJS.registerAdapter(AdminJSSequelize);
@@ -725,11 +723,11 @@ export const applicationResource = {
   },
 };
 
-// rakesh code
+// rakesh code start here
 export const FixtureResource = {
   resource: Fixture,
   options: {
-    navigation: { name: "School League", icon: "School" },
+    navigation: { name: "Football League", icon: "School" },
     actions: {
       list: {
         isAccessible: ({ currentAdmin }) =>
@@ -763,7 +761,7 @@ export const FixtureResource = {
 export const ResultFixtureResource = {
   resource: ResultFixture,
   options: {
-    navigation: { name: "School League", icon: "School" },
+    navigation: { name: "Football League", icon: "School" },
     actions: {
       list: {
         isAccessible: ({ currentAdmin }) =>
@@ -847,7 +845,7 @@ export const ResultFixtureResource = {
 export const TableFixtureResource = {
   resource: TableFixture,
   options: {
-    navigation: { name: "School League", icon: "School" },
+    navigation: { name: "Football League", icon: "School" },
     properties: {
       // Define the order of fields
       id: { isVisible: false },
@@ -899,11 +897,10 @@ export const TableFixtureResource = {
   },
 };
 
-// rakesh code DETAILS OF TEAM PAGE
 export const gameTeamResource = {
   resource: gameTeam,
   options: {
-    navigation: { name: "League Team", icon: "School" },
+    navigation: { name: "Football League", icon: "School" },
     actions: {
       list: {
         isAccessible: ({ currentAdmin }) =>
@@ -970,7 +967,7 @@ export const gameTeamResource = {
 export const playerResource = {
   resource: Player,
   options: {
-    navigation: { name: "League Team", icon: "School" },
+    navigation: { name: "Football League", icon: "School" },
     actions: {
       list: {
         isAccessible: ({ currentAdmin }) =>
@@ -1030,7 +1027,7 @@ export const playerResource = {
 export const GameFixtureResource = {
   resource: GameFixture,
   options: {
-    navigation: { name: "School League", icon: "School" },
+    navigation: { name: "Football League", icon: "School" },
     actions: {
       list: {
         isAccessible: ({ currentAdmin }) =>
@@ -1112,77 +1109,60 @@ export const GameFixtureResource = {
 };
 
 export const FootballManualRegistrationResource = {
-    resource: FootballManualRegistration,
-    options: {
-      navigation: {
-        name: "Football League",
+  resource: FootballManualRegistration,
+  options: {
+    navigation: {
+      name: "Football League",
+    },
+    properties: {
+      gameFee: { isVisible: true },
+      paymentType: { isVisible: true },
+      noOfParticipants: { isVisible: true },
+      gameCategory: { isVisible: true },
+      gameName: { isVisible: true },
+      schoolEmail: {
+        isVisible: { list: false, filter: true, show: true, edit: true },
       },
-      properties: {
-        noOfParticipants: {
-          isVisible: { list: true, filter: true, show: true, edit: true },
-        },
-        totalAmount: {
-          isVisible: { list: true, filter: true, show: true, edit: false },
-        },
-        paymentType: {
-          isVisible: { list: true, filter: true, show: true, edit: true },
-        },
-        gameFee: {
-          isVisible: { list: true, filter: true, show: true, edit: true },
-        },
-        gameCategory: {
-          isVisible: { list: true, filter: true, show: true, edit: true },
-        },
-        gameName: {
-          isVisible: { list: true, filter: true, show: true, edit: true },
-        },
-        schoolEmail: {
-          isVisible: { list: false, filter: true, show: true, edit: true },
-        },
-        schoolContactNo: {
-          isVisible: { list: true, filter: true, show: true, edit: true },
-        },
-        schoolName: {
-          isVisible: { list: true, filter: true, show: true, edit: true },
-        },
-        updatedAt: {
-          isVisible: { list: false, filter: false, show: true, edit: false },
-        },
-        createdAt: {
-          isVisible: { list: false, filter: false, show: true, edit: false },
-        },
+      schoolContactNo: { isVisible: true },
+      schoolName: { isVisible: true },
+      updatedAt: {
+        isVisible: { list: false, filter: false, show: true, edit: false },
       },
-      listProperties: [
-        "id",
-        "schoolName",
-        "schoolContactNo",
-        "gameName",
-        "gameCategory",
-        "noOfParticipants",
-        "gameFee",
-        "totalAmount",
-      ],
-      actions: {
-        new: {
-          isAccessible: ({ currentAdmin }) =>
-            currentAdmin && (currentAdmin.role === "Admin" || currentAdmin.role === "Front desk"),
-        },
-        edit: {
-          isAccessible: ({ currentAdmin }) =>
-            currentAdmin && (currentAdmin.role === "Admin" || currentAdmin.role === "Front desk"),
-        },
-        delete: {
-          isAccessible: ({ currentAdmin }) => currentAdmin && currentAdmin.role === "Admin",
-        },
-        show: {
-          isAccessible: ({ currentAdmin }) =>
-            currentAdmin && (currentAdmin.role === "Admin" || currentAdmin.role === "Front desk"),
-        },
-        list: {
-          isAccessible: ({ currentAdmin }) =>
-            currentAdmin && (currentAdmin.role === "Admin" || currentAdmin.role === "Front desk"),
-        },
+      createdAt: {
+        isVisible: { list: false, filter: false, show: true, edit: false },
       },
     },
-  };
-  
+    //   listProperties: [
+    //     "id",
+    //     "schoolName",
+    //     "schoolContactNo",
+    //     "gameName",
+    //     "gameCategory",
+    //     "noOfParticipants",
+    //     "gameFee",
+    //     "totalAmount",
+    //   ],
+    actions: {
+      list: {
+        isAccessible: ({ currentAdmin }) =>
+          currentAdmin && currentAdmin.role === "Admin",
+      },
+      edit: {
+        isAccessible: ({ currentAdmin }) =>
+          currentAdmin && currentAdmin.role === "Admin",
+      },
+      new: {
+        isAccessible: ({ currentAdmin }) =>
+          currentAdmin && currentAdmin.role === "Admin",
+      },
+      show: {
+        isAccessible: ({ currentAdmin }) =>
+          currentAdmin && currentAdmin.role === "Admin",
+      },
+      delete: {
+        isAccessible: ({ currentAdmin }) =>
+          currentAdmin && currentAdmin.role === "Admin",
+      },
+    },
+  },
+};

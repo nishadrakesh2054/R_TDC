@@ -68,8 +68,8 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 const apiLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per windowMs
+  windowMs: 15 * 60 * 1000, 
+  max: 100, 
   message: "Too many requests from this IP, please try again after 15 minutes.",
 });
 
@@ -77,7 +77,7 @@ const apiLimiter = rateLimit({
 app.use("/uploads", express.static(path.join(__dirname, "public/uploads")));
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/pdfs", express.static(path.join(__dirname, "public/pdfs")));
-// Specific route for serving generated certificates
+
 app.use(
   "/generated_certificates",
   express.static(path.join(__dirname, "public", "generated_certificates"))
@@ -129,7 +129,7 @@ const port = process.env.PORT || 3000;
 
 const startServer = async () => {
   try {
-    await sequelize.sync({ alter: true });
+    await sequelize.sync({ alter: false });
     app.listen(port, () => {
       console.log(`Server running on port ${port}`);
     });

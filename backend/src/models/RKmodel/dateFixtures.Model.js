@@ -11,7 +11,7 @@ const Fixture = sequelize.define(
     },
   },
   {
-    tableName: "fixture Date",
+    tableName: "football_fixture_date",
     timestamps: false,
   }
 );

@@ -60,7 +60,7 @@ const ResultFixture = sequelize.define(
     },
   },
   {
-    tableName: "result_fixture",
+    tableName: "football_result",
     timestamps: false,
   }
 );

@@ -29,12 +29,14 @@ import {
   gameGroupResource,
   applicationResource,
   careerResource,
+
   FixtureResource,
   ResultFixtureResource,
   TableFixtureResource,
   gameTeamResource,
   playerResource,
   GameFixtureResource,
+  
   TDCmanualReg,
   FootballManualRegistrationResource,
 } from "./models.Resource.js";
@@ -134,11 +136,12 @@ const admin = new AdminJS({
 
     // rakesh code  start
     FixtureResource,
+    GameFixtureResource,
     ResultFixtureResource,
     TableFixtureResource,
     gameTeamResource,
     playerResource,
-    GameFixtureResource,
+   
     // rakesh code end
 
     {

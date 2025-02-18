@@ -6,8 +6,8 @@ import Fixture from "../models/RKmodel/dateFixtures.Model.js";
 import GameFixture from "../models/RKmodel/gameFixture.Model.js";
 import ResultFixture from "../models/RKmodel/resultFixture.Model.js";
 import TableFixture from "../models/RKmodel/tableFixture.Model.js";
-import Player from "../models/RKmodelDetails/player.Model.js";
-import Team from "../models/RKmodelDetails/team.Model.js";
+import Player from "../models/RKmodel/player.Model.js";
+import Team from "../models/RKmodel/team.Model.js";
 
 const baseURL = "http://localhost:3000/uploads/";
 
@@ -120,9 +120,7 @@ router.get("/players", async (req, res) => {
       height: player.height,
       goalsScored: player.goalsScored,
       matchesPlayed: player.matchesPlayed,
-      player_image: player.imageKey
-        ? `${baseURL}${player.imageKey}` 
-        : null,
+      player_image: player.imageKey ? `${baseURL}${player.imageKey}` : null,
       teamId: player.teamId,
 
       team: {
@@ -181,9 +179,7 @@ router.get("/teams", async (req, res) => {
         weight: player.weight,
         goalsScored: player.goalsScored,
         matchesPlayed: player.matchesPlayed,
-           player_image: player.imageKey
-        ? `${baseURL}${player.imageKey}` 
-        : null,
+        player_image: player.imageKey ? `${baseURL}${player.imageKey}` : null,
       })),
     }));
 

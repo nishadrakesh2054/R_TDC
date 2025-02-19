@@ -169,14 +169,14 @@ const NavigationSec = () => {
                   >
                  Football
                   </NavLink>
-                  <NavDropdown.Divider />
+                  {/* <NavDropdown.Divider />
                   <NavLink
                     activeclassname="active"
                     to="/contact"
                     onClick={handleClose}
                   >
                   Contact
-                  </NavLink>
+                  </NavLink> */}
                 </NavDropdown>
 
 

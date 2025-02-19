@@ -29,29 +29,25 @@ import {
   gameGroupResource,
   applicationResource,
   careerResource,
-
   FixtureResource,
   ResultFixtureResource,
   TableFixtureResource,
   gameTeamResource,
   playerResource,
   GameFixtureResource,
-  
   TDCmanualReg,
   FootballManualRegistrationResource,
 } from "./models.Resource.js";
 import { componentLoader } from "./components.js";
 import { TDCparticipationResource } from "./TDCparticipation.Resouces.js";
+import { CourseResource } from "./course.Resourcse.js";
 
-// Register AdminJS adapter
 AdminJS.registerAdapter(AdminJSSequelize);
-// const componentLoader = new ComponentLoader();
-
 // Local provider configuration for file uploads
 const localProvider = {
-  bucket: "public/uploads", // Directory to store uploaded files
+  bucket: "public/uploads",
   opts: {
-    baseUrl: "/uploads", // The URL base to access the uploaded files
+    baseUrl: "/uploads",
   },
 };
 
@@ -59,11 +55,12 @@ const localProvider = {
 const admin = new AdminJS({
   componentLoader,
   resources: [
+    /*----------------- Thunderbolts Development  resources start----------- */
     {
-      resource: RegistrationPayment,
+      resource: TDCRegistrationPayment,
       options: {
         navigation: {
-          name: "Events Management",
+          name: "Thunderbolts Dev Center",
           icon: "Money",
         },
         actions: {
@@ -90,12 +87,100 @@ const admin = new AdminJS({
         },
       },
     },
-
+    TDCmanualReg,
     {
-      resource: TDCRegistrationPayment,
+      resource: TDCGame,
       options: {
         navigation: {
-          name: "TDC",
+          name: "Thunderbolts Dev Center",
+          icon: "Event",
+        },
+        actions: {
+          list: {
+            isAccessible: ({ currentAdmin }) =>
+              currentAdmin &&
+              (currentAdmin.role === "Admin" ||
+                currentAdmin.role === "Front desk"),
+          },
+          edit: {
+            isAccessible: ({ currentAdmin }) =>
+              currentAdmin && currentAdmin.role === "Admin",
+          },
+          new: {
+            isAccessible: ({ currentAdmin }) =>
+              currentAdmin && currentAdmin.role === "Admin",
+          },
+          show: {
+            isAccessible: ({ currentAdmin }) =>
+              currentAdmin &&
+              (currentAdmin.role === "Admin" ||
+                currentAdmin.role === "Front desk"),
+          },
+          delete: {
+            isAccessible: ({ currentAdmin }) =>
+              currentAdmin && currentAdmin.role === "Admin",
+          },
+        },
+      },
+    },
+    {
+      resource: TDCSchool,
+      options: {
+        navigation: {
+          name: "Thunderbolts Dev Center",
+          icon: "Event",
+        },
+        actions: {
+          list: {
+            isAccessible: ({ currentAdmin }) =>
+              currentAdmin &&
+              (currentAdmin.role === "Admin" ||
+                currentAdmin.role === "Front desk"),
+          },
+          edit: {
+            isAccessible: ({ currentAdmin }) =>
+              currentAdmin && currentAdmin.role === "Admin",
+          },
+          new: {
+            isAccessible: ({ currentAdmin }) =>
+              currentAdmin && currentAdmin.role === "Admin",
+          },
+          show: {
+            isAccessible: ({ currentAdmin }) =>
+              currentAdmin &&
+              (currentAdmin.role === "Admin" ||
+                currentAdmin.role === "Front desk"),
+          },
+          delete: {
+            isAccessible: ({ currentAdmin }) =>
+              currentAdmin && currentAdmin.role === "Admin",
+          },
+        },
+      },
+    },
+    TDCparticipationResource,
+    /*----------------- Thunderbolts Development  resources end----------- */
+
+    /*----------------- Football League  resources start   RAKESH CODE   ----------- */
+    FootballManualRegistrationResource,
+    FixtureResource,
+    GameFixtureResource,
+    ResultFixtureResource,
+    TableFixtureResource,
+    gameTeamResource,
+    playerResource,
+    /*----------------- Football League  resources end   RAKESH CODE   ----------- */
+
+    /*----------------- Course  resources start  CODE   ----------- */
+    CourseResource,
+    /*----------------- Course  resources end   RAKESH CODE   ----------- */
+
+    /*----------------- Thunderbolts cup resources start----------- */
+    {
+      resource: RegistrationPayment,
+      options: {
+        navigation: {
+          name: "Thunderbolts Cup",
           icon: "Money",
         },
         actions: {
@@ -123,32 +208,12 @@ const admin = new AdminJS({
       },
     },
     manualRegistration,
-    ageGroup,
     certificateResource,
-    pointsTableResource,
-    gamePointsTableResource,
-    gameGroupResource,
-    applicationResource,
-    careerResource,
-    FootballManualRegistrationResource,
-
-    TDCmanualReg,
-
-    // rakesh code  start
-    FixtureResource,
-    GameFixtureResource,
-    ResultFixtureResource,
-    TableFixtureResource,
-    gameTeamResource,
-    playerResource,
-   
-    // rakesh code end
-
     {
       resource: Game,
       options: {
         navigation: {
-          name: "Events Management",
+          name: "Thunderbolts Cup",
           icon: "Event",
         },
         actions: {
@@ -179,84 +244,11 @@ const admin = new AdminJS({
         },
       },
     },
-
-    {
-      resource: TDCGame,
-      options: {
-        navigation: {
-          name: "TDC",
-          icon: "Event",
-        },
-        actions: {
-          list: {
-            isAccessible: ({ currentAdmin }) =>
-              currentAdmin &&
-              (currentAdmin.role === "Admin" ||
-                currentAdmin.role === "Front desk"),
-          },
-          edit: {
-            isAccessible: ({ currentAdmin }) =>
-              currentAdmin && currentAdmin.role === "Admin",
-          },
-          new: {
-            isAccessible: ({ currentAdmin }) =>
-              currentAdmin && currentAdmin.role === "Admin",
-          },
-          show: {
-            isAccessible: ({ currentAdmin }) =>
-              currentAdmin &&
-              (currentAdmin.role === "Admin" ||
-                currentAdmin.role === "Front desk"),
-          },
-          delete: {
-            isAccessible: ({ currentAdmin }) =>
-              currentAdmin && currentAdmin.role === "Admin",
-          },
-        },
-      },
-    },
-
     {
       resource: School,
       options: {
         navigation: {
-          name: "Events Management",
-          icon: "Event",
-        },
-        actions: {
-          list: {
-            isAccessible: ({ currentAdmin }) =>
-              currentAdmin &&
-              (currentAdmin.role === "Admin" ||
-                currentAdmin.role === "Front desk"),
-          },
-          edit: {
-            isAccessible: ({ currentAdmin }) =>
-              currentAdmin && currentAdmin.role === "Admin",
-          },
-          new: {
-            isAccessible: ({ currentAdmin }) =>
-              currentAdmin && currentAdmin.role === "Admin",
-          },
-          show: {
-            isAccessible: ({ currentAdmin }) =>
-              currentAdmin &&
-              (currentAdmin.role === "Admin" ||
-                currentAdmin.role === "Front desk"),
-          },
-          delete: {
-            isAccessible: ({ currentAdmin }) =>
-              currentAdmin && currentAdmin.role === "Admin",
-          },
-        },
-      },
-    },
-
-    {
-      resource: TDCSchool,
-      options: {
-        navigation: {
-          name: "TDC",
+          name: "Thunderbolts Cup",
           icon: "Event",
         },
         actions: {
@@ -288,7 +280,10 @@ const admin = new AdminJS({
       },
     },
     participationResource,
-    TDCparticipationResource,
+    /*----------------- Thunderbolts cup resources end----------- */
+
+    /*----------------- Academy Management resources start----------- */
+    ageGroup,
     {
       resource: Partners,
       options: {
@@ -437,7 +432,23 @@ const admin = new AdminJS({
         }),
       ],
     },
+    /*----------------- Academy Management resources end----------- */
 
+    /*----------------- Points resources end----------- */
+    pointsTableResource,
+    /*----------------- Points resources start----------- */
+
+    /*----------------- Tournament resources start----------- */
+    gamePointsTableResource,
+    gameGroupResource,
+    /*----------------- Tournament resources end----------- */
+
+    /*----------------- Career resources start----------- */
+    applicationResource,
+    careerResource,
+    /*----------------- Career resources end----------- */
+
+    /*----------------- Events Media Communication   User resources start----------- */
     {
       resource: SpecialCamps,
       options: {
@@ -502,6 +513,7 @@ const admin = new AdminJS({
       ],
     },
     galleryResource,
+
     {
       resource: Contact,
       options: {
@@ -539,7 +551,10 @@ const admin = new AdminJS({
         },
       },
     },
+
     userResource,
+
+    /*----------------- Events Media Communication   User resources end----------- */
   ],
   rootPath: "/admin",
   branding: {

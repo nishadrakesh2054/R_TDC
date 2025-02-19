@@ -42,7 +42,7 @@ export const manualRegistration = {
   resource: ManualRegistration,
   options: {
     navigation: {
-      name: "Events Management",
+      name: "Thunderbolts Cup",
     },
     properties: {
       noOfParticipants: {
@@ -138,7 +138,7 @@ export const TDCmanualReg = {
   resource: TDCmanualRegistration,
   options: {
     navigation: {
-      name: "TDC",
+      name: "Thunderbolts Dev Center",
     },
     properties: {
       noOfParticipants: {
@@ -347,7 +347,7 @@ export const ageGroup = {
 export const certificateResource = {
   resource: Certificate,
   options: {
-    navigation: { name: "Events Management" },
+    navigation: { name: "Thunderbolts Cup" },
     actions: {
       list: {
         isAccessible: ({ currentAdmin }) =>
@@ -723,7 +723,11 @@ export const applicationResource = {
   },
 };
 
-// rakesh code start here
+
+
+
+/*-------------------- Football League  model start--------------------*/
+
 export const FixtureResource = {
   resource: Fixture,
   options: {
@@ -1166,3 +1170,5 @@ export const FootballManualRegistrationResource = {
     },
   },
 };
+/*-------------------- Football League  model end--------------------*/
+

@@ -3,7 +3,6 @@
 import sequelize from "../db/index.js";
 import Academy from "./academy.Model.js";
 import AgeGroup from "./ageGroup.Model.js";
-// import Category from "./category.Model.js";
 import Contact from "./contact.Model.js";
 import Gallery from "./gallery.Model.js";
 import Game from "./game.Model.js";

@@ -6,7 +6,7 @@ export const participationResource = {
   resource: Participation,
   options: {
     navigation: {
-      name: "Events Management",
+      name: "Thunderbolts Cup",
       icon: "Event",
     },
     actions: {

@@ -6,7 +6,7 @@ export const TDCparticipationResource = {
   resource: TDCParticipation,
   options: {
     navigation: {
-      name: "TDC",
+      name: "Thunderbolts Dev Center",
       icon: "Event",
     },
     actions: {

@@ -10,7 +10,9 @@ import {
   Spinner,
 } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import thunderboltsbup from "../../assets/logo/tdcwhitelogo.png";
+// import thunderboltsbup from "../../assets/logo/tdcwhitelogo.png";
+import thunderboltsbup from "/thunderbolts-logo.png";
+
 import downloadPdf from "./downloadPdf";
 import "./RegistrationPage.scss";
 
@@ -202,7 +204,7 @@ const RegistrationPage = () => {
               <Spinner animation="border" />
             </div>
           ) : (
-            <Form className="form-regise" onSubmit={handleSubmit}>
+            <Form className="form-regise " onSubmit={handleSubmit}>
               <Row xs={1} md={2}>
                 <Form.Group
                   as={Col}
@@ -213,8 +215,10 @@ const RegistrationPage = () => {
                   <Form.Control
                     type="text"
                     name="schoolName"
+                    className="form-input"
                     value={formData.schoolName}
                     onChange={handleChange}
+                    placeholder="Enter school name"
                     required
                   />
                 </Form.Group>
@@ -228,6 +232,8 @@ const RegistrationPage = () => {
                   <Form.Control
                     type="text"
                     name="contactNo"
+                    className="form-input"
+                    placeholder="Enter contact number"
                     value={formData.contactNo}
                     onChange={handleChange}
                     required
@@ -241,6 +247,8 @@ const RegistrationPage = () => {
                   <Form.Control
                     type="email"
                     name="email"
+                    placeholder="Enter email address"
+                    className="form-input"
                     value={formData.email}
                     onChange={handleChange}
                     required
@@ -255,6 +263,8 @@ const RegistrationPage = () => {
                   <Form.Control
                     type="address"
                     name="address"
+                    placeholder="Enter your address"
+                    className="form-input"
                     value={formData.address}
                     onChange={handleChange}
                     required
@@ -272,6 +282,8 @@ const RegistrationPage = () => {
                   <Form.Control
                     type="emergencyContactname"
                     name="emergencyContactname"
+                    className="form-input"
+                    placeholder="Enter contact person name"
                     value={formData.emergencyContactname}
                     onChange={handleChange}
                     required
@@ -287,6 +299,8 @@ const RegistrationPage = () => {
                   <Form.Control
                     type="emergencyContactrelation"
                     name="emergencyContactrelation"
+                    placeholder="Enter contact person relation"
+                    className="form-input"
                     value={formData.emergencyContactrelation}
                     onChange={handleChange}
                     required
@@ -297,10 +311,13 @@ const RegistrationPage = () => {
                   <Form.Label>DATE OF BIRTH</Form.Label>
                   <Form.Control
                     type="date"
+              
                     name="dob"
+                    className="form-input text-secondary "
                     value={formData.dob}
                     onChange={handleChange}
                     required
+                 
                   />
                 </Form.Group>
               </Row>
@@ -312,6 +329,8 @@ const RegistrationPage = () => {
                     name="type"
                     value={formData.type}
                     onChange={handleChange}
+                  
+                    className="form-input text-secondary"
                     required
                   >
                     <option>Choose...</option>
@@ -327,6 +346,7 @@ const RegistrationPage = () => {
                     value={displayGame} // Use displayGame for dropdown
                     onChange={handleChange}
                     disabled={!formData.type}
+                    className="form-input text-secondary"
                     required
                   >
                     <option>choose...</option>
@@ -348,6 +368,7 @@ const RegistrationPage = () => {
                     name="category"
                     value={displayCategory}
                     onChange={handleChange}
+                    className="form-input text-secondary"
                     disabled={!displayGame}
                     required
                   >
@@ -371,6 +392,7 @@ const RegistrationPage = () => {
                     <Form.Label>Number of Participants</Form.Label>
                     <Form.Control
                       type="number"
+                      className="form-input"
                       name="numberOfParticipants"
                       value={formData.numberOfParticipants}
                       onChange={handleChange}

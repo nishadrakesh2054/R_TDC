@@ -1,6 +1,6 @@
 .register-page {
-	background: #686868;
-	padding-top: 15rem;
+	background: #e7f0ff;
+	padding-top: 8rem;
 	padding-bottom: 5rem;
 	.logo-text-thunder {
 		display: flex;
@@ -20,14 +20,17 @@
 		.text-thi {
 			h1 {
 				text-align: center;
-				color: #fec802;
+				color: #ffbb00;
+                font-weight:bold; 
+                letter-spacing: 3px;
 				text-transform: uppercase;
 				margin-bottom: 0;
+                text-shadow: 2px 2px 4px #2060C7; 
 			}
 			h2 {
 				text-align: center;
 				text-transform: uppercase;
-				color: #fff;
+				color: #2060C7;
 				margin-bottom: 0;
 			}
 		}
@@ -37,13 +40,21 @@
 	}
 
 	.from-regis {
-		margin-top: 3rem;
+		margin-top: 2rem;
+
 		.form-regise {
-			border: 1px solid #fec802;
+		
 			border-radius: 4px;
+            // box-shadow: 0 6px 10px rgba(32, 96, 199, 0.2);
+            box-shadow: 
+            0 2px 4px rgba(32, 96, 199, 0.1), 
+            0 4px 8px rgba(32, 96, 199, 0.2);
+  
+       
 			padding: 5rem;
 			.form-label {
-				color: #fff;
+				color: #444343;
+                font-weight: 500;
 			}
 			input,
 			.form-control,
@@ -52,8 +63,8 @@
 				color: #fff;
 				border-radius: 0%;
 				option {
-					color: #fff;
-					background-color: rgba(0, 73, 190, 1);
+					color: #000;
+					background-color: rgb(228, 239, 255);
 					border-radius: 0%;
 					border: none;
 				}
@@ -88,7 +99,23 @@
 			}
 		}
 	}
+
+
+
+    .form-input {
+        border: 1px solid #85acff;
+        border-radius: 5px !important;
+        padding: 0.5rem;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+        background-color: rgb(255, 255, 255) !important;
+      }
+      
+      .form-input:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+      }
 	@media (max-width: 768px) {
-		padding-top: 10rem;
+		padding-top: 7rem;
 	}
 }

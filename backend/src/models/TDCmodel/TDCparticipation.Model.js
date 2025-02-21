@@ -105,11 +105,10 @@ const TDCParticipation = sequelize.define(
   },
   {
     tableName: "TDCParticipations",
-    timestamps: true, // Enable timestamps for createdAt and updatedAt
+    timestamps: true, 
     validate: {
       participantsRequired() {
         if (this.gameId) {
-          // Fetch the associated game to determine its type
           return sequelize.models.Game.findByPk(this.gameId).then((game) => {
             if (
               game &&

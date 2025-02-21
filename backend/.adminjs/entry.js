@@ -3,6 +3,8 @@ import GameSelect from '../src/admin/GameSelect'
 AdminJS.UserComponents.GameSelect = GameSelect
 import downloadPDF from '../src/admin/downloadbtn'
 AdminJS.UserComponents.downloadPDF = downloadPDF
+import DashboardUI from '../src/admin/DashboardUI'
+AdminJS.UserComponents.DashboardUI = DashboardUI
 import GenerateCertificates from '../src/admin/GenerateCertificates'
 AdminJS.UserComponents.GenerateCertificates = GenerateCertificates
 import ResumeDownloadButton from '../src/admin/ResumeDownloadButton'

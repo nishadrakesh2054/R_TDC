@@ -54,6 +54,8 @@ const localProvider = {
 // Initialize AdminJS
 const admin = new AdminJS({
   componentLoader,
+  
+
   resources: [
     /*----------------- Thunderbolts Development  resources start----------- */
     {

@@ -16,7 +16,7 @@ if (process.env.NODE_ENV === "development") {
     process.env.DBUSER,
     process.env.DBPASSWORD,
     {
-      host: process.env.DBHOST, 
+      host: process.env.DBHOST,
       dialect: "mysql",
       logging: false,
     }
@@ -27,7 +27,7 @@ if (process.env.NODE_ENV === "development") {
 const connect = async () => {
   try {
     await sequelize.authenticate();
-    console.log("Connection has been established successfully.");
+    console.log(" Database Connected successfully.");
   } catch (error) {
     console.error("Unable to connect to the database:", error);
   }
@@ -36,16 +36,6 @@ const connect = async () => {
 connect();
 
 export default sequelize;
-
-
-
-
-
-
-
-
-
-
 
 // import { Sequelize } from "sequelize";
 // import "dotenv/config"; // Ensure environment variables are loaded
@@ -56,9 +46,9 @@ export default sequelize;
 //   process.env.DBUSER,
 //   process.env.DBPASSWORD,
 //   {
-//     host: process.env.DBHOST, 
+//     host: process.env.DBHOST,
 //     dialect: "mysql",
-//     logging: false, 
+//     logging: false,
 //   }
 // );
 

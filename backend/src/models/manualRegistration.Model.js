@@ -7,7 +7,7 @@ const ManualRegistration = sequelize.define("ManualRegistration", {
 		allowNull: false, // Assuming paymentType should not be null
 	},
 	totalAmount: {
-		type: DataTypes.FLOAT, // Changed 'types' to 'type' and considered a numeric type
+		type: DataTypes.FLOAT, 
 		allowNull: false,
 		validate: {
 			isFloat: {

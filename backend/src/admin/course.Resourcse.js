@@ -7,24 +7,19 @@ export const CourseResource = {
 
     actions: {
       list: {
-        isAccessible: ({ currentAdmin }) =>
-          currentAdmin && currentAdmin.role === "Admin",
+        isAccessible: ({ currentAdmin }) => currentAdmin?.role === "Admin",
       },
       edit: {
-        isAccessible: ({ currentAdmin }) =>
-          currentAdmin && currentAdmin.role === "Admin",
+        isAccessible: ({ currentAdmin }) => currentAdmin?.role === "Admin",
       },
       new: {
-        isAccessible: ({ currentAdmin }) =>
-          currentAdmin && currentAdmin.role === "Admin",
+        isAccessible: ({ currentAdmin }) => currentAdmin?.role === "Admin",
       },
       show: {
-        isAccessible: ({ currentAdmin }) =>
-          currentAdmin && currentAdmin.role === "Admin",
+        isAccessible: ({ currentAdmin }) => currentAdmin?.role === "Admin",
       },
       delete: {
-        isAccessible: ({ currentAdmin }) =>
-          currentAdmin && currentAdmin.role === "Admin",
+        isAccessible: ({ currentAdmin }) => currentAdmin?.role === "Admin",
       },
     },
     properties: {
@@ -38,7 +33,7 @@ export const CourseResource = {
         isVisible: { list: false, edit: false, filter: false, show: false },
       },
       reasonForJoining: {
-        isVisible: { list: false, edit: false, filter: false, show: false },
+        isVisible: { list: false, edit: true, filter: false, show: true }, // Ensure it is visible in 'edit' and 'show'
       },
     },
   },

@@ -1,6 +1,7 @@
 import express from "express";
 import Joi from "joi";
-import { sendRegistrationSuccessEmail } from "../../middleware/sendRegistrationSuccessEmail.js";
+import { sendRegistrationSuccessEmail } from "../../middleware/TDCmiddleware/TDCsendRegistrationSuccessEmail.js";
+
 import {
   TDCGame,
   TDCParticipation,
@@ -23,16 +24,20 @@ const registrationSchema = Joi.object({
   address: Joi.string().required().messages({
     "string.empty": "Please provide a valid address.",
   }),
-  emergencyContactname: Joi.string().min(3).max(255).required(),
-
-  emergencyContactrelation: Joi.string().min(3).max(255).required(),
-
-  emergencyContactNo: Joi.string().pattern(/^\d+$/).min(10).max(15).optional().messages({
-    "string.pattern.base": "Please provide a valid emergency contact number (digits only).",
-    "string.min": "Emergency contact number must be at least 10 digits long.",
-    "string.max": "Emergency contact number must be at most 15 digits long.",
-  }),
-  dob: Joi.date().required().messages({
+  contactPersonName: Joi.string().min(3).max(255).required(),
+  contactPersonRelation: Joi.string().min(3).max(255).required(),
+  contactPersonNumber: Joi.string()
+    .pattern(/^\d+$/)
+    .min(10)
+    .max(15)
+    .optional()
+    .messages({
+      "string.pattern.base":
+        "Please provide a valid emergency contact number (digits only).",
+      "string.min": "Emergency contact number must be at least 10 digits long.",
+      "string.max": "Emergency contact number must be at most 15 digits long.",
+    }),
+  dateOfBirth: Joi.date().required().messages({
     "date.base": "Please provide a valid date of birth.",
   }),
 
@@ -57,10 +62,20 @@ const registrationSchema = Joi.object({
 router.post(
   "/tdcparticipations",
   async (req, res, next) => {
-    const { schoolName, contactNo, type, game, numberOfParticipants, email,address ,emergencyContactname,emergencyContactrelation,emergencyContactNo,dob} =
-      req.body;
+    const {
+      schoolName,
+      contactNo,
+      type,
+      game,
+      numberOfParticipants,
+      email,
+      address,
+      contactPersonName,
+      contactPersonRelation,
+      contactPersonNumber,
+      dateOfBirth,
+    } = req.body;
 
-    // Validate request data using Joi schema
     const { error } = registrationSchema.validate(req.body);
     if (error) {
       return res.status(400).json({ error: error.details[0].message });
@@ -72,10 +87,10 @@ router.post(
         contactNo,
         email,
         address,
-        emergencyContactname,
-        emergencyContactrelation,
-        emergencyContactNo,
-        dob,
+        contactPersonName,
+        contactPersonRelation,
+        contactPersonNumber,
+        dateOfBirth,
       });
 
       const selectedGame = await TDCGame.findByPk(Number(game));
@@ -95,10 +110,10 @@ router.post(
         fee,
         schoolId: school.id,
         gameId: selectedGame.id,
-        emergencyContactname,
-        emergencyContactrelation,
-        emergencyContactNo,
-        dob,
+        contactPersonName,
+        contactPersonRelation,
+        contactPersonNumber,
+        dateOfBirth,
       });
 
       res.locals.school = school;

@@ -5,10 +5,10 @@ const Course = sequelize.define(
   "Course",
   {
     id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-      },
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
     declaration: {
       type: DataTypes.BOOLEAN,
       allowNull: false,

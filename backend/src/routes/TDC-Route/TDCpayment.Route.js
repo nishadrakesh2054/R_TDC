@@ -4,7 +4,7 @@ import crypto from "crypto";
 import express from "express";
 import Joi from "joi";
 import sequelize from "../../db/index.js";
-import { sendRegistrationSuccessEmail } from "../../middleware/sendRegistrationSuccessEmail.js";
+import { sendRegistrationSuccessEmail } from "../../middleware/TDCmiddleware/TDCsendRegistrationSuccessEmail.js";
 import {
   TDCGame,
   TDCParticipation,
@@ -66,79 +66,8 @@ const registrationSchema = Joi.object({
     }),
 });
 
-// Function to validate input parameters
-const validatePaymentRequest = (req) => {
-  const { pid, md, prn, amt, crn, dt, r1, r2, ru } = req.body;
 
-  // Validate RU
-  if (ru.length > 150)
-    return "RU must be a string with a maximum length of 150.";
-
-  // Validate PID
-  if (pid.length < 3 || pid.length > 20)
-    return "PID must be a string between 3 and 20 characters.";
-
-  // Validate PRN
-  if (prn.length < 3 || prn.length > 25)
-    return "PRN must be a string between 3 and 25 characters.";
-
-  // Validate AMT
-  if (isNaN(amt) || amt.toString().length > 18)
-    return "AMT must be a valid number with a maximum length of 18.";
-
-  // Validate CRN
-  if (crn !== "NPR" || crn.length !== 3) return "CRN must be exactly 'NPR'.";
-
-  // Validate DT
-  const datePattern = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/; // MM/DD/YYYY format
-  if (!datePattern.test(dt) || dt.length !== 10)
-    return "DT must be a string in MM/DD/YYYY format and exactly 10 characters long.";
-
-  // Validate R1
-  if (r1.length > 160)
-    return "R1 must be a string with a maximum length of 160.";
-
-  // Validate R2
-  if (r2.length > 50) return "R2 must be a string with a maximum length of 50.";
-
-  // Validate MD
-  if (md.length < 1 || md.length > 3)
-    return "MD must be a string between 1 and 3 characters.";
-
-  return null; // No validation errors
-};
-
-// Endpoint to generate HMAC-SHA512 hash
-router.post("/tdcgenerate-hash", (req, res) => {
-  //   console.log("Request Body:", req.body);
-  const { pid, md, prn, amt, crn, dt, r1, r2, ru } = req.body;
-
-  // Validate parameters
-  const validationError = validatePaymentRequest(req);
-  if (validationError) {
-    return res.status(400).json({ message: validationError });
-  }
-
-  const dataString = `${pid},${md},${prn},${amt},${crn},${dt},${r1},${r2},${ru}`;
-
-  let SECRET_KEY;
-
-  if (process.env.NODE_ENV === "development") {
-    SECRET_KEY = "fonepay";
-  } else {
-    SECRET_KEY = process.env.SECRET_KEY;
-  }
-
-  // Generate HMAC-SHA512 hash (DV)
-  const hmac = crypto.createHmac("sha512", SECRET_KEY);
-  hmac.update(dataString, "utf-8");
-  const dv = hmac.digest("hex");
-
-  res.json({ dv });
-});
-
-router.post("/tdcpre-check-registration", async (req, res) => {
-  const preCheckSchema = Joi.object({
+const preCheckSchema = Joi.object({
     schoolName: Joi.string().min(3).max(255).required(),
     contactNo: Joi.string()
       .pattern(/^\d+$/)
@@ -188,6 +117,74 @@ router.post("/tdcpre-check-registration", async (req, res) => {
       "any.required": "Type of registration is required.",
     }),
   });
+
+
+// Function to validate input parameters
+const validatePaymentRequest = (req) => {
+  const { pid, md, prn, amt, crn, dt, r1, r2, ru } = req.body;
+
+  // Validate RU
+  if (ru.length > 150)
+    return "RU must be a string with a maximum length of 150.";
+
+  // Validate PID
+  if (pid.length < 3 || pid.length > 20)
+    return "PID must be a string between 3 and 20 characters.";
+
+  // Validate PRN
+  if (prn.length < 3 || prn.length > 25)
+    return "PRN must be a string between 3 and 25 characters.";
+
+  // Validate AMT
+  if (isNaN(amt) || amt.toString().length > 18)
+    return "AMT must be a valid number with a maximum length of 18.";
+
+  // Validate CRN
+  if (crn !== "NPR" || crn.length !== 3) return "CRN must be exactly 'NPR'.";
+
+  // Validate DT
+  const datePattern = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/; // MM/DD/YYYY format
+  if (!datePattern.test(dt) || dt.length !== 10)
+    return "DT must be a string in MM/DD/YYYY format and exactly 10 characters long.";
+
+  // Validate R1
+  if (r1.length > 160)
+    return "R1 must be a string with a maximum length of 160.";
+
+  // Validate R2
+  if (r2.length > 50) return "R2 must be a string with a maximum length of 50.";
+
+  // Validate MD
+  if (md.length < 1 || md.length > 3)
+    return "MD must be a string between 1 and 3 characters.";
+
+  return null; // No validation errors
+};
+
+// Endpoint to generate HMAC-SHA512 hash
+router.post("/tdcgenerate-hash", (req, res) => {
+  const { pid, md, prn, amt, crn, dt, r1, r2, ru } = req.body; 
+  const validationError = validatePaymentRequest(req);
+  if (validationError) {
+    return res.status(400).json({ message: validationError });
+  }
+  const dataString = `${pid},${md},${prn},${amt},${crn},${dt},${r1},${r2},${ru}`;
+  let SECRET_KEY;
+
+  if (process.env.NODE_ENV === "development") {
+    SECRET_KEY = "fonepay";
+  } else {
+    SECRET_KEY = process.env.SECRET_KEY;
+  }
+
+  const hmac = crypto.createHmac("sha512", SECRET_KEY);
+  hmac.update(dataString, "utf-8");
+  const dv = hmac.digest("hex");
+
+  res.json({ dv });
+});
+
+router.post("/tdcpre-check-registration", async (req, res) => {
 
   const { error, value } = preCheckSchema.validate(req.body);
   if (error) {
@@ -341,14 +338,6 @@ router.post("/tdcverify-payment", async (req, res) => {
         type === "Individual"
           ? selectedGame.fee * numberOfParticipants
           : selectedGame.fee;
-
-      //   if (parsedPaidAmount !== finalFee) {
-      //     await transaction.rollback();
-      //     return res.status(400).json({
-      //       verified: false,
-      //       message: "Paid amount does not match the calculated fee.",
-      //     });
-      //   }
 
       const participation = await TDCParticipation.create(
         {

@@ -24,7 +24,10 @@ import TableFixture from "../models/RKmodel/tableFixture.Model.js";
 import gameTeam from "../models/RKmodel/team.Model.js";
 import Player from "../models/RKmodel/player.Model.js";
 import FootballManualRegistration from "../models/RKmodel/Registration.Model.js";
+
 import FootballManualReg from "../models/NewTdc/manualReg.Model.js";
+import ThunderBoltsReg from "../models/NewTdc/RegisterForm.Model.js";
+import NewPaymentTDC from "../models/NewTdc/Payment.Model.js";
 
 // Register AdminJS adapter
 AdminJS.registerAdapter(AdminJSSequelize);
@@ -1170,11 +1173,15 @@ export const FootballManualRegistrationResource = {
 };
 /*-------------------- Football League  model end--------------------*/
 
+
+
+
+/*-------------------- New TDC Registration model start--------------------*/
 export const TDCManualRegResource = {
   resource: FootballManualReg,
   options: {
     navigation: {
-      name: "TDC REGISTRATION",
+      name: "REGISTRATION TDC",
     },
     properties: {
       paymentType: { isVisible: true },
@@ -1198,8 +1205,8 @@ export const TDCManualRegResource = {
       ContactNo: { isVisible: true },
       address: { isVisible: true },
       fullName: { isVisible: true },
-      updatedAt:{ isVisible: false },
-      createdAt:{ isVisible: false },
+      updatedAt: { isVisible: false },
+      createdAt: { isVisible: false },
     },
 
     actions: {
@@ -1226,3 +1233,78 @@ export const TDCManualRegResource = {
     },
   },
 };
+
+export const ThundersRegistration = {
+  resource: ThunderBoltsReg,
+  options: {
+    navigation: {
+      name: "REGISTRATION TDC",
+    },
+    listProperties: [
+      "fullName",
+      "email",
+      "contactNo",
+      "gender",
+      "age",
+      "sports",
+      "category",
+    ],
+    editProperties: [
+      "fullName",
+      "address",
+      "contactNo",
+      "email",
+      "dob",
+      "age",
+      "gender",
+      "schoolName",
+      "parentName",
+      "parentEmail",
+      "parentContactNo",
+      "parentAddress",
+      "sports",
+      "category",
+      "emergencyContactname",
+      "emergencyContactNumber",
+      "hasMedicalConditions",
+      "medicalDetails",
+    ],
+    showProperties: [
+      "fullName",
+      "address",
+      "contactNo",
+      "email",
+      "dob",
+      "age",
+      "gender",
+      "schoolName",
+      "parentName",
+      "parentEmail",
+      "parentContactNo",
+      "parentAddress",
+      "sports",
+      "category",
+      "emergencyContactname",
+      "emergencyContactNumber",
+      "hasMedicalConditions",
+      "medicalDetails",
+    ],
+  },
+};
+
+export const PaymentTDC={
+    resource: NewPaymentTDC,
+    options: {
+        navigation: {
+            name: "REGISTRATION TDC",
+          },
+        listProperties: ["id", "userId", "amount", "status", "paymentMethod"],
+        editProperties: ["status"],
+        actions: {
+          edit: {
+            isAccessible: ({ currentAdmin }) => currentAdmin.role === "admin",
+          },
+        },
+      },
+}
+

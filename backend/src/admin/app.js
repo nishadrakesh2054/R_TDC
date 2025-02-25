@@ -37,6 +37,8 @@ import {
   GameFixtureResource,
   TDCmanualReg,
   FootballManualRegistrationResource,
+  TDCManualRegResource
+  
 } from "./models.Resource.js";
 import { componentLoader } from "./components.js";
 import { TDCparticipationResource } from "./TDCparticipation.Resouces.js";
@@ -161,6 +163,7 @@ const admin = new AdminJS({
       },
     },
     TDCparticipationResource,
+    TDCManualRegResource,
     /*----------------- Thunderbolts Development  resources end----------- */
 
     /*----------------- Football League  resources start   RAKESH CODE   ----------- */

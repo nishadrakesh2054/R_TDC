@@ -9,7 +9,6 @@ import {
   Row,
   Spinner,
 } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
 
 import "./RegistrationPage.scss";
 
@@ -59,11 +58,11 @@ const RegistrationPage = () => {
       // Determine the category based on age
       let category = "";
       if (calculatedAge >= 6 && calculatedAge <= 11) {
-        category = "Grassroots(6-11 years)";
+        category = "Grassroots";
       } else if (calculatedAge >= 12 && calculatedAge <= 15) {
-        category = "Intermediate(12-15 years)";
+        category = "Intermediate";
       } else if (calculatedAge >= 16 && calculatedAge <= 19) {
-        category = "Senior(16-19 years)";
+        category = "Senior";
       }
 
       setFormData((prevFormData) => ({
@@ -119,12 +118,46 @@ const RegistrationPage = () => {
 
     setIsSubmitting(true);
     try {
-      console.log("Form Data Submitted:", formData);
-      setIsSubmitting(false);
+      const response = await axios.post(
+        "http://localhost:3000/api/register_tdc",
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("Form Data Submitted:", response.data);
+      alert("Registration successful!"); // Show success message
+      setFormData({
+        fullName: "",
+        address: "",
+        contactNo: "",
+        email: "",
+        dob: "",
+        age: "",
+        gender: "",
+        schoolName: "",
+        parentName: "",
+        parentEmail: "",
+        parentContactNo: "",
+        parentAddress: "",
+        sports: "",
+        category: "",
+        emergencyContactname: "",
+        emergencyContactNumber: "",
+        hasMedicalConditions: "",
+        medicalDetails: "",
+      }); // Reset form
     } catch (error) {
+      console.error(
+        "Error submitting form:",
+        error.response?.data || error.message
+      );
       setError("Failed to submit the form. Please try again.");
-      setIsSubmitting(false);
     }
+    setIsSubmitting(false);
   };
 
   return (
@@ -372,26 +405,19 @@ const RegistrationPage = () => {
                   </Form.Select>
                 </Form.Group>
 
-                <Form.Group as={Col} controlId="formGridGame" className="mb-3">
+                <Form.Group
+                  as={Col}
+                  controlId="formGridCategory"
+                  className="mb-3"
+                >
                   <Form.Label>Category</Form.Label>
-                  <Form.Select
+                  <Form.Control
+                    type="text"
                     name="category"
+                    className="form-input"
                     value={formData.category}
-                    onChange={handleChange}
-                    className="form-input text-secondary"
-                    required
-                  >
-                    <option value="">Choose...</option>
-                    <option value="Grassroots(6-11 years)">
-                      Grassroots(6-11 years)
-                    </option>
-                    <option value="Intermediate(12-15 years)">
-                      Intermediate(12-15 years)
-                    </option>
-                    <option value="Senior(16-19 years)">
-                      Senior(16-19 years)
-                    </option>
-                  </Form.Select>
+                    readOnly
+                  />
                 </Form.Group>
               </Row>
 
@@ -479,18 +505,19 @@ const RegistrationPage = () => {
               </Row>
 
               {formError && <Alert variant="danger">{formError}</Alert>}
-
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="paynow-btn"
-              >
-                {isSubmitting ? (
-                  <Spinner animation="border" size="sm" />
-                ) : (
-                  `Pay Now NRP. 10,000`
-                )}
-              </Button>
+              <div className="button-container mt-4">
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="paynow-btn"
+                >
+                  {isSubmitting ? (
+                    <Spinner animation="border" size="sm" />
+                  ) : (
+                    "Register Here"
+                  )}
+                </Button>
+              </div>
             </Form>
           )}
         </div>

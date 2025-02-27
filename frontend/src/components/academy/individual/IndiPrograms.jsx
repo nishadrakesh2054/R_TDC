@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import placeholder from "../../../assets/academy/thunderbolts-logo.png";
 
-const IndiPrograms = ({ items }) => {
+const IndiPrograms = ({ items, titles  }) => {
   const navigate = useNavigate();
   return (
     <>
@@ -24,9 +24,14 @@ const IndiPrograms = ({ items }) => {
                     </div>
                   </Col>
                   <Col>
-                    <Card.Body>
+                    <Card.Body className="academtennis">
                       <h2>{_?.title}</h2>
-                      <h4>{_?.age}</h4>
+                  
+                      {titles === "cricket-academy" ? (
+                        <h4>{_?.ages}</h4>
+                      ) : (
+                        <h4>{_?.age}</h4>
+                      )}
                       <Card.Text>{_?.dec}</Card.Text>
                       <Button
                         onClick={() => {

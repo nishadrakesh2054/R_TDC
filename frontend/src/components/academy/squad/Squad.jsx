@@ -13,7 +13,7 @@ import cri from "../../../assets/academy/cri1.jpg";
 import fot from "../../../assets/academy/football.jpg";
 import futsal from "../../../assets/academy/futsal.jpg";
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const items = [
   {

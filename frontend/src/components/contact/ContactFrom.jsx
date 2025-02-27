@@ -101,6 +101,12 @@ const ContactForm = () => {
           <Button type="submit" disabled={loading}>
             {loading ? <Spinner animation="border" size="sm" /> : "SEND"}
           </Button>
+          <Row>
+            <p className="text-light">
+              Note : Keep me updated on new features, program updates, and
+              special offers from Thunderbolts Development Center.
+            </p>
+          </Row>
         </Form>
       </div>
     </>

@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Container } from "react-bootstrap";
 import "./hero.scss";
 import { useNavigate } from "react-router-dom";
-import btnside from "../../assets/yellow-btn-side.png";
+ import btnside from "../../assets/yellow-btn-side.png";
 
 const HeroSec = () => {
 	const navigate = useNavigate();
@@ -18,7 +18,7 @@ const HeroSec = () => {
 						Where Champions Are <span>Made</span>
 					</p>
 					<div className="join-btn-her">
-						<Button
+						{/* <Button
 							onClick={() => {
 								navigate("/register-thunderbolts-cup");
 							}}
@@ -26,7 +26,7 @@ const HeroSec = () => {
 						>
 							<p>Register for TBC </p>
 							<img src={btnside} alt="btn" />
-						</Button>
+						</Button> */}
 
 						<Button
 							onClick={() => {

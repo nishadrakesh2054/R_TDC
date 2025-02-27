@@ -73,10 +73,10 @@ function App() {
           <Route path="/e-sports" element={<Esports />} />
           <Route path="/events/thunderboltscup" element={<Events />} />
           <Route path="/events/footballleague/*" element={<FootballLeague />} />
-          
+
           <Route
             path="/register-thunderbolts-cup"
-            element={<TdcRegistrationPage/>}
+            element={<TdcRegistrationPage />}
           />
           {/* <Route
             path="/register-thunderbolts-cup"
@@ -84,8 +84,7 @@ function App() {
           /> */}
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/contact" element={<Contact />} />
-
-          <Route path="//football-course" element={<Course />} />
+          <Route path="/football-course" element={<Course />} />
           <Route path="/payment-response" element={<PaymentResponse />} />
           <Route path="/payment-form" element={<PaymentForm />} />
 

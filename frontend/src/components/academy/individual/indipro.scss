@@ -1,12 +1,20 @@
 .indi-pro {
+
   .cards-row {
     margin-top: 5rem;
   }
   .indi-card {
     border-radius: 0;
-    background: #0049be !important;
+    background: #0049be !important ;
     .image-stu {
       height: 25em;
+      max-width: 100%; // Ensures responsiveness
+      overflow: hidden; 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+     
+     
       img {
         border: none;
         border-radius: 0;
@@ -18,6 +26,8 @@
 
     .card-body {
       border-radius: 0;
+    
+
       p {
         color: #fff;
       }
@@ -34,4 +44,8 @@
       }
     }
   }
+}
+.academtennis{
+    background: #0049be !important;
+
 }

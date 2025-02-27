@@ -194,7 +194,7 @@ const RegistrationPage = () => {
                     className="form-input"
                     value={formData.fullName}
                     onChange={handleChange}
-                    placeholder="Enter school name"
+                    placeholder="Enter full name"
                     required
                   />
                 </Form.Group>
@@ -207,7 +207,7 @@ const RegistrationPage = () => {
                   <Form.Control
                     type="text"
                     name="address"
-                    placeholder="Enter your address"
+                    placeholder="Enter address"
                     className="form-input"
                     value={formData.address}
                     onChange={handleChange}
@@ -355,7 +355,7 @@ const RegistrationPage = () => {
                   <Form.Control
                     type="text"
                     name="parentAddress"
-                    placeholder="Enter your address"
+                    placeholder="Enter address"
                     className="form-input"
                     value={formData.parentAddress}
                     onChange={handleChange}
@@ -518,6 +518,13 @@ const RegistrationPage = () => {
                   )}
                 </Button>
               </div>
+
+              <Row>
+                <p className="text-dark">
+                  Note : Keep me updated on new features, program updates, and
+                  special offers from Thunderbolts Development Center.
+                </p>
+              </Row>
             </Form>
           )}
         </div>

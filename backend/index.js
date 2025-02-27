@@ -116,7 +116,7 @@ app.use("/api", TDCGame);
 
 // New TDC routes defines
 app.use("/api", TDCRegister);
-app.use("/api", NewTDCPayment);
+app.use("/newapi", NewTDCPayment);
 
 app.get("/api/test", (req, res) => {
   res.send("API is working");

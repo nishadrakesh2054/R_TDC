@@ -23,31 +23,28 @@ export default [
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
     },
-    // rules: {
-    //   ...js.configs.recommended.rules,
-    //   ...react.configs.recommended.rules,
-    //   ...react.configs['jsx-runtime'].rules,
-    //   ...reactHooks.configs.recommended.rules,
-    //   'react/jsx-no-target-blank': 'off',
-    //   'react-refresh/only-export-components': [
-    //     'warn',
-    //     { allowConstantExport: true },
-    //   ],
-    // },
     rules: {
-        ...js.configs.recommended.rules,
-        ...react.configs.recommended.rules,
-        ...react.configs["jsx-runtime"].rules,
-        ...reactHooks.configs.recommended.rules,
-        "react/jsx-no-target-blank": "off",
-        "react/jsx-uses-react": "off",
-        "react/react-in-jsx-scope": "off",
-        "react-refresh/only-export-components": [
-          "warn",
-          { allowConstantExport: true,vars: "all",  varsIgnorePattern: "^React$",   args: "after-used",  ignoreRestSiblings: true,
-  
-           },
-        ],
-      },
+      ...js.configs.recommended.rules,
+      ...react.configs.recommended.rules,
+      ...react.configs['jsx-runtime'].rules,
+      ...reactHooks.configs.recommended.rules,
+      'react/jsx-no-target-blank': 'off',
+      'react-refresh/only-export-components': [
+        'warn',
+        { allowConstantExport: true },
+      ],
+      // Disable unused variable warning
+      'no-unused-vars': [
+        'warn',
+        {
+          vars: 'all',
+          args: 'after-used',
+          ignoreRestSiblings: true,
+          argsIgnorePattern: '^_' // Ignore arguments that start with '_'
+        },
+      ],
+      // Disable unused imports for React (React 17+)
+      'react/react-in-jsx-scope': 'off',
+    },
   },
 ]

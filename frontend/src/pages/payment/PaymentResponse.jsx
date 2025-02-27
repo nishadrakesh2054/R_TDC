@@ -10,7 +10,7 @@ const PaymentResponse = () => {
 	const [responseMessage, setResponseMessage] = useState("");
 	const [isVerified, setIsVerified] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
-	const [isSuccess, setIsSuccess] = useState(false); 
+	const [isSuccess, setIsSuccess] = useState(false); // Ensure you keep this if you use it
 	const [details, setDetails] = useState(null);
 	const [copySuccess, setCopySuccess] = useState(false);
 

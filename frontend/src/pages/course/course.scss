@@ -1,174 +1,174 @@
 .football-course {
-    padding-top: 10rem;
-    padding-bottom: 2rem;
-    text-align: center;
-    background: linear-gradient(rgba(8, 22, 51, 0.5), rgba(0, 0, 0, 0.5)),
-      url("../../assets/contact/contactHead.jpg") center/cover no-repeat;
-  
-    .course-title {
-      font-size: 2.5rem;
-      font-weight: bold;
-      letter-spacing: 2px;
-      color: #ececec;
-    }
-  
-    .course-subtitle {
-      font-size: 1.5rem;
-      color: #fec802;
-    }
-  
-    .intro-box,
-    .details-box,
-    .gain-box,
-    .why-box,
-    .register-box,
-    .closing-box {
-      background: rgba(171, 196, 232, 0.15);
-      box-shadow: 0 8px 32px 0 rgba(97, 97, 100, 0.37);
-      border-radius: 10px;
-      backdrop-filter: blur(9.5px);
-      margin-bottom: 5px;
-    }
-    p {
-      color: #ececec;
-    }
-    h5 {
-      color: white;
-      font-size: 1.5rem;
-      font-weight: 700;
-    }
-    ul {
-      list-style: none;
-      padding-left: 0;
-  
-      li {
-        padding: 5px 0;
-        font-size: 1rem;
-  
-        svg {
-          color: #ffcc00;
-          margin-right: 8px;
-        }
+  padding-top: 10rem;
+  padding-bottom: 2rem;
+  text-align: center;
+  background: linear-gradient(rgba(8, 22, 51, 0.5), rgba(0, 0, 0, 0.5)),
+    url("../../assets/contact/contactHead.jpg") center/cover no-repeat;
+
+  .course-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: #ececec;
+  }
+
+  .course-subtitle {
+    font-size: 1.5rem;
+    color: #fec802;
+  }
+
+  .intro-box,
+  .details-box,
+  .gain-box,
+  .why-box,
+  .register-box,
+  .closing-box {
+    background: rgba(171, 196, 232, 0.15);
+    box-shadow: 0 8px 32px 0 rgba(97, 97, 100, 0.37);
+    border-radius: 10px;
+    backdrop-filter: blur(9.5px);
+    margin-bottom: 5px;
+  }
+  p {
+    color: #ececec;
+  }
+  h5 {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  ul {
+    list-style: none;
+    padding-left: 0;
+
+    li {
+      padding: 5px 0;
+      font-size: 1rem;
+
+      svg {
+        color: #ffcc00;
+        margin-right: 8px;
       }
     }
-  
-    .register-btn {
-      display: block;
-      width: auto;
-      font-size: 1.05rem;
-      font-weight: bold;
-      background: #ffcc00;
-      color: #0d47a1;
-      border: none;
-      padding: 8px 12px;
-      margin-top: 10px;
-      transition: 0.3s;
-  
-   
-    }
-  
-    .closing-box h5 {
-      color: #ffcc00;
-      font-size: 1.3rem;
-    }
-    a {
-      text-decoration: none;
-    }
   }
-  
-  .text-light {
-    color: red;
+
+  .register-btn {
+    display: block;
+    width: auto;
+    font-size: 1.05rem;
+    font-weight: bold;
+    background: #ffcc00;
+    color: #0d47a1;
+    border: none;
+    padding: 8px 12px;
+    margin-top: 10px;
+    transition: 0.3s;
+
+ 
   }
-  
-  /* Ensure equal height for both cards */
-  .details-box {
-    height: 100%;
+
+  .closing-box h5 {
+    color: #ffcc00;
+    font-size: 1.3rem;
+  }
+  a {
+    text-decoration: none;
+  }
+}
+
+.text-light {
+  color: red;
+}
+
+/* Ensure equal height for both cards */
+.details-box {
+  height: 100%;
+  border-radius: 15px;
+  border: 1px solid red;
+
+}
+.boxes{
     border-radius: 15px;
-    border: 1px solid red;
-  
+}
+
+/* Enhanced Blinking & Glowing Animation */
+@keyframes glowBlink {
+  0% {
+    color: #0140a7; /* Red */
+    opacity: 1;
+    transform: scale(1);
   }
-  .boxes{
-      border-radius: 15px;
+  50% {
+    color: #fea602; /* Yellow */
+
+    opacity: 0.7;
+    transform: scale(1.05);
+  }
+  100% {
+    color: #0140a7; /* Red */
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.blinking-text {
+  animation: glowBlink 1.5s infinite ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+
+
+
+/* Ensure consistent logo size */
+.closing-logo {
+    width: 350px;  /* Adjust width as needed */
+    height: auto;  /* Maintain aspect ratio */
+    max-height: 150px; /* Prevent it from being too large */
+  }
+
+
+
+
+
+
+
+
+
+
+  /* Ensure table scrolls horizontally on small screens */
+.table-responsive {
+    overflow-x: auto;
   }
   
-  /* Enhanced Blinking & Glowing Animation */
-  @keyframes glowBlink {
-    0% {
-      color: #0140a7; /* Red */
-      opacity: 1;
-      transform: scale(1);
+  /* Adjust font size & padding for better readability */
+  @media (max-width: 768px) {
+    .table-responsive table {
+      font-size: 14px; /* Reduce font size */
     }
-    50% {
-      color: #fea602; /* Yellow */
-  
-      opacity: 0.7;
-      transform: scale(1.05);
-    }
-    100% {
-      color: #0140a7; /* Red */
-      opacity: 1;
-      transform: scale(1);
+    .table-responsive td {
+      padding: 8px; /* Reduce padding */
+      white-space: nowrap; /* Prevent text wrapping */
     }
   }
   
-  .blinking-text {
-    animation: glowBlink 1.5s infinite ease-in-out;
-    transition: all 0.3s ease-in-out;
+  .lastp{
+    padding: 0 70px  !important;
   }
-  
-  
-  
-  
-  /* Ensure consistent logo size */
-  .closing-logo {
-      width: 350px;  /* Adjust width as needed */
-      height: auto;  /* Maintain aspect ratio */
-      max-height: 150px; /* Prevent it from being too large */
-    }
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-    /* Ensure table scrolls horizontally on small screens */
-  .table-responsive {
-      overflow-x: auto;
-    }
+
+  .lastitalic{
+    letter-spacing: 4px;
+    margin-top: 3px;
+  }
+  .years{
+    letter-spacing: 1px;
     
-    /* Adjust font size & padding for better readability */
-    @media (max-width: 768px) {
-      .table-responsive table {
-        font-size: 14px; /* Reduce font size */
-      }
-      .table-responsive td {
-        padding: 8px; /* Reduce padding */
-        white-space: nowrap; /* Prevent text wrapping */
-      }
-    }
-    
-    .lastp{
-      padding: 0 70px  !important;
-    }
+  }
+  li{
+    line-height: 1.3;
+  }
+  /* Ensure no top margin or padding */
+.custom-margin-padding {
+    margin-top: 0; /* Remove any top margin */
+    padding-top: 0; /* Remove any top padding */
+  }
   
-    .lastitalic{
-      letter-spacing: 4px;
-      margin-top: 3px;
-    }
-    .years{
-      letter-spacing: 1px;
-      
-    }
-    li{
-      line-height: 1.3;
-    }
-    /* Ensure no top margin or padding */
-  .custom-margin-padding {
-      margin-top: 0; /* Remove any top margin */
-      padding-top: 0; /* Remove any top padding */
-    }
-    

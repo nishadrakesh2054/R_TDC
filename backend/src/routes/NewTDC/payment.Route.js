@@ -159,7 +159,7 @@ router.post("/pre-check-registration", async (req, res) => {
     const newPayment = await paymentTDC.create(
       {
         registrationId: newRegistration.id,
-        transactionId: `TXN_${Date.now()}`,
+        transactionId: `TXN_${crypto.randomUUID()}`,
         amount: value.amount,
         paymentMethod: value.paymentMethod,
         status: "pending",
@@ -204,29 +204,40 @@ router.post("/verify-payment", async (req, res) => {
     process.env.NODE_ENV === "development" ? "fonepay" : process.env.SECRET_KEY;
 
   // Debugging log
-  console.log("Verification String:", verificationString);
+  console.log("Received Request Body:", req.body);
+  console.log("Raw Verification String:", verificationString);
+  console.log("Type of Verification String:", typeof verificationString);
+  // Check if verificationString is a valid string before trimming
+  if (typeof verificationString !== "string") {
+    return res
+      .status(400)
+      .json({
+        verified: false,
+        message: "Verification String must be a string.",
+      });
+  }
+  const trimmedVerificationString = verificationString.trim();
+  console.log("Trimmed Verification String:", trimmedVerificationString);
+
   console.log("Received DV:", dv);
   console.log("Using Secret Key:", SECRET_KEY);
 
-  // Declare transaction outside the try block
   const transaction = await sequelize.transaction();
 
   try {
     // Generate HMAC-SHA512 hash
     const hmac = crypto.createHmac("sha512", SECRET_KEY);
-    hmac.update(verificationString.trim(), "utf-8"); // Check without trimming
-    const generatedHash =
-      "99b7b6568e8de34ac8a4a8a760dc20a03e56b5b1a3c0b816589679436d1dc52432602f8d1cfdac769b32a45d287dd156c5088edd9a5469f2869f52ac8a89209e";
+    hmac.update(trimmedVerificationString, "utf-8");
+    const generatedHash = hmac.digest("hex");
 
     // Debugging log
-    console.log("Generated Hash:", generatedHash);
+    console.log("Generated Hash Code:", generatedHash);
     console.log(
-      "Hash Match:",
+      "Hash Match Both:",
       generatedHash.toLowerCase() === dv.toLowerCase()
     );
 
     if (generatedHash.toLowerCase() !== dv.toLowerCase()) {
-      await transaction.rollback(); // Rollback if hash doesn't match
       return res.status(400).json({
         verified: false,
         message: "Payment verification failed: invalid hash.",

@@ -6,7 +6,7 @@ const PaymentTDC = sequelize.define(
   "PaymentThunder",
   {
     registrationId: {
-      type: DataTypes.INTEGER.UNSIGNED,
+      type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: Registration,
@@ -28,7 +28,7 @@ const PaymentTDC = sequelize.define(
     },
     status: {
       type: DataTypes.ENUM("pending", "success", "failed"),
-      defaultValue: "pending",
+
       allowNull: false,
     },
     paymentMethod: {
@@ -36,7 +36,19 @@ const PaymentTDC = sequelize.define(
       allowNull: false, // Ensure payment method is always specified
     },
     paymentDate: {
-        type: DataTypes.DATE,
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    fullName: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    sports: {
+        type: DataTypes.STRING,
         allowNull: true,
       },
   },

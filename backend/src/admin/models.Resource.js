@@ -1173,9 +1173,6 @@ export const FootballManualRegistrationResource = {
 };
 /*-------------------- Football League  model end--------------------*/
 
-
-
-
 /*-------------------- New TDC Registration model start--------------------*/
 export const TDCManualRegResource = {
   resource: FootballManualReg,
@@ -1292,19 +1289,30 @@ export const ThundersRegistration = {
   },
 };
 
-export const PaymentTDC={
-    resource: NewPaymentTDC,
-    options: {
-        navigation: {
-            name: "REGISTRATION TDC",
-          },
-        listProperties: ["id", "userId", "amount", "status", "paymentMethod"],
-        editProperties: ["status"],
-        actions: {
-          edit: {
-            isAccessible: ({ currentAdmin }) => currentAdmin.role === "admin",
-          },
-        },
+export const PaymentTDC = {
+  resource: NewPaymentTDC,
+  options: {
+    navigation: {
+      name: "REGISTRATION TDC",
+    },
+    listProperties: [
+      "id",
+      "fullName",
+      "email",
+      "sports",
+      "amount",
+      "paymentMethod",
+      "status",
+    ],
+    editProperties: ["status"],
+    properties: {
+      updatedAt: { isVisible: false },
+      createdAt: { isVisible: false },
+    },
+    actions: {
+      edit: {
+        isAccessible: ({ currentAdmin }) => currentAdmin.role === "admin",
       },
-}
-
+    },
+  },
+};

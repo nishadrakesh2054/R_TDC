@@ -137,7 +137,7 @@ const port = process.env.PORT || 3000;
 
 const startServer = async () => {
   try {
-    await sequelize.sync({ alter: false });
+    await sequelize.sync({ alter: false});
     app.listen(port, () => {
       console.log(`Server running on port ${port}`);
     });

@@ -1,0 +1,55 @@
+.here-payment-form {
+    background: #ffffff;
+    padding: 15rem 0 10rem;
+    color: #000000;
+    text-align: center; // Center the text for a more polished look
+  
+    .form-title {
+      font-size: 2.5rem;
+      margin-bottom: 2.5rem;
+      font-weight: bold; // Make the title bold
+    }
+  
+    .total-amount {
+      font-size: 1.75rem;
+      margin: 2rem 0; // Add margin for spacing
+      span {
+        font-weight: bold; // Highlight the amount
+        color: #ffae00; // Use a contrasting color for the amount
+      }
+    }
+  
+    .error-message {
+      margin: 1rem 0; // Add spacing around the error message
+      font-size: 1.2rem; // Slightly increase the font size for visibility
+    }
+  
+    .pay-button {
+      background-color: #ce2027 !important;
+      border-color: #ce2027;
+      color: #fff !important;
+      border-radius: 4px !important;
+      padding: 0.75rem 1.5rem; // Increase padding for a better button size
+      font-size: 1.25rem; // Increase font size for better readability
+      transition: background-color 0.3s ease; // Add transition for a smoother effect
+  
+      &:hover {
+        background-color: #b51a24 !important; // Darken on hover
+        border-color: #b51a24;
+      }
+  
+      &:disabled {
+        background-color: #555 !important; // Change color for disabled state
+        border-color: #555;
+        cursor: not-allowed; // Change cursor to indicate disabled
+      }
+    }
+  }
+
+
+
+
+//   .tdcpayform{
+//     padding: 15rem 0 5rem;
+//   }
+  

@@ -1,0 +1,63 @@
+.payment-reponse {
+    background: #000;
+    padding-top: 15rem;
+    padding-bottom: 5rem;
+    color: #fff;
+    text-align: center; // Center-align the text for a more balanced look
+  
+    h1 {
+      font-size: 2.5rem; // Increase font size for emphasis
+      margin-bottom: 1rem; // Add spacing below the heading
+  
+      span {
+        color: #fec802;
+        font-weight: bold; // Make the school name bold for emphasis
+      }
+    }
+  
+    .confirmation-message {
+      font-size: 1.2rem; // Slightly larger font size for the confirmation message
+      margin-bottom: 2rem; // Add some spacing below the message
+    }
+  
+    .order-number {
+      font-size: 1.5rem; // Increase font size for visibility
+      margin-bottom: 1rem; // Add spacing below the order number
+    }
+  
+    .box-to-details {
+      padding: 5rem;
+      background-color: rgba(
+        255,
+        255,
+        255,
+        0.1
+      ); // Slight background for better contrast
+      border-radius: 10px; // Add rounded corners for a modern look
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); // Add subtle shadow for depth
+      margin-top: 2rem; // Add spacing above the details box
+  
+      h3 {
+        font-size: 1.5rem; // Consistent font size for game and category titles
+        margin-bottom: 0.5rem; // Space between titles
+  
+        span {
+          color: #fec802; // Highlighted category and game name
+          font-weight: bold; // Make it bold for emphasis
+        }
+      }
+  
+      h2.total-amount {
+        font-size: 2rem; // Larger font for the total amount
+        margin-top: 1rem; // Spacing above the total amount
+        color: #fec802; // Emphasize the total amount color
+      }
+    }
+  
+    @media (max-width: 768px) {
+      .box-to-details {
+        padding: 1rem; // Reduce padding on smaller screens
+      }
+    }
+  }
+  

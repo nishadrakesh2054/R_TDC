@@ -133,7 +133,7 @@ const RegistrationPage = () => {
         filteredFormData,
         {
           headers: {
-            "Content-Type": "application/json", // Ensure the correct Content-Type
+            "Content-Type": "application/json", 
           },
         }
       );

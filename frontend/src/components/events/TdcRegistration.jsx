@@ -11,8 +11,10 @@ import {
 } from "react-bootstrap";
 
 import "./RegistrationPage.scss";
+import { useNavigate } from "react-router-dom";
 
 const RegistrationPage = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullName: "",
     address: "",
@@ -64,7 +66,6 @@ const RegistrationPage = () => {
       } else if (calculatedAge >= 16 && calculatedAge <= 19) {
         category = "Senior";
       }
-
       setFormData((prevFormData) => ({
         ...prevFormData,
         dob: value,
@@ -128,8 +129,20 @@ const RegistrationPage = () => {
         }
       );
 
+      if (response.data.message === "Registration successful!") {
+        sessionStorage.setItem("formData", JSON.stringify(formData));
+        navigate("/tdc-payment-form", {
+          state: {
+            formData,
+            fee:10000
+          },
+        });
+      } else {
+        // If pre-check fails, display the error message
+        setFormError(response.data.message || "Pre-registration check failed.");
+      }
       console.log("Form Data Submitted:", response.data);
-      alert("Registration successful!"); // Show success message
+      alert(response.data.message);
       setFormData({
         fullName: "",
         address: "",

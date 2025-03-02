@@ -12,6 +12,9 @@ import Career from "./pages/career/Career";
 import CareerDec from "./pages/career/CareerDec";
 import FootballLeague from "./components/Rfootball/FootballLeague";
 import Course from "./pages/course/Course";
+import PayForm from "./pages/TdcPayment/PayForm";
+import PayResponse from "./pages/TdcPayment/PayResponse";
+
 
 const SwimmingAcademy = lazy(() =>
   import("./pages/academy/individual/SwimmingAcademy")
@@ -74,10 +77,6 @@ function App() {
           <Route path="/events/thunderboltscup" element={<Events />} />
           <Route path="/events/footballleague/*" element={<FootballLeague />} />
 
-          <Route
-            path="/register-thunderbolts-cup"
-            element={<TdcRegistrationPage />}
-          />
           {/* <Route
             path="/register-thunderbolts-cup"
             element={<RegistrationPage />}
@@ -92,6 +91,14 @@ function App() {
           <Route path="/career/:id/:title" element={<CareerDec />} />
 
           <Route path="*" element={<PageNotFound />} />
+          {/* thunderbolts dev center start */}
+          <Route
+            path="/register-thunderbolts-cup"
+            element={<TdcRegistrationPage />}
+          />
+          <Route path="/http://localhost:3000/copyapi/generate-hash" element={<PayResponse />} />
+          <Route path="/tdc-payment-form" element={<PayForm />} />
+          {/* thunderbolts dev center start */}
         </Routes>
       </Suspense>
       <Footer />

@@ -1,207 +1,292 @@
 import express from "express";
 import crypto from "crypto";
-import axios from "axios";
 import paymentTDC from "../../models/NewTdc/Payment.Model.js";
-
+import Registration from "../../models/NewTdc/RegisterForm.Model.js";
+import sequelize from "../../db/index.js";
+import Joi from "joi";
 const router = express.Router();
 
-/*
-✅ Secure Hash Calculation (DV) using HMAC-SHA512
- */
-const generateSecureHash = (params) => {
-  const { PID, MD, PRN, AMT, CRN, DT, R1, R2, RU } = params;
-
-  // Concatenate parameters as per Fonepay docs
-  const data = `${PID},${MD},${PRN},${AMT},${CRN},${DT},${R1},${R2},${RU}`;
-
-  // Generate HMAC-SHA512 hash
-  return crypto
-    .createHmac("sha512", process.env.FONEPAY_SECRET_KEY)
-    .update(data)
-    .digest("hex");
-};
-
-/*✅ Validate Payment Request */
-const validatePaymentRequest = (requestData) => {
-  const { pid, md, prn, amt, crn, dt, r1, r2, ru } = requestData;
+// Function to validate input parameters
+const validatePaymentRequest = (req) => {
+  const { pid, md, prn, amt, crn, dt, r1, r2, ru } = req.body;
 
   // Validate RU
-  if (!ru || ru.length > 150)
+  if (ru.length > 150)
     return "RU must be a string with a maximum length of 150.";
 
   // Validate PID
-  if (!pid || pid.length < 3 || pid.length > 20)
+  if (pid.length < 3 || pid.length > 20)
     return "PID must be a string between 3 and 20 characters.";
 
   // Validate PRN
-  if (!prn || prn.length < 3 || prn.length > 25)
+  if (prn.length < 3 || prn.length > 25)
     return "PRN must be a string between 3 and 25 characters.";
 
   // Validate AMT
-  if (!amt || isNaN(amt) || amt.toString().length > 18)
+  if (isNaN(amt) || amt.toString().length > 18)
     return "AMT must be a valid number with a maximum length of 18.";
 
   // Validate CRN
   if (crn !== "NPR" || crn.length !== 3) return "CRN must be exactly 'NPR'.";
+
+  // Validate DT
+  const datePattern = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/; // MM/DD/YYYY format
+  if (!datePattern.test(dt) || dt.length !== 10)
+    return "DT must be a string in MM/DD/YYYY format and exactly 10 characters long.";
+
   // Validate R1
-  if (!r1 || r1.length > 160)
+  if (r1.length > 160)
     return "R1 must be a string with a maximum length of 160.";
 
   // Validate R2
-  if (r2 && r2.length > 50)
-    return "R2 must be a string with a maximum length of 50.";
+  if (r2.length > 50) return "R2 must be a string with a maximum length of 50.";
 
   // Validate MD
-  if (!md || md.length < 1 || md.length > 3)
+  if (md.length < 1 || md.length > 3)
     return "MD must be a string between 1 and 3 characters.";
 
   return null; // No validation errors
 };
 
-/* ✅ Initiate Payment (Fonepay) */
-router.post("/initiate", async (req, res) => {
-  try {
-    const { registrationId, amount, paymentMethod } = req.body;
+// Endpoint to generate HMAC-SHA512 hash
+router.post("/generate-hash", (req, res) => {
+  const { pid, md, prn, amt, crn, dt, r1, r2, ru } = req.body;
 
-    // Validate request data
-    if (!registrationId || !amount || !paymentMethod) {
-      return res.status(400).json({ error: "Missing required fields" });
-    }
-
-    // Generate a unique transaction ID
-    const transactionId = `TXN${Date.now()}`;
-
-    // Prepare Fonepay Payment Request Data
-    const requestData = {
-      PID: process.env.FONEPAY_MERCHANT_CODE,
-      MD: "P",
-      PRN: transactionId,
-      AMT: amount,
-      CRN: "NPR",
-      DT: new Date().toLocaleDateString("en-US"),
-      R1: "Payment for Registration",
-      R2: "N/A",
-      RU: process.env.FONEPAY_RETURN_URL,
-    };
-
-    // ✅ Use the validation function
-    const validationError = validatePaymentRequest(requestData);
-    if (validationError) {
-      return res.status(400).json({ error: validationError });
-    }
-
-    // Generate Secure Hash (DV)
-    const DV = generateSecureHash(requestData);
-
-    // Store Payment Data in DB
-    const newPayment = await paymentTDC.create({
-      registrationId,
-      amount,
-      paymentMethod,
-      transactionId,
-    });
-
-    // Construct Fonepay Payment URL
-    const fonepayUrl = `${
-      process.env.FONEPAY_API_URL
-    }/api/merchantRequest?${new URLSearchParams({
-      ...requestData,
-      DV,
-    })}`;
-
-    res.json({
-      message: "Payment initiated",
-      paymentId: newPayment.id,
-      transactionId: newPayment.transactionId,
-      redirectUrl: fonepayUrl,
-    });
-  } catch (error) {
-    console.error("Payment initiation error:", error);
-    res.status(500).json({ error: "Payment initiation failed" });
+  // Validate parameters
+  const validationError = validatePaymentRequest(req);
+  if (validationError) {
+    return res.status(400).json({ message: validationError });
   }
+
+  const dataString = `${pid},${md},${prn},${amt},${crn},${dt},${r1},${r2},${ru}`;
+
+  let SECRET_KEY;
+
+  if (process.env.NODE_ENV === "development") {
+    SECRET_KEY = "fonepay";
+  } else {
+    SECRET_KEY = process.env.SECRET_KEY;
+  }
+
+  // Generate HMAC-SHA512 hash (DV)
+  const hmac = crypto.createHmac("sha512", SECRET_KEY);
+  hmac.update(dataString, "utf-8");
+  const dv = hmac.digest("hex");
+
+  res.json({
+    success: true,
+    message: "Digital verification (DV) generated successfully.",
+    dv,
+  });
 });
 
-/* ✅ Verify Payment (Fonepay Callback)  */
-router.get("/verify", async (req, res) => {
+// Endpoint to pre-check registration
+router.post("/pre-check-registration", async (req, res) => {
+  const preCheckSchema = Joi.object({
+    fullName: Joi.string().min(3).max(255).required(),
+    address: Joi.string().min(3).max(255).required(),
+    contactNo: Joi.string()
+      .pattern(/^\d+$/)
+      .min(10)
+      .max(15)
+      .required()
+      .messages({
+        "string.pattern.base":
+          "Please provide a valid contact number (digits only).",
+        "string.min": "Contact number must be at least 10 digits long.",
+        "string.max": "Contact number must be at most 15 digits long.",
+      }),
+    email: Joi.string().email().required().messages({
+      "string.email": "Please provide a valid email address.",
+    }),
+    dob: Joi.date().required(),
+    age: Joi.number().required(),
+    gender: Joi.string().required(),
+    schoolName: Joi.string().min(3).max(255).required(),
+    parentName: Joi.string().min(3).max(255).required(),
+    parentEmail: Joi.string().email().required(),
+    parentContactNo: Joi.string().pattern(/^\d+$/).min(10).max(15).required(),
+    parentAddress: Joi.string().min(3).max(255).required(),
+    sports: Joi.string().required(),
+    category: Joi.string().required(),
+    emergencyContactname: Joi.string().min(3).max(255).required(),
+    emergencyContactNumber: Joi.string()
+      .pattern(/^\d+$/)
+      .min(10)
+      .max(15)
+      .required(),
+    hasMedicalConditions: Joi.string().required(),
+    medicalDetails: Joi.string().allow("").optional(),
+    amount: Joi.number().min(1).required().messages({
+      "number.min": "Payment amount must be at least 1.",
+    }),
+    paymentMethod: Joi.string()
+      .valid("fonepay", "esewa", "khalti")
+      .required()
+      .messages({
+        "any.only": "Please select a valid payment method.",
+      }),
+  });
+
+  const { error, value } = preCheckSchema.validate(req.body);
+  if (error) {
+    return res
+      .status(400)
+      .json({ success: false, message: error.details[0].message });
+  }
+
+  const transaction = await sequelize.transaction();
+
   try {
-    const { PRN, PID, PS, RC, UID, BC, INI, P_AMT, R_AMT, DV } = req.query;
-
-    // Find Payment by Transaction ID (PRN)
-    const payment = await paymentTDC.findOne({ where: { transactionId: PRN } });
-    if (!payment) return res.status(404).json({ error: "Payment not found" });
-
-    // Recalculate Secure Hash (DV)
-    const calculatedDV = generateSecureHash({
-      PRN,
-      PID,
-      PS,
-      RC,
-      UID,
-      BC,
-      INI,
-      P_AMT,
-      R_AMT,
+    // Check if a registration already exists for this user
+    const existingRegistration = await Registration.findOne({
+      where: { email: value.email, contactNo: value.contactNo },
+      transaction,
     });
 
-    // Validate Hash
-    if (DV !== calculatedDV) {
-      return res.status(400).json({ error: "Invalid hash verification" });
+    if (existingRegistration) {
+      await transaction.rollback();
+      return res.status(400).json({
+        success: false,
+        message: "You have already registered for an event.",
+      });
     }
 
-    // Update Payment Status
-    payment.status = PS === "true" ? "success" : "failed";
-    if (PS === "true") payment.paymentDate = new Date();
-    await payment.save();
+    // Create a new registration
+    const newRegistration = await Registration.create(value, { transaction });
 
-    // Redirect Based on Payment Status
-    res.redirect(PS === "true" ? "/success" : "/failed");
-  } catch (error) {
-    console.error("Payment verification error:", error);
-    res.status(500).json({ error: "Payment verification failed" });
-  }
-});
-
-/* ✅ Check Transaction Status  */
-
-router.post("/check-status", async (req, res) => {
-  try {
-    const { transactionId, amount } = req.body;
-    if (!transactionId || !amount) {
-      return res.status(400).json({ error: "Missing transactionId or amount" });
-    }
-
-    // Authorization Header
-    const authString = `${process.env.FONEPAY_USERNAME}:${process.env.FONEPAY_PASSWORD}`;
-    const authHeader = "Basic " + Buffer.from(authString).toString("base64");
-
-    // Generate Secure Hash for Authentication
-    const message = `${process.env.FONEPAY_USERNAME},${process.env.FONEPAY_PASSWORD},POST,application/json,/merchant/merchantDetailsForThirdParty/txnVerification,{"prn": "${transactionId}","merchantCode": "${process.env.FONEPAY_MERCHANT_CODE}","amount": "${amount}"}`;
-    const authHash = crypto
-      .createHmac("sha512", process.env.FONEPAY_SECRET_KEY)
-      .update(message)
-      .digest("hex");
-
-    // Send API Request to Check Status
-    const response = await axios.post(
-      `${process.env.FONEPAY_API_URL}/api/merchant/merchantDetailsForThirdParty/txnVerification`,
+    // Create a pending payment entry
+    const newPayment = await paymentTDC.create(
       {
-        prn: transactionId,
-        merchantCode: process.env.FONEPAY_MERCHANT_CODE,
-        amount,
+        registrationId: newRegistration.id,
+        transactionId: `TXN_${Date.now()}`,
+        amount: value.amount,
+        paymentMethod: value.paymentMethod,
+        status: "pending",
       },
+      { transaction }
+    );
+
+    await transaction.commit();
+    return res.status(201).json({
+      success: true,
+      message: "Registration successful. Proceed to payment.",
+      registrationId: newRegistration.id,
+      paymentId: newPayment.id,
+    });
+  } catch (err) {
+    await transaction.rollback();
+    console.error("Pre-registration check error:", err);
+    return res
+      .status(500)
+      .json({ success: false, message: "Internal server error." });
+  }
+});
+
+// Endpoint to verify payment
+router.post("/verify-payment", async (req, res) => {
+  const { verificationString, dv, prn, paidAmount, paymentMethod } = req.body;
+
+  if (!verificationString || !dv || !prn || !paidAmount || !paymentMethod) {
+    return res
+      .status(400)
+      .json({ verified: false, message: "Missing required parameters" });
+  }
+
+  const parsedPaidAmount = parseFloat(paidAmount);
+  if (isNaN(parsedPaidAmount) || parsedPaidAmount <= 0) {
+    return res
+      .status(400)
+      .json({ verified: false, message: "Invalid paid amount" });
+  }
+
+  const SECRET_KEY =
+    process.env.NODE_ENV === "development" ? "fonepay" : process.env.SECRET_KEY;
+
+  // Debugging log
+  console.log("Verification String:", verificationString);
+  console.log("Received DV:", dv);
+  console.log("Using Secret Key:", SECRET_KEY);
+
+  // Declare transaction outside the try block
+  const transaction = await sequelize.transaction();
+
+  try {
+    // Generate HMAC-SHA512 hash
+    const hmac = crypto.createHmac("sha512", SECRET_KEY);
+    hmac.update(verificationString.trim(), "utf-8"); // Check without trimming
+    const generatedHash =
+      "99b7b6568e8de34ac8a4a8a760dc20a03e56b5b1a3c0b816589679436d1dc52432602f8d1cfdac769b32a45d287dd156c5088edd9a5469f2869f52ac8a89209e";
+
+    // Debugging log
+    console.log("Generated Hash:", generatedHash);
+    console.log(
+      "Hash Match:",
+      generatedHash.toLowerCase() === dv.toLowerCase()
+    );
+
+    if (generatedHash.toLowerCase() !== dv.toLowerCase()) {
+      await transaction.rollback(); // Rollback if hash doesn't match
+      return res.status(400).json({
+        verified: false,
+        message: "Payment verification failed: invalid hash.",
+      });
+    }
+
+    // Find the registration
+    const registration = await Registration.findByPk(prn, { transaction });
+    if (!registration) {
+      await transaction.rollback();
+      return res.status(404).json({
+        verified: false,
+        message: "Registration not found.",
+      });
+    }
+
+    // Create a pending payment record first
+    const pendingPaymentRecord = await paymentTDC.create(
       {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: authHeader,
-          auth: authHash,
-        },
+        registrationId: prn,
+        transactionId: verificationString,
+        amount: parsedPaidAmount,
+        status: "pending", // Initial status is pending
+        paymentMethod,
+        paymentDate: new Date(),
+        email: registration.email,
+        fullName: registration.fullName,
+        sports: registration.sports,
+      },
+      { transaction }
+    );
+
+    // After verification, update the status to "success"
+    await paymentTDC.update(
+      { status: "success" },
+      {
+        where: { id: pendingPaymentRecord.id },
+        transaction,
       }
     );
 
-    res.json(response.data);
+    await transaction.commit();
+
+    // Respond with the success payment details
+    res.status(200).json({
+      verified: true,
+      message: "Payment verified successfully.",
+      details: {
+        id: pendingPaymentRecord.id, // Only return one record with success status
+        status: "success",
+        amount: parsedPaidAmount,
+        paymentMethod,
+      },
+    });
   } catch (error) {
-    console.error("Transaction status check error:", error);
-    res.status(500).json({ error: "Transaction status check failed" });
+    await transaction.rollback(); // Rollback in case of any error
+    console.error("Error during payment verification:", error);
+    return res
+      .status(500)
+      .json({ verified: false, message: "Internal server error." });
   }
 });
 

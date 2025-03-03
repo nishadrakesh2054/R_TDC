@@ -76,8 +76,7 @@ const Registration = sequelize.define(
       type: DataTypes.STRING,
       allowNull: true,
     },
-    prn: { type: DataTypes.STRING, allowNull: false }, // Add this line
-
+    prn: { type: DataTypes.STRING, allowNull: false, unique: true },
   },
   {
     tableName: "registrations",
@@ -85,4 +84,4 @@ const Registration = sequelize.define(
   }
 );
 
-export default  Registration;
+export default Registration;

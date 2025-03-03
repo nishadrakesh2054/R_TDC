@@ -134,7 +134,7 @@ const RegistrationPage = () => {
         navigate("/tdc-payment-form", {
           state: {
             formData,
-            fee:10000
+            fee: 10000,
           },
         });
       } else {

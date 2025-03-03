@@ -1,5 +1,6 @@
 import express from "express";
 import crypto from "crypto";
+import { randomUUID } from "crypto";
 import paymentTDC from "../../models/NewTdc/Payment.Model.js";
 import Registration from "../../models/NewTdc/RegisterForm.Model.js";
 import sequelize from "../../db/index.js";
@@ -126,11 +127,7 @@ router.post("/pre-check-registration", async (req, res) => {
       .messages({
         "any.only": "Please select a valid payment method.",
       }),
-    prn: Joi.string().required().messages({
-      // Add this field
-      "string.base": "PRN must be a valid string.",
-      "any.required": "PRN is required.",
-    }),
+      prn: Joi.string().optional(),
   });
 
   const { error, value } = preCheckSchema.validate(req.body);
@@ -157,12 +154,16 @@ router.post("/pre-check-registration", async (req, res) => {
       });
     }
 
+    const generatePRN = () => {
+      return `PRN_${randomUUID()}`;
+    };
+    const prn = generatePRN();
+
     // Create a new registration
-    // const newRegistration = await Registration.create(value, { transaction });
     const newRegistration = await Registration.create(
       {
         ...value,
-        prn: value.prn, // Add this line to store the PRN value
+        prn,
       },
       { transaction }
     );
@@ -180,10 +181,12 @@ router.post("/pre-check-registration", async (req, res) => {
     );
 
     await transaction.commit();
+
     return res.status(201).json({
       success: true,
       message: "Registration successful. Proceed to payment.",
       registrationId: newRegistration.id,
+      prn: newRegistration.prn,
       paymentId: newPayment.id,
     });
   } catch (err) {
@@ -195,109 +198,113 @@ router.post("/pre-check-registration", async (req, res) => {
   }
 });
 
-
-
 router.post("/verify-payment", async (req, res) => {
-  const { verificationString, dv, prn, paidAmount, paymentMethod } = req.body;
-
-  if (!verificationString || !dv || !prn || !paidAmount || !paymentMethod) {
-    return res
-      .status(400)
-      .json({ verified: false, message: "Missing required parameters" });
-  }
-
-  const parsedPaidAmount = parseFloat(paidAmount);
-  if (isNaN(parsedPaidAmount) || parsedPaidAmount <= 0) {
-    return res
-      .status(400)
-      .json({ verified: false, message: "Invalid paid amount" });
-  }
-
-  const SECRET_KEY =
-    process.env.NODE_ENV === "development" ? "fonepay" : process.env.SECRET_KEY;
-
-  // Debugging logs
-  console.log("Received Request Body:", req.body);
-  console.log("Verification String:", verificationString);
-  console.log("Received DV:", dv);
-
-  const transaction = await sequelize.transaction();
-
-  try {
-    // Generate HMAC-SHA512 hash
-    const hmac = crypto.createHmac("sha512", SECRET_KEY);
-    hmac.update(verificationString.trim(), "utf-8");
-    const generatedHash = hmac.digest("hex");
-
-    console.log("Generated Hash:", generatedHash);
-
-    // Verify the hash
-    if (generatedHash.toLowerCase() !== dv.toLowerCase()) {
-      return res.status(400).json({
-        verified: false,
-        message: "Payment verification failed: invalid hash.",
-      });
+    const { verificationString, dv, prn, paidAmount, paymentMethod } = req.body;
+  
+    // Check if all required parameters are present
+    if (!verificationString || !dv || !prn || !paidAmount || !paymentMethod) {
+      return res
+        .status(400)
+        .json({ verified: false, message: "Missing required parameters" });
     }
-
-    // Find the registration using the PRN value
-    const registration = await Registration.findOne({
-      where: { prn }, // Use the PRN value to find the registration
-      transaction,
-    });
-
-    if (!registration) {
-      await transaction.rollback();
-      return res.status(404).json({
-        verified: false,
-        message: "Registration not found.",
-      });
+  
+    const parsedPaidAmount = parseFloat(paidAmount);
+    
+    // Validate paid amount
+    if (isNaN(parsedPaidAmount) || parsedPaidAmount <= 0) {
+      return res
+        .status(400)
+        .json({ verified: false, message: "Invalid paid amount" });
     }
-
-    // Create a pending payment record
-    const pendingPaymentRecord = await paymentTDC.create(
-      {
-        registrationId: registration.id, // Use the registration ID
-        transactionId: verificationString,
-        amount: parsedPaidAmount,
-        status: "pending",
-        paymentMethod,
-        paymentDate: new Date(),
-        email: registration.email,
-        fullName: registration.fullName,
-        sports: registration.sports,
-      },
-      { transaction }
-    );
-
-    // Update the payment status to "success"
-    await paymentTDC.update(
-      { status: "success" },
-      {
-        where: { id: pendingPaymentRecord.id },
-        transaction,
+  
+    const SECRET_KEY =
+      process.env.NODE_ENV === "development" ? "fonepay" : process.env.SECRET_KEY;
+  
+    // Debugging logs (can be removed after debugging)
+    console.log("Received Request Body:", req.body);
+    console.log("Verification String:", verificationString);
+    console.log("Received DV:", dv);
+  
+    const transaction = await sequelize.transaction();
+  
+    try {
+      // Generate HMAC-SHA512 hash for verification
+      const hmac = crypto.createHmac("sha512", SECRET_KEY);
+      hmac.update(verificationString.trim(), "utf-8");
+      const generatedHash = hmac.digest("hex");
+  
+      console.log("Generated Hash:", generatedHash);
+  
+      // Verify the hash
+      if (generatedHash.toLowerCase() !== dv.toLowerCase()) {
+        return res.status(400).json({
+          verified: false,
+          message: "Payment verification failed: invalid hash.",
+        });
       }
-    );
-
-    await transaction.commit();
-
-    // Respond with success
-    res.status(200).json({
-      verified: true,
-      message: "Payment verified successfully.",
-      details: {
-        id: pendingPaymentRecord.id,
-        status: "success",
-        amount: parsedPaidAmount,
-        paymentMethod,
-      },
-    });
-  } catch (error) {
-    await transaction.rollback();
-    console.error("Error during payment verification:", error);
-    return res
-      .status(500)
-      .json({ verified: false, message: "Internal server error." });
-  }
-});
-
+  
+      // Find the registration based on PRN
+      const registration = await Registration.findOne({
+        where: { prn },
+        transaction,
+      });
+  
+      // If registration not found, return error
+      if (!registration) {
+        await transaction.rollback();
+        return res.status(404).json({
+          verified: false,
+          message: "Registration not found.",
+        });
+      }
+  
+      // Create a new pending payment record
+      const pendingPaymentRecord = await paymentTDC.create(
+        {
+          registrationId: registration.id, // Use the registration ID
+          transactionId: verificationString, // Using verificationString as the transaction ID
+          amount: parsedPaidAmount,
+          status: "pending",
+          paymentMethod,
+          paymentDate: new Date(),
+          email: registration.email,
+          fullName: registration.fullName,
+          sports: registration.sports,
+        },
+        { transaction }
+      );
+  
+      // Update the payment status to "success"
+      await paymentTDC.update(
+        { status: "success" },
+        {
+          where: { id: pendingPaymentRecord.id },
+          transaction,
+        }
+      );
+  
+      // Commit the transaction
+      await transaction.commit();
+  
+      // Respond with success message and payment details
+      res.status(200).json({
+        verified: true,
+        message: "Payment verified successfully.",
+        paymentDetails: {
+          id: pendingPaymentRecord.id,
+          status: "success",
+          amount: parsedPaidAmount,
+          paymentMethod,
+        },
+      });
+    } catch (error) {
+      // Rollback transaction in case of an error
+      await transaction.rollback();
+      console.error("Error during payment verification:", error);
+      return res
+        .status(500)
+        .json({ verified: false, message: "Internal server error." });
+    }
+  });
+  
 export default router;

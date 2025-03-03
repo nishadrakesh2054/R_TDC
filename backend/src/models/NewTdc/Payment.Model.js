@@ -54,7 +54,7 @@ const PaymentTDC = sequelize.define(
   },
   {
     tableName: "PaymentThunder",
-    freezeTableName: true, // Prevents Sequelize from making it plural
+    freezeTableName: true, 
     timestamps: true,
   }
 );

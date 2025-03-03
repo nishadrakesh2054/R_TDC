@@ -76,6 +76,8 @@ const Registration = sequelize.define(
       type: DataTypes.STRING,
       allowNull: true,
     },
+    prn: { type: DataTypes.STRING, allowNull: false }, // Add this line
+
   },
   {
     tableName: "registrations",

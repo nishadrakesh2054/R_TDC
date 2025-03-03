@@ -39,8 +39,7 @@ import {
   FootballManualRegistrationResource,
   TDCManualRegResource,
   ThundersRegistration,
-  PaymentTDC
-  
+  PaymentTDC,
 } from "./models.Resource.js";
 import { componentLoader } from "./components.js";
 import { TDCparticipationResource } from "./TDCparticipation.Resouces.js";
@@ -58,7 +57,6 @@ const localProvider = {
 // Initialize AdminJS
 const admin = new AdminJS({
   componentLoader,
-  
 
   resources: [
     /*----------------- Thunderbolts Development  resources start----------- */

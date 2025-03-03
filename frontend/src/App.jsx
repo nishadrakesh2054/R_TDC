@@ -96,7 +96,7 @@ function App() {
             path="/register-thunderbolts-cup"
             element={<TdcRegistrationPage />}
           />
-          <Route path="/http://localhost:3000/copyapi/generate-hash" element={<PayResponse />} />
+          <Route path="/copyapi/generate-hash" element={<PayResponse />} />
           <Route path="/tdc-payment-form" element={<PayForm />} />
           {/* thunderbolts dev center start */}
         </Routes>

@@ -34,7 +34,9 @@ const RegistrationPage = () => {
     emergencyContactNumber: "",
     hasMedicalConditions: "",
     medicalDetails: "",
+    paymentMethod: "fonepay",
   });
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [formError, setFormError] = useState(null);
@@ -99,7 +101,8 @@ const RegistrationPage = () => {
       !formData.category ||
       !formData.emergencyContactNumber ||
       !formData.emergencyContactname ||
-      !formData.hasMedicalConditions
+      !formData.hasMedicalConditions ||
+      !formData.paymentMethod
     ) {
       setFormError("Please fill in all required fields.");
       return false;
@@ -118,23 +121,33 @@ const RegistrationPage = () => {
     if (!validateForm()) return;
 
     setIsSubmitting(true);
+
+    const amount = 10000; // Example value, update as needed
+    const dataToSend = { ...formData, amount };
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/register_tdc",
-        formData,
+        "http://localhost:3000/tdc-api/pre-check-registration",
+        dataToSend,
         {
           headers: {
             "Content-Type": "application/json",
           },
         }
       );
-
-      if (response.data.message === "Registration successful!") {
+      console.log("TDC Response" + response);
+      if (response.data.message === "Registration successful. Proceed to payment.") {
         sessionStorage.setItem("formData", JSON.stringify(formData));
+        sessionStorage.setItem("prn", response.data.prn);
+        sessionStorage.setItem("registrationId", response.data.registrationId);
+        sessionStorage.setItem("paymentId", response.data.paymentId);
+
         navigate("/tdc-payment-form", {
           state: {
             formData,
-            fee: 10000,
+            fee: amount,
+            prn: response.data.prn,
+            registrationId: response.data.registrationId, 
+            paymentId: response.data.paymentId, 
           },
         });
       } else {
@@ -162,6 +175,7 @@ const RegistrationPage = () => {
         emergencyContactNumber: "",
         hasMedicalConditions: "",
         medicalDetails: "",
+        paymentMethod: "fonepay",
       }); // Reset form
     } catch (error) {
       console.error(

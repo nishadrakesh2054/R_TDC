@@ -55,7 +55,7 @@ const PayForm = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/copyapi/generate-hash",
+        "http://localhost:3000/tdc-api/generate-hash",
         {
           md: MD,
           prn: PRN,

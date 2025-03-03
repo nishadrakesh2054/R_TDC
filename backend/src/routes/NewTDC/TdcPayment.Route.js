@@ -1,5 +1,6 @@
 import express from "express";
 import crypto from "crypto";
+import { randomUUID } from "crypto";
 import paymentTDC from "../../models/NewTdc/Payment.Model.js";
 import Registration from "../../models/NewTdc/RegisterForm.Model.js";
 import sequelize from "../../db/index.js";
@@ -126,6 +127,7 @@ router.post("/pre-check-registration", async (req, res) => {
       .messages({
         "any.only": "Please select a valid payment method.",
       }),
+    prn: Joi.string().optional(),
   });
 
   const { error, value } = preCheckSchema.validate(req.body);
@@ -152,14 +154,25 @@ router.post("/pre-check-registration", async (req, res) => {
       });
     }
 
+    const generatePRN = () => {
+      return `PRN_${randomUUID()}`;
+    };
+    const prn = generatePRN();
+
     // Create a new registration
-    const newRegistration = await Registration.create(value, { transaction });
+    const newRegistration = await Registration.create(
+      {
+        ...value,
+        prn,
+      },
+      { transaction }
+    );
 
     // Create a pending payment entry
     const newPayment = await paymentTDC.create(
       {
         registrationId: newRegistration.id,
-        transactionId: `TXN_${crypto.randomUUID()}`,
+        transactionId: `TXN_${Date.now()}`,
         amount: value.amount,
         paymentMethod: value.paymentMethod,
         status: "pending",
@@ -168,10 +181,12 @@ router.post("/pre-check-registration", async (req, res) => {
     );
 
     await transaction.commit();
+
     return res.status(201).json({
       success: true,
       message: "Registration successful. Proceed to payment.",
       registrationId: newRegistration.id,
+      prn: newRegistration.prn,
       paymentId: newPayment.id,
     });
   } catch (err) {
@@ -187,6 +202,7 @@ router.post("/pre-check-registration", async (req, res) => {
 router.post("/verify-payment", async (req, res) => {
   const { verificationString, dv, prn, paidAmount, paymentMethod } = req.body;
 
+  // Check if all required parameters are present
   if (!verificationString || !dv || !prn || !paidAmount || !paymentMethod) {
     return res
       .status(400)
@@ -194,6 +210,8 @@ router.post("/verify-payment", async (req, res) => {
   }
 
   const parsedPaidAmount = parseFloat(paidAmount);
+
+  // Validate paid amount
   if (isNaN(parsedPaidAmount) || parsedPaidAmount <= 0) {
     return res
       .status(400)
@@ -203,40 +221,22 @@ router.post("/verify-payment", async (req, res) => {
   const SECRET_KEY =
     process.env.NODE_ENV === "development" ? "fonepay" : process.env.SECRET_KEY;
 
-  // Debugging log
+  // Debugging logs (can be removed after debugging)
   console.log("Received Request Body:", req.body);
-  console.log("Raw Verification String:", verificationString);
-  console.log("Type of Verification String:", typeof verificationString);
-  // Check if verificationString is a valid string before trimming
-  if (typeof verificationString !== "string") {
-    return res
-      .status(400)
-      .json({
-        verified: false,
-        message: "Verification String must be a string.",
-      });
-  }
-  const trimmedVerificationString = verificationString.trim();
-  console.log("Trimmed Verification String:", trimmedVerificationString);
-
+  console.log("Verification String:", verificationString);
   console.log("Received DV:", dv);
-  console.log("Using Secret Key:", SECRET_KEY);
 
   const transaction = await sequelize.transaction();
 
   try {
-    // Generate HMAC-SHA512 hash
+    // Generate HMAC-SHA512 hash for verification
     const hmac = crypto.createHmac("sha512", SECRET_KEY);
-    hmac.update(trimmedVerificationString, "utf-8");
+    hmac.update(verificationString.trim(), "utf-8");
     const generatedHash = hmac.digest("hex");
 
-    // Debugging log
-    console.log("Generated Hash Code:", generatedHash);
-    console.log(
-      "Hash Match Both:",
-      generatedHash.toLowerCase() === dv.toLowerCase()
-    );
+    console.log("Generated Hash:", generatedHash);
 
+    // Verify the hash
     if (generatedHash.toLowerCase() !== dv.toLowerCase()) {
       return res.status(400).json({
         verified: false,
@@ -244,8 +244,13 @@ router.post("/verify-payment", async (req, res) => {
       });
     }
 
-    // Find the registration
-    const registration = await Registration.findByPk(prn, { transaction });
+    // Find the registration based on PRN
+    const registration = await Registration.findOne({
+      where: { prn },
+      transaction,
+    });
+
+    // If registration not found, return error
     if (!registration) {
       await transaction.rollback();
       return res.status(404).json({
@@ -254,13 +259,13 @@ router.post("/verify-payment", async (req, res) => {
       });
     }
 
-    // Create a pending payment record first
-    const pendingPaymentRecord = await paymentTDC.create(
+    // Only create a payment record if the verification is successful
+    const successfulPaymentRecord = await paymentTDC.create(
       {
-        registrationId: prn,
-        transactionId: verificationString,
+        registrationId: registration.id, // Use the registration ID
+        transactionId: verificationString, // Using verificationString as the transaction ID
         amount: parsedPaidAmount,
-        status: "pending", // Initial status is pending
+        status: "success", // Only save success results
         paymentMethod,
         paymentDate: new Date(),
         email: registration.email,
@@ -270,30 +275,23 @@ router.post("/verify-payment", async (req, res) => {
       { transaction }
     );
 
-    // After verification, update the status to "success"
-    await paymentTDC.update(
-      { status: "success" },
-      {
-        where: { id: pendingPaymentRecord.id },
-        transaction,
-      }
-    );
-
+    // Commit the transaction after saving the payment
     await transaction.commit();
 
-    // Respond with the success payment details
+    // Respond with success message and payment details
     res.status(200).json({
       verified: true,
       message: "Payment verified successfully.",
-      details: {
-        id: pendingPaymentRecord.id, // Only return one record with success status
+      paymentDetails: {
+        id: successfulPaymentRecord.id,
         status: "success",
         amount: parsedPaidAmount,
         paymentMethod,
       },
     });
   } catch (error) {
-    await transaction.rollback(); // Rollback in case of any error
+    // Rollback transaction in case of an error
+    await transaction.rollback();
     console.error("Error during payment verification:", error);
     return res
       .status(500)

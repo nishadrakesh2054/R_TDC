@@ -502,9 +502,7 @@ const RegistrationPage = () => {
                     />
                   )}
                 </Form.Group>
-              </Row>
 
-              <Row xs={1} md={2}>
                 <Form.Group
                   as={Col}
                   controlId="formGridMedicalInsurance"
@@ -544,6 +542,8 @@ const RegistrationPage = () => {
                   )}
                 </Form.Group>
               </Row>
+
+     
               <br />
               {/* emergency contact person */}
 

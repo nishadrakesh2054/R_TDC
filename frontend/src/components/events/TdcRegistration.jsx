@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Alert,
   Button,
@@ -34,6 +34,9 @@ const RegistrationPage = () => {
     emergencyContactNumber: "",
     hasMedicalConditions: "",
     medicalDetails: "",
+    // hasMedicalInsurance: "",
+    // insuranceNo: "",
+    // transportation: "",
     paymentMethod: "fonepay",
   });
 
@@ -102,15 +105,15 @@ const RegistrationPage = () => {
       !formData.emergencyContactNumber ||
       !formData.emergencyContactname ||
       !formData.hasMedicalConditions ||
+      (formData.hasMedicalConditions === "yes" && !formData.medicalDetails) ||
+      (formData.hasMedicalInsurance === "yes" && !formData.insuranceNo) ||
+      !formData.transportation ||
       !formData.paymentMethod
     ) {
       setFormError("Please fill in all required fields.");
       return false;
     }
-    if (formData.hasMedicalConditions === "yes" && !formData.medicalDetails) {
-      setFormError("Please provide medical details.");
-      return false;
-    }
+
     return true;
   };
 
@@ -122,7 +125,7 @@ const RegistrationPage = () => {
 
     setIsSubmitting(true);
 
-    const amount = 10000; // Example value, update as needed
+    const amount = 10000;
     const dataToSend = { ...formData, amount };
     try {
       const response = await axios.post(
@@ -135,7 +138,9 @@ const RegistrationPage = () => {
         }
       );
       console.log("TDC Response" + response);
-      if (response.data.message === "Registration successful. Proceed to payment.") {
+      if (
+        response.data.message === "Registration successful. Proceed to payment."
+      ) {
         sessionStorage.setItem("formData", JSON.stringify(formData));
         sessionStorage.setItem("prn", response.data.prn);
         sessionStorage.setItem("registrationId", response.data.registrationId);
@@ -146,8 +151,8 @@ const RegistrationPage = () => {
             formData,
             fee: amount,
             prn: response.data.prn,
-            registrationId: response.data.registrationId, 
-            paymentId: response.data.paymentId, 
+            registrationId: response.data.registrationId,
+            paymentId: response.data.paymentId,
           },
         });
       } else {
@@ -173,8 +178,14 @@ const RegistrationPage = () => {
         category: "",
         emergencyContactname: "",
         emergencyContactNumber: "",
+
         hasMedicalConditions: "",
         medicalDetails: "",
+
+        hasMedicalInsurance: "",
+        insuranceNo: "",
+
+        transportation: "",
         paymentMethod: "fonepay",
       }); // Reset form
     } catch (error) {
@@ -490,6 +501,81 @@ const RegistrationPage = () => {
                       required
                     />
                   )}
+                </Form.Group>
+              </Row>
+
+              <Row xs={1} md={2}>
+                <Form.Group
+                  as={Col}
+                  controlId="formGridMedicalInsurance"
+                  className="mb-3"
+                >
+                  <Form.Label>Do You Have Medical Insurance ?</Form.Label>
+                  <div>
+                    <Form.Check
+                      type="radio"
+                      label="Yes"
+                      name="hasMedicalInsurance"
+                      value="yes"
+                      onChange={handleChange}
+                      className="custom-radio"
+                      inline
+                    />
+                    <Form.Check
+                      type="radio"
+                      label="No"
+                      name="hasMedicalInsurance"
+                      value="no"
+                      onChange={handleChange}
+                      inline
+                      className="custom-radio"
+                    />
+                  </div>
+                  {formData.hasMedicalInsurance === "yes" && (
+                    <Form.Control
+                      type="text"
+                      name="insuranceNo"
+                      className="form-input mt-2"
+                      value={formData.insuranceNo}
+                      onChange={handleChange}
+                      placeholder="Please Enter Your Insurance Number"
+                      required
+                    />
+                  )}
+                </Form.Group>
+              </Row>
+              <br />
+              {/* emergency contact person */}
+
+              <Row xs={1} md={2}>
+                <Form.Group
+                  as={Col}
+                  controlId="formGridTransportation"
+                  className="mb-3"
+                >
+                  <Form.Label>Do You Have Require Transportation ?</Form.Label>
+                  <div>
+                    <Form.Check
+                      type="radio"
+                      label="Yes"
+                      name="transportation"
+                      value="yes"
+                      onChange={handleChange}
+                      checked={formData.transportation === "yes"}
+                      className="custom-radio"
+                      inline
+                    />
+                    <Form.Check
+                      type="radio"
+                      label="No"
+                      name="transportation"
+                      value="no"
+                      onChange={handleChange}
+                      checked={formData.transportation === "no"}
+                      inline
+                      className="custom-radio"
+                    />
+                  </div>
                 </Form.Group>
               </Row>
 

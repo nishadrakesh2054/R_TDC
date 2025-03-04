@@ -1265,6 +1265,9 @@ export const ThundersRegistration = {
       "emergencyContactNumber",
       "hasMedicalConditions",
       "medicalDetails",
+      "hasMedicalInsurance",
+      "insuranceNo",
+      "transportation",
     ],
     showProperties: [
       "fullName",
@@ -1285,6 +1288,9 @@ export const ThundersRegistration = {
       "emergencyContactNumber",
       "hasMedicalConditions",
       "medicalDetails",
+      "hasMedicalInsurance",
+      "insuranceNo",
+      "transportation",
     ],
   },
 };

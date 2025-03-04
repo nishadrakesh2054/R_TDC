@@ -68,6 +68,7 @@ const Registration = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+
     hasMedicalConditions: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -75,6 +76,20 @@ const Registration = sequelize.define(
     medicalDetails: {
       type: DataTypes.STRING,
       allowNull: true,
+    },
+
+    hasMedicalInsurance: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    insuranceNo: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+
+    transportation: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     prn: { type: DataTypes.STRING, allowNull: false, unique: true },
   },

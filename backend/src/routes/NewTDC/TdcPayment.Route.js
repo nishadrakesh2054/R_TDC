@@ -118,6 +118,11 @@ router.post("/pre-check-registration", async (req, res) => {
       .required(),
     hasMedicalConditions: Joi.string().required(),
     medicalDetails: Joi.string().allow("").optional(),
+
+    hasMedicalInsurance: Joi.string().required(),
+    insuranceNo: Joi.string().allow("").optional(),
+    transportation: Joi.string().valid("yes", "no").required(),
+
     amount: Joi.number().min(1).required().messages({
       "number.min": "Payment amount must be at least 1.",
     }),

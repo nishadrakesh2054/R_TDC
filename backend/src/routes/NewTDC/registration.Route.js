@@ -23,6 +23,9 @@ router.post("/register_tdc", async (req, res) => {
     emergencyContactNumber,
     hasMedicalConditions,
     medicalDetails,
+    hasMedicalInsurance,
+    insuranceNo,
+    transportation,
   } = req.body;
 
   try {
@@ -45,6 +48,9 @@ router.post("/register_tdc", async (req, res) => {
       emergencyContactNumber,
       hasMedicalConditions,
       medicalDetails,
+      hasMedicalInsurance,
+      insuranceNo,
+      transportation,
     });
 
     res

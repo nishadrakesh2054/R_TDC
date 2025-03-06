@@ -15,7 +15,6 @@ import Course from "./pages/course/Course";
 import PayForm from "./pages/TdcPayment/PayForm";
 import PayResponse from "./pages/TdcPayment/PayResponse";
 
-
 const SwimmingAcademy = lazy(() =>
   import("./pages/academy/individual/SwimmingAcademy")
 );
@@ -91,12 +90,13 @@ function App() {
           <Route path="/career/:id/:title" element={<CareerDec />} />
 
           <Route path="*" element={<PageNotFound />} />
+
           {/* thunderbolts dev center start */}
           <Route
             path="/register-thunderbolts-cup"
             element={<TdcRegistrationPage />}
           />
-          <Route path="/copyapi/generate-hash" element={<PayResponse />} />
+          <Route path="/tdc-payment-response" element={<PayResponse />} />
           <Route path="/tdc-payment-form" element={<PayForm />} />
           {/* thunderbolts dev center start */}
         </Routes>

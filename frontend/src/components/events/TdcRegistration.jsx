@@ -34,9 +34,9 @@ const RegistrationPage = () => {
     emergencyContactNumber: "",
     hasMedicalConditions: "",
     medicalDetails: "",
-    // hasMedicalInsurance: "",
-    // insuranceNo: "",
-    // transportation: "",
+    hasMedicalInsurance: "",
+    insuranceNo: "",
+    transportation: "",
     paymentMethod: "fonepay",
   });
 
@@ -126,6 +126,7 @@ const RegistrationPage = () => {
     setIsSubmitting(true);
 
     const amount = 10000;
+
     const dataToSend = { ...formData, amount };
     try {
       const response = await axios.post(
@@ -161,41 +162,48 @@ const RegistrationPage = () => {
       }
       console.log("Form Data Submitted:", response.data);
       alert(response.data.message);
-      setFormData({
-        fullName: "",
-        address: "",
-        contactNo: "",
-        email: "",
-        dob: "",
-        age: "",
-        gender: "",
-        schoolName: "",
-        parentName: "",
-        parentEmail: "",
-        parentContactNo: "",
-        parentAddress: "",
-        sports: "",
-        category: "",
-        emergencyContactname: "",
-        emergencyContactNumber: "",
+      //   setFormData({
+      //     fullName: "",
+      //     address: "",
+      //     contactNo: "",
+      //     email: "",
+      //     dob: "",
+      //     age: "",
+      //     gender: "",
+      //     schoolName: "",
+      //     parentName: "",
+      //     parentEmail: "",
+      //     parentContactNo: "",
+      //     parentAddress: "",
+      //     sports: "",
+      //     category: "",
+      //     emergencyContactname: "",
+      //     emergencyContactNumber: "",
+      //     hasMedicalConditions: "",
+      //     medicalDetails: "",
+      //     hasMedicalInsurance: "",
+      //     insuranceNo: "",
 
-        hasMedicalConditions: "",
-        medicalDetails: "",
-
-        hasMedicalInsurance: "",
-        insuranceNo: "",
-
-        transportation: "",
-        paymentMethod: "fonepay",
-      }); // Reset form
+      //     transportation: "",
+      //     paymentMethod: "fonepay",
+      //   });
     } catch (error) {
       console.error(
         "Error submitting form:",
         error.response?.data || error.message
       );
-      setError("Failed to submit the form. Please try again.");
+
+      if (error.response && error.response.data) {
+        setFormError(
+          error.response.data.message ||
+            "Failed to submit the form. Please try again."
+        );
+      } else {
+        setFormError("Failed to submit the form. Please try again.");
+      }
+    } finally {
+      setIsSubmitting(false); // Hide the loading spinner after submission
     }
-    setIsSubmitting(false);
   };
 
   return (
@@ -490,6 +498,7 @@ const RegistrationPage = () => {
                       className="custom-radio"
                     />
                   </div>
+
                   {formData.hasMedicalConditions === "yes" && (
                     <Form.Control
                       type="text"
@@ -529,6 +538,7 @@ const RegistrationPage = () => {
                       className="custom-radio"
                     />
                   </div>
+
                   {formData.hasMedicalInsurance === "yes" && (
                     <Form.Control
                       type="text"
@@ -543,7 +553,6 @@ const RegistrationPage = () => {
                 </Form.Group>
               </Row>
 
-     
               <br />
               {/* emergency contact person */}
 

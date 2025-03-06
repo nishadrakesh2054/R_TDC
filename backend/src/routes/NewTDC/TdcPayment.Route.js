@@ -63,7 +63,7 @@ router.post("/generate-hash", (req, res) => {
 
   let SECRET_KEY;
 
-  if (process.env.NODE_ENV === "development") {
+  if (process.env.NODE_ENV === "developments") {
     SECRET_KEY = "fonepay";
   } else {
     SECRET_KEY = process.env.SECRET_KEY;
@@ -106,7 +106,17 @@ router.post("/pre-check-registration", async (req, res) => {
     schoolName: Joi.string().min(3).max(255).required(),
     parentName: Joi.string().min(3).max(255).required(),
     parentEmail: Joi.string().email().required(),
-    parentContactNo: Joi.string().pattern(/^\d+$/).min(10).max(15).required(),
+    parentContactNo: Joi.string()
+      .pattern(/^\d+$/)
+      .min(10)
+      .max(15)
+      .required()
+      .messages({
+        "string.pattern.base":
+          "Please provide a valid contact number (digits only).",
+        "string.min": "Contact number must be at least 10 digits long.",
+        "string.max": "Contact number must be at most 15 digits long.",
+      }),
     parentAddress: Joi.string().min(3).max(255).required(),
     sports: Joi.string().required(),
     category: Joi.string().required(),
@@ -115,14 +125,35 @@ router.post("/pre-check-registration", async (req, res) => {
       .pattern(/^\d+$/)
       .min(10)
       .max(15)
-      .required(),
-    hasMedicalConditions: Joi.string().required(),
-    medicalDetails: Joi.string().allow("").optional(),
+      .required()
+      .messages({
+        "string.pattern.base":
+          "Please provide a valid contact number (digits only).",
+        "string.min": "Contact number must be at least 10 digits long.",
+        "string.max": "Contact number must be at most 15 digits long.",
+      }),
 
-    hasMedicalInsurance: Joi.string().required(),
-    insuranceNo: Joi.string().allow("").optional(),
-    transportation: Joi.string().valid("yes", "no").required(),
-
+    hasMedicalConditions: Joi.string().valid("yes", "no").required().messages({
+      "any.required": "Please indicate if you have any medical conditions.",
+      "any.only": "Please select 'yes' or 'no'.",
+    }),
+    medicalDetails: Joi.string().allow("").optional().messages({
+      "string.base": "Medical details should be a string.",
+      "string.empty": ", please provide medical details.",
+    }),
+    hasMedicalInsurance: Joi.string().valid("yes", "no").required().messages({
+      "any.required": "Please indicate if you have medical insurance.",
+      "any.only": "Please select 'yes' or 'no'.",
+    }),
+    insuranceNo: Joi.string().allow("").optional().messages({
+      "string.base": "Insurance number should be a string.",
+      "string.empty":
+        "If you have medical insurance, please provide your insurance number.",
+    }),
+    transportation: Joi.string().valid("yes", "no").required().messages({
+      "any.required": "Please specify if you need transportation.",
+      "any.only": " Please select transportation 'yes' or 'no'.",
+    }),
     amount: Joi.number().min(1).required().messages({
       "number.min": "Payment amount must be at least 1.",
     }),
@@ -224,12 +255,15 @@ router.post("/verify-payment", async (req, res) => {
   }
 
   const SECRET_KEY =
-    process.env.NODE_ENV === "development" ? "fonepay" : process.env.SECRET_KEY;
+    process.env.NODE_ENV === "developments"
+      ? "fonepay"
+      : process.env.SECRET_KEY;
 
   // Debugging logs (can be removed after debugging)
   console.log("Received Request Body:", req.body);
   console.log("Verification String:", verificationString);
   console.log("Received DV:", dv);
+  console.log("SECRET_KEY:", SECRET_KEY);
 
   const transaction = await sequelize.transaction();
 
@@ -267,10 +301,10 @@ router.post("/verify-payment", async (req, res) => {
     // Only create a payment record if the verification is successful
     const successfulPaymentRecord = await paymentTDC.create(
       {
-        registrationId: registration.id, // Use the registration ID
-        transactionId: verificationString, // Using verificationString as the transaction ID
+        registrationId: registration.id,
+        transactionId: verificationString,
         amount: parsedPaidAmount,
-        status: "success", // Only save success results
+        status: "success",
         paymentMethod,
         paymentDate: new Date(),
         email: registration.email,
@@ -280,10 +314,8 @@ router.post("/verify-payment", async (req, res) => {
       { transaction }
     );
 
-    // Commit the transaction after saving the payment
     await transaction.commit();
 
-    // Respond with success message and payment details
     res.status(200).json({
       verified: true,
       message: "Payment verified successfully.",

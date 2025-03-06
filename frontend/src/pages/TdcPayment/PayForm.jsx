@@ -18,6 +18,8 @@ const PayForm = () => {
   const returnUrlenv = import.meta.env.VITE_RETURN_URL;
   const paymentUrlenv = import.meta.env.VITE_PAYMENT_URL;
   console.log("VITE_MERCHANT_CODE:", merchantCodeenv);
+  console.log("returnUrlenv:", returnUrlenv);
+  console.log("paymentUrlenv:", paymentUrlenv);
 
   const PID = merchantCodeenv;
   const MD = "P";
@@ -26,7 +28,7 @@ const PayForm = () => {
   const DT = getCurrentDate();
   const R1 = String(formData?.fullName || "").substring(0, 160);
   const R2 = String(JSON.stringify(formData?.sports) || "N/A").substring(0, 50);
-  const RU = `${returnUrlenv}/#/tdc-pay-response`;
+  const RU = `${returnUrlenv}/#/tdc-payment-response`;
   const PRN = uuidv4().substring(0, 25);
 
   const generatePaymentUrl = async () => {

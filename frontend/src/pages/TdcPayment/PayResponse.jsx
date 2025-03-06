@@ -45,7 +45,6 @@ const PayResponse = () => {
     const formData = sessionStorage.getItem("formData")
       ? JSON.parse(sessionStorage.getItem("formData"))
       : null;
-    const fee = sessionStorage.getItem("fee") || "0";
 
     // If any required parameter is missing
     if (![PRN, PID, MD, AMT, CRN, DT, R1, R2, RU, DV].every((param) => param)) {
@@ -67,7 +66,7 @@ const PayResponse = () => {
       setIsLoading(true);
       try {
         const response = await axios.post(
-          "http://localhost:3000/copyapi/verify-payment",
+          "http://localhost:3000/tdc-api/verify-payment",
           {
             verificationString,
             dv: DV,
@@ -75,7 +74,6 @@ const PayResponse = () => {
             paidAmount: Number(AMT),
             paymentMethod: "fonepay",
             formData,
-            fee,
           }
         );
 
@@ -104,7 +102,7 @@ const PayResponse = () => {
     debouncedVerifyPayment();
 
     return () => {
-      // Cleanup if necessary
+      
     };
   }, [location.search]);
 
@@ -140,7 +138,7 @@ const PayResponse = () => {
             Thank you, <span>{details?.details?.fullName}</span>
           </h1>
           <p className="confirmation-message">
-            Youll receive a confirmation email shortly.
+            You will receive a confirmation email shortly.
           </p>
           <OverlayTrigger
             placement="right"

@@ -5,6 +5,7 @@ import paymentTDC from "../../models/NewTdc/Payment.Model.js";
 import Registration from "../../models/NewTdc/RegisterForm.Model.js";
 import sequelize from "../../db/index.js";
 import Joi from "joi";
+ import { sendPaymentConfirmationEmail } from "../../middleware/TDCMail/mailService.js";
 const router = express.Router();
 
 // Function to validate input parameters
@@ -315,6 +316,16 @@ router.post("/verify-payment", async (req, res) => {
     );
 
     await transaction.commit();
+
+    // Send payment confirmation email to the user
+    await sendPaymentConfirmationEmail(
+      registration.email,
+      registration.fullName,
+      parsedPaidAmount,
+      registration.contactNo,
+      registration.sports,    
+      registration.category  
+    );
 
     res.status(200).json({
       verified: true,

@@ -31,8 +31,8 @@ import TDCparticipation from "./src/routes/TDC-Route/TDCparticipation.Route.js";
 import TDCPayment from "./src/routes/TDC-Route/TDCpayment.Route.js";
 import TDCPDFGenerater from "./src/routes/TDC-Route/TDCpdfGenerator.Router.js";
 import TDCschool from "./src/routes/TDC-Route/TDCschool.Route.js";
-import TDCRegister from "./src/routes/NewTDC/registration.Route.js";
-import copyPayment from "./src/routes/NewTDC/TdcPayment.Route.js";
+// import TDCRegister from "./src/routes/NewTDC/registration.Route.js";
+import ThundersPayment from "./src/routes/NewTDC/TdcPayment.Route.js";
 
 const app = express();
 os.tmpdir = () => "D:\\temp";
@@ -115,8 +115,8 @@ app.use("/api", TDCPDFGenerater);
 app.use("/api", TDCGame);
 
 // New TDC routes defines
-app.use("/api", TDCRegister);
-app.use("/tdc-api", copyPayment);
+// app.use("/api", TDCRegister);
+app.use("/tdc-api", ThundersPayment);
 
 app.get("/api/test", (req, res) => {
   res.send("API is working");

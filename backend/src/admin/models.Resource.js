@@ -24,20 +24,204 @@ import TableFixture from "../models/RKmodel/tableFixture.Model.js";
 import gameTeam from "../models/RKmodel/team.Model.js";
 import Player from "../models/RKmodel/player.Model.js";
 import FootballManualRegistration from "../models/RKmodel/Registration.Model.js";
-
 import FootballManualReg from "../models/NewTdc/manualReg.Model.js";
 import ThunderBoltsReg from "../models/NewTdc/RegisterForm.Model.js";
 import NewPaymentTDC from "../models/NewTdc/Payment.Model.js";
 
-// Register AdminJS adapter
+
 AdminJS.registerAdapter(AdminJSSequelize);
-// const componentLoader = new ComponentLoader();
+
 
 // Local provider configuration for file uploads
 const localProvider = {
   bucket: "public/uploads", // Directory to store uploaded files
   opts: {
     baseUrl: "/uploads", // The URL base to access the uploaded files
+  },
+};
+
+/*-------------------- New TDC Registration model start--------------------*/
+export const ThundersRegistration = {
+  resource: ThunderBoltsReg,
+  options: {
+    navigation: {
+      name: "REGISTRATION TDC",
+    },
+    listProperties: [
+      "fullName",
+      "email",
+      "contactNo",
+      "gender",
+      "age",
+      "sports",
+      "category",
+      "prn",
+    ],
+    editProperties: [
+      "fullName",
+      "address",
+      "contactNo",
+      "email",
+      "dob",
+      "age",
+      "gender",
+      "schoolName",
+      "parentName",
+      "parentEmail",
+      "parentContactNo",
+      "parentAddress",
+      "sports",
+      "category",
+      "emergencyContactname",
+      "emergencyContactNumber",
+      "hasMedicalConditions",
+      "medicalDetails",
+      "hasMedicalInsurance",
+      "insuranceNo",
+      "transportation",
+      "notes",
+      "agreement",
+      "prn",
+    ],
+    showProperties: [
+      "fullName",
+      "address",
+      "contactNo",
+      "email",
+      "dob",
+      "age",
+      "gender",
+      "schoolName",
+      "parentName",
+      "parentEmail",
+      "parentContactNo",
+      "parentAddress",
+      "sports",
+      "category",
+      "emergencyContactname",
+      "emergencyContactNumber",
+      "hasMedicalConditions",
+      "medicalDetails",
+      "hasMedicalInsurance",
+      "insuranceNo",
+      "transportation",
+      "notes",
+      "agreement",
+      "prn",
+    ],
+  },
+};
+
+export const PaymentTDC = {
+  resource: NewPaymentTDC,
+  options: {
+    navigation: {
+      name: "REGISTRATION TDC",
+    },
+    listProperties: [
+      "id",
+      "fullName",
+      "email",
+      "sports",
+      "amount",
+      "paymentMethod",
+      "status",
+    ],
+    editProperties: ["status"],
+    properties: {
+      updatedAt: { isVisible: false },
+      createdAt: { isVisible: false },
+    },
+    actions: {
+      edit: {
+        isAccessible: ({ currentAdmin }) => currentAdmin.role === "admin",
+      },
+    },
+  },
+};
+export const TDCManualRegResource = {
+  resource: FootballManualReg,
+  options: {
+    navigation: {
+      name: "REGISTRATION TDC",
+    },
+    properties: {
+      agreement: { isVisible: true },
+      paymentType: { isVisible: true },
+      totalAmount: { isVisible: true },
+      gameFee: { isVisible: true },
+      emergencyContactPersonName: { isVisible: true },
+      emergencyContactPersonNumber: { isVisible: true },
+
+      hasMedicalConditions: {
+        type: "boolean",
+        isVisible: true,
+      },
+      medicalDetails: {
+        isVisible: {
+          list: false,
+          filter: true,
+          show: ({ record }) => record?.params?.hasMedicalConditions === true,
+          edit: ({ record }) => record?.params?.hasMedicalConditions === true,
+        },
+      },
+
+      hasMedicalInsurance: {
+        type: "boolean",
+        isVisible: true,
+      },
+      insuranceNo: {
+        isVisible: {
+          list: false,
+          filter: true,
+          show: ({ record }) => record?.params?.hasMedicalInsurance === true,
+          edit: ({ record }) => record?.params?.hasMedicalInsurance === true,
+        },
+      },
+      transportation: { isVisible: true },
+
+      sportsCategory: { isVisible: true },
+      sports: { isVisible: true },
+      parentAddress: { isVisible: true },
+      parentContactNo: { isVisible: true },
+      parentEmail: {
+        isVisible: { list: false, filter: true, show: true, edit: true },
+      },
+      parentName: { isVisible: true },
+      schoolName: { isVisible: true },
+      gender: { isVisible: true },
+      age: { isVisible: true },
+      email: { isVisible: true },
+      dateOfBirth: { isVisible: true },
+      ContactNo: { isVisible: true },
+      address: { isVisible: true },
+      fullName: { isVisible: true },
+      updatedAt: { isVisible: false },
+      createdAt: { isVisible: false },
+    },
+
+    actions: {
+      list: {
+        isAccessible: ({ currentAdmin }) =>
+          currentAdmin && currentAdmin.role === "Admin",
+      },
+      edit: {
+        isAccessible: ({ currentAdmin }) =>
+          currentAdmin && currentAdmin.role === "Admin",
+      },
+      new: {
+        isAccessible: ({ currentAdmin }) =>
+          currentAdmin && currentAdmin.role === "Admin",
+      },
+      show: {
+        isAccessible: ({ currentAdmin }) =>
+          currentAdmin && currentAdmin.role === "Admin",
+      },
+      delete: {
+        isAccessible: ({ currentAdmin }) =>
+          currentAdmin && currentAdmin.role === "Admin",
+      },
+    },
   },
 };
 
@@ -1172,153 +1356,3 @@ export const FootballManualRegistrationResource = {
   },
 };
 /*-------------------- Football League  model end--------------------*/
-
-/*-------------------- New TDC Registration model start--------------------*/
-export const TDCManualRegResource = {
-  resource: FootballManualReg,
-  options: {
-    navigation: {
-      name: "REGISTRATION TDC",
-    },
-    properties: {
-      paymentType: { isVisible: true },
-      totalAmount: { isVisible: true },
-      gameFee: { isVisible: true },
-      emergencyContactPersonName: { isVisible: true },
-      emergencyContactPersonNumber: { isVisible: true },
-      gameCategory: { isVisible: true },
-      sportsName: { isVisible: true },
-      parentAddress: { isVisible: true },
-      parentContactNo: { isVisible: true },
-      parentEmail: {
-        isVisible: { list: false, filter: true, show: true, edit: true },
-      },
-      parentName: { isVisible: true },
-      schoolName: { isVisible: true },
-      gender: { isVisible: true },
-      age: { isVisible: true },
-      Email: { isVisible: true },
-      dateOfBirth: { isVisible: true },
-      ContactNo: { isVisible: true },
-      address: { isVisible: true },
-      fullName: { isVisible: true },
-      updatedAt: { isVisible: false },
-      createdAt: { isVisible: false },
-    },
-
-    actions: {
-      list: {
-        isAccessible: ({ currentAdmin }) =>
-          currentAdmin && currentAdmin.role === "Admin",
-      },
-      edit: {
-        isAccessible: ({ currentAdmin }) =>
-          currentAdmin && currentAdmin.role === "Admin",
-      },
-      new: {
-        isAccessible: ({ currentAdmin }) =>
-          currentAdmin && currentAdmin.role === "Admin",
-      },
-      show: {
-        isAccessible: ({ currentAdmin }) =>
-          currentAdmin && currentAdmin.role === "Admin",
-      },
-      delete: {
-        isAccessible: ({ currentAdmin }) =>
-          currentAdmin && currentAdmin.role === "Admin",
-      },
-    },
-  },
-};
-
-export const ThundersRegistration = {
-  resource: ThunderBoltsReg,
-  options: {
-    navigation: {
-      name: "REGISTRATION TDC",
-    },
-    listProperties: [
-      "fullName",
-      "email",
-      "contactNo",
-      "gender",
-      "age",
-      "sports",
-      "category",
-    ],
-    editProperties: [
-      "fullName",
-      "address",
-      "contactNo",
-      "email",
-      "dob",
-      "age",
-      "gender",
-      "schoolName",
-      "parentName",
-      "parentEmail",
-      "parentContactNo",
-      "parentAddress",
-      "sports",
-      "category",
-      "emergencyContactname",
-      "emergencyContactNumber",
-      "hasMedicalConditions",
-      "medicalDetails",
-      "hasMedicalInsurance",
-      "insuranceNo",
-      "transportation",
-    ],
-    showProperties: [
-      "fullName",
-      "address",
-      "contactNo",
-      "email",
-      "dob",
-      "age",
-      "gender",
-      "schoolName",
-      "parentName",
-      "parentEmail",
-      "parentContactNo",
-      "parentAddress",
-      "sports",
-      "category",
-      "emergencyContactname",
-      "emergencyContactNumber",
-      "hasMedicalConditions",
-      "medicalDetails",
-      "hasMedicalInsurance",
-      "insuranceNo",
-      "transportation",
-    ],
-  },
-};
-
-export const PaymentTDC = {
-  resource: NewPaymentTDC,
-  options: {
-    navigation: {
-      name: "REGISTRATION TDC",
-    },
-    listProperties: [
-      "id",
-      "fullName",
-      "email",
-      "sports",
-      "amount",
-      "paymentMethod",
-      "status",
-    ],
-    editProperties: ["status"],
-    properties: {
-      updatedAt: { isVisible: false },
-      createdAt: { isVisible: false },
-    },
-    actions: {
-      edit: {
-        isAccessible: ({ currentAdmin }) => currentAdmin.role === "admin",
-      },
-    },
-  },
-};

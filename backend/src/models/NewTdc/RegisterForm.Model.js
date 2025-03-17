@@ -92,6 +92,8 @@ const Registration = sequelize.define(
       allowNull: false,
     },
     prn: { type: DataTypes.STRING, allowNull: false, unique: true },
+    notes: { type: DataTypes.BOOLEAN, allowNull: true },
+    agreement: { type: DataTypes.BOOLEAN, allowNull: true },
   },
   {
     tableName: "registrations",

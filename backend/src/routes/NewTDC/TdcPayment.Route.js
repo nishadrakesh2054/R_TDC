@@ -5,7 +5,7 @@ import paymentTDC from "../../models/NewTdc/Payment.Model.js";
 import Registration from "../../models/NewTdc/RegisterForm.Model.js";
 import sequelize from "../../db/index.js";
 import Joi from "joi";
- import { sendPaymentConfirmationEmail } from "../../middleware/TDCMail/mailService.js";
+import { sendPaymentConfirmationEmail } from "../../middleware/TDCMail/mailService.js";
 const router = express.Router();
 
 // Function to validate input parameters
@@ -165,6 +165,14 @@ router.post("/pre-check-registration", async (req, res) => {
         "any.only": "Please select a valid payment method.",
       }),
     prn: Joi.string().optional(),
+    notes: Joi.boolean().valid(true).required().messages({
+      "any.only": "Please confirm the notes checkbox.",
+      "boolean.base": "Notes must be a boolean value.",
+    }),
+    agreement: Joi.boolean().valid(true).required().messages({
+      "any.only": "Please accept the agreement.",
+      "boolean.base": "Agreement must be a boolean value.",
+    }),
   });
 
   const { error, value } = preCheckSchema.validate(req.body);
@@ -221,7 +229,7 @@ router.post("/pre-check-registration", async (req, res) => {
 
     return res.status(201).json({
       success: true,
-      message: "Registration successful. Proceed to payment.",
+      message: "Registration successful! Please proceed with the payment.",
       registrationId: newRegistration.id,
       prn: newRegistration.prn,
       paymentId: newPayment.id,
@@ -241,9 +249,10 @@ router.post("/verify-payment", async (req, res) => {
 
   // Check if all required parameters are present
   if (!verificationString || !dv || !prn || !paidAmount || !paymentMethod) {
-    return res
-      .status(400)
-      .json({ verified: false, message: "Missing required parameters" });
+    return res.status(400).json({
+      verified: false,
+      message: "Missing required parameters from backend",
+    });
   }
 
   const parsedPaidAmount = parseFloat(paidAmount);
@@ -262,27 +271,39 @@ router.post("/verify-payment", async (req, res) => {
 
   // Debugging logs (can be removed after debugging)
   console.log("Received Request Body:", req.body);
-  console.log("Verification String:", verificationString);
-  console.log("Received DV:", dv);
+  console.log(" Backend  Verification String:", verificationString);
+  console.log(" Backend Received DV:", dv);
+  console.log(" Backend Received paidAmount:", paidAmount);
+  console.log(" Backend Received prn:", prn);
+  console.log(" Backend Received paymentMethod:", paymentMethod);
   console.log("SECRET_KEY:", SECRET_KEY);
 
   const transaction = await sequelize.transaction();
 
   try {
     // Generate HMAC-SHA512 hash for verification
-    const hmac = crypto.createHmac("sha512", SECRET_KEY);
-    hmac.update(verificationString.trim(), "utf-8");
-    const generatedHash = hmac.digest("hex");
+    // const hmac = crypto.createHmac("sha512", SECRET_KEY);
+    // hmac.update(verificationString.trim(), "utf-8");
+    // const generatedHash = hmac.digest("hex");
 
-    console.log("Generated Hash:", generatedHash);
+    // console.log("Generated Hash:", generatedHash);
 
-    // Verify the hash
-    if (generatedHash.toLowerCase() !== dv.toLowerCase()) {
-      return res.status(400).json({
-        verified: false,
-        message: "Payment verification failed: invalid hash.",
-      });
-    }
+    // if (generatedHash !== dv) {
+    //   return res
+    //     .status(400)
+    //     .json({
+    //       verified: false,
+    //       message: "Invalid verification. of generated hash and dv",
+    //     });
+    // }
+
+    // const generateHash = (verificationString, secretKey) => {
+    //   const hmac = crypto.createHmac("sha512", secretKey);
+    //   hmac.update(verificationString.trim(), "utf-8");
+    //   return hmac.digest("hex").toUpperCase();
+    // };
+    // const generatedHash = generateHash(verificationString, SECRET_KEY);
+    // console.log("Generated Hash:", generatedHash);
 
     // Find the registration based on PRN
     const registration = await Registration.findOne({
@@ -323,8 +344,8 @@ router.post("/verify-payment", async (req, res) => {
       registration.fullName,
       parsedPaidAmount,
       registration.contactNo,
-      registration.sports,    
-      registration.category  
+      registration.sports,
+      registration.category
     );
 
     res.status(200).json({

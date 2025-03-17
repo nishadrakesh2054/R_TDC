@@ -528,23 +528,28 @@ const admin = new AdminJS({
         actions: {
           list: {
             isAccessible: ({ currentAdmin }) =>
-              currentAdmin && currentAdmin.role === "Admin",
-          },
+                currentAdmin &&
+            (currentAdmin.role === "Admin" || currentAdmin.role === "Front desk"),
+        },
           edit: {
             isAccessible: ({ currentAdmin }) =>
-              currentAdmin && currentAdmin.role === "Admin",
+                currentAdmin &&
+            (currentAdmin.role === "Admin" || currentAdmin.role === "Front desk")
           },
           new: {
             isAccessible: ({ currentAdmin }) =>
-              currentAdmin && currentAdmin.role === "Admin",
+           currentAdmin &&
+          (currentAdmin.role === "Admin" || currentAdmin.role === "Front desk")
           },
           show: {
             isAccessible: ({ currentAdmin }) =>
-              currentAdmin && currentAdmin.role === "Admin",
+           currentAdmin &&
+          (currentAdmin.role === "Admin" || currentAdmin.role === "Front desk")
           },
           delete: {
             isAccessible: ({ currentAdmin }) =>
-              currentAdmin && currentAdmin.role === "Admin",
+           currentAdmin &&
+          (currentAdmin.role === "Admin" || currentAdmin.role === "Front desk")
           },
         },
 

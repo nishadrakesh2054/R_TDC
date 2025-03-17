@@ -12,6 +12,7 @@ import {
 
 import "./RegistrationPage.scss";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const RegistrationPage = () => {
   const navigate = useNavigate();
@@ -39,7 +40,6 @@ const RegistrationPage = () => {
     transportation: "",
     paymentMethod: "fonepay",
   });
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [formError, setFormError] = useState(null);
@@ -70,6 +70,10 @@ const RegistrationPage = () => {
         category = "Intermediate";
       } else if (calculatedAge >= 16 && calculatedAge <= 19) {
         category = "Senior";
+      } else if (calculatedAge > 19) {
+        // alert("You are not eligible  to participate");
+        toast.warning("You are not eligible  to participate");
+        return;
       }
       setFormData((prevFormData) => ({
         ...prevFormData,
@@ -108,7 +112,9 @@ const RegistrationPage = () => {
       (formData.hasMedicalConditions === "yes" && !formData.medicalDetails) ||
       (formData.hasMedicalInsurance === "yes" && !formData.insuranceNo) ||
       !formData.transportation ||
-      !formData.paymentMethod
+      !formData.paymentMethod ||
+      formData.notes !== true ||
+      formData.agreement !== true
     ) {
       setFormError("Please fill in all required fields.");
       return false;
@@ -125,7 +131,7 @@ const RegistrationPage = () => {
 
     setIsSubmitting(true);
 
-    const amount = 10000;
+    const amount = 1;
 
     const dataToSend = { ...formData, amount };
     try {
@@ -138,9 +144,8 @@ const RegistrationPage = () => {
           },
         }
       );
-      console.log("TDC Response" + response);
       if (
-        response.data.message === "Registration successful. Proceed to payment."
+        response.data.message === "Registration successful! Please proceed with the payment."
       ) {
         sessionStorage.setItem("formData", JSON.stringify(formData));
         sessionStorage.setItem("prn", response.data.prn);
@@ -160,33 +165,35 @@ const RegistrationPage = () => {
         // If pre-check fails, display the error message
         setFormError(response.data.message || "Pre-registration check failed.");
       }
-      console.log("Form Data Submitted:", response.data);
-      alert(response.data.message);
-      //   setFormData({
-      //     fullName: "",
-      //     address: "",
-      //     contactNo: "",
-      //     email: "",
-      //     dob: "",
-      //     age: "",
-      //     gender: "",
-      //     schoolName: "",
-      //     parentName: "",
-      //     parentEmail: "",
-      //     parentContactNo: "",
-      //     parentAddress: "",
-      //     sports: "",
-      //     category: "",
-      //     emergencyContactname: "",
-      //     emergencyContactNumber: "",
-      //     hasMedicalConditions: "",
-      //     medicalDetails: "",
-      //     hasMedicalInsurance: "",
-      //     insuranceNo: "",
 
-      //     transportation: "",
-      //     paymentMethod: "fonepay",
-      //   });
+      toast.success("Registration successful! Please proceed to payment.");
+
+      setFormData({
+        fullName: "",
+        address: "",
+        contactNo: "",
+        email: "",
+        dob: "",
+        age: "",
+        gender: "",
+        schoolName: "",
+        parentName: "",
+        parentEmail: "",
+        parentContactNo: "",
+        parentAddress: "",
+        sports: "",
+        category: "",
+        emergencyContactname: "",
+        emergencyContactNumber: "",
+        hasMedicalConditions: "",
+        medicalDetails: "",
+        hasMedicalInsurance: "",
+        insuranceNo: "",
+        transportation: "",
+        paymentMethod: "fonepay",
+        notes: "",
+        agreement: "",
+      });
     } catch (error) {
       console.error(
         "Error submitting form:",
@@ -202,7 +209,7 @@ const RegistrationPage = () => {
         setFormError("Failed to submit the form. Please try again.");
       }
     } finally {
-      setIsSubmitting(false); // Hide the loading spinner after submission
+      setIsSubmitting(false);
     }
   };
 
@@ -483,6 +490,7 @@ const RegistrationPage = () => {
                       type="radio"
                       label="Yes"
                       name="hasMedicalConditions"
+
                       value="yes"
                       onChange={handleChange}
                       className="custom-radio"
@@ -562,7 +570,7 @@ const RegistrationPage = () => {
                   controlId="formGridTransportation"
                   className="mb-3"
                 >
-                  <Form.Label>Do You Have Require Transportation ?</Form.Label>
+                  <Form.Label>Do You Require Transportation ?</Form.Label>
                   <div>
                     <Form.Check
                       type="radio"
@@ -625,6 +633,37 @@ const RegistrationPage = () => {
                   />
                 </Form.Group>
               </Row>
+              <br />
+              <Row>
+                <Form.Group as={Col} controlId="formGridNotes" className="mb-3">
+                  <Form.Check
+                    type="checkbox"
+                    label="Keep me updated on new features, program updates, and special offers from Thunderbolts Development Center."
+                    checked={formData.notes}
+                    className="custom-radio"
+                    onChange={(e) =>
+                      setFormData({ ...formData, notes: e.target.checked })
+                    }
+                  />
+                </Form.Group>
+              </Row>
+              <Row>
+                <Form.Group
+                  as={Col}
+                  controlId="formGridAgreement"
+                  className="mb-3"
+                >
+                  <Form.Check
+                    type="checkbox"
+                    label="I acknowledge and accept the agreement terms."
+                    checked={formData.agreement}
+                    className="custom-radio"
+                    onChange={(e) =>
+                      setFormData({ ...formData, agreement: e.target.checked })
+                    }
+                  />
+                </Form.Group>
+              </Row>
 
               {formError && <Alert variant="danger">{formError}</Alert>}
               <div className="button-container mt-4">
@@ -640,13 +679,6 @@ const RegistrationPage = () => {
                   )}
                 </Button>
               </div>
-
-              <Row>
-                <p className="text-dark">
-                  Note : Keep me updated on new features, program updates, and
-                  special offers from Thunderbolts Development Center.
-                </p>
-              </Row>
             </Form>
           )}
         </div>

@@ -31,58 +31,71 @@ const PayResponse = () => {
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    const PRN = Number(params.get("PRN")); // Convert to number
+    const PRN = params.get("PRN");
     const PID = params.get("PID");
-    const MD = params.get("MD");
-    const AMT = params.get("AMT");
-    const CRN = params.get("CRN");
-    const DT = params.get("DT");
-    const R1 = params.get("R1");
-    const R2 = params.get("R2");
-    const RU = params.get("RU");
+    const PS = params.get("PS");
+    const RC = params.get("RC");
     const DV = params.get("DV");
+    const UID = params.get("UID");
+    const BC = params.get("BC");
+    const INI = params.get("INI");
+    const P_AMT = params.get("P_AMT");
+    const R_AMT = params.get("R_AMT");
 
     const formData = sessionStorage.getItem("formData")
       ? JSON.parse(sessionStorage.getItem("formData"))
       : null;
 
-    // If any required parameter is missing
-    if (![PRN, PID, MD, AMT, CRN, DT, R1, R2, RU, DV].every((param) => param)) {
+    // Ensure all required parameters exist
+    if (
+      ![PRN, PID, PS, RC, UID, BC, INI, P_AMT, R_AMT, DV].every(
+        (param) => param
+      )
+    ) {
       setResponseMessage("Missing required parameters.");
       setIsSuccess(false);
       return;
     }
 
-    const verificationString = `PID=${PID}&MD=${MD}&PRN=${PRN}&AMT=${AMT}&CRN=${CRN}&DT=${DT}&R1=${R1}&R2=${R2}&RU=${RU}`;
+    const verificationString = `PRN=${PRN}PID=${PID}&RC=${RC}&UID=${UID}&BC=${BC}&INI=${INI}&P_AMT=${P_AMT}&R_AMT=${R_AMT}`;
+
 
     const verifyPayment = async () => {
       if (isVerifyingRef.current) return;
       isVerifyingRef.current = true;
       requestCountRef.current += 1;
-      console.log(
-        `Payment verification request count: ${requestCountRef.current}`
-      );
 
       setIsLoading(true);
       try {
+            // Log data before sending the request
+    console.log("Sending request to backend with data:", {
+        verificationString,
+        dv: DV,
+        prn: PRN,
+        paidAmount: Number(P_AMT),
+        paymentMethod: "fonepay",
+        formData,
+      });
         const response = await axios.post(
           "http://localhost:3000/tdc-api/verify-payment",
           {
             verificationString,
             dv: DV,
             prn: PRN,
-            paidAmount: Number(AMT),
+            paidAmount: Number(P_AMT),
             paymentMethod: "fonepay",
             formData,
           }
         );
 
+   // Log the response data after the request
+   console.log("Response data:", response.data);
         if (response.status === 200) {
           const { verified, message } = response.data;
           setIsVerified(verified);
           setResponseMessage(message);
           setDetails(response.data);
-          setIsSuccess(verified); // **Set isSuccess based on verification**
+          setIsSuccess(verified);
         } else {
           setResponseMessage(
             `Payment verification failed with status: ${response.status}`
@@ -90,6 +103,11 @@ const PayResponse = () => {
           setIsSuccess(false);
         }
       } catch (error) {
+        console.error(
+          "Error during payment verification:",
+          error.response || error.message
+        );
+
         setResponseMessage("Payment verification failed.");
         setIsSuccess(false);
       } finally {
@@ -101,9 +119,7 @@ const PayResponse = () => {
     const debouncedVerifyPayment = debounce(verifyPayment, 1000);
     debouncedVerifyPayment();
 
-    return () => {
-      
-    };
+    return () => {};
   }, [location.search]);
 
   const copyToClipboard = (text) => {

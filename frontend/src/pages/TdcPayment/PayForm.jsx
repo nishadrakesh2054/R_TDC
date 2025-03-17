@@ -11,7 +11,6 @@ const PayForm = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const location = useLocation();
-
   const { formData, fee } = location.state;
 
   const merchantCodeenv = import.meta.env.VITE_MERCHANT_CODE;
@@ -71,7 +70,7 @@ const PayForm = () => {
         },
         {
           headers: {
-            "Content-Type": "application/json", // Set the content type to JSON
+            "Content-Type": "application/json", 
           },
         }
       );

@@ -2,6 +2,11 @@ import { DataTypes } from "sequelize";
 import sequelize from "../../db/index.js";
 
 const ManualReg = sequelize.define("ManualReg", {
+  agreement: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  },
   paymentType: {
     type: DataTypes.ENUM("Cash", "QR"),
     allowNull: false,
@@ -41,12 +46,54 @@ const ManualReg = sequelize.define("ManualReg", {
     allowNull: true,
   },
 
-  gameCategory: {
-    type: DataTypes.ENUM("Grassroots (6-11 years)", "Intermediate (12-15 years)", "Senior (16-19 years)"),
+  medicalDetails: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    validate: {
+      isValid(value) {
+        if (this.hasMedicalConditions === true && !value) {
+          throw new Error("Please specify your medical conditions.");
+        }
+      },
+    },
+  },
+
+  hasMedicalConditions: {
+    type: DataTypes.BOOLEAN,
     allowNull: false,
   },
-  sportsName: {
-    type: DataTypes.ENUM("Football", "Futsal", "Cricket","Swimming","Tennis"),
+
+  insuranceNo: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    validate: {
+      isValid(value) {
+        if (this.hasMedicalInsurance === true && !value) {
+          throw new Error(
+            "Insurance number is required when medical insurance is Yes."
+          );
+        }
+      },
+    },
+  },
+
+  hasMedicalInsurance: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+  },
+
+  transportation: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+  },
+
+  sportsCategory: {
+    type: DataTypes.ENUM("Grassroots ", "Intermediate ", "Senior "),
+    allowNull: false,
+  },
+
+  sports: {
+    type: DataTypes.ENUM("Football", "Futsal", "Cricket", "Swimming", "Tennis"),
     allowNull: false,
   },
 
@@ -54,7 +101,6 @@ const ManualReg = sequelize.define("ManualReg", {
     type: DataTypes.STRING,
     allowNull: false,
     validate: {
-  
       notEmpty: {
         msg: " address cannot be empty.",
       },
@@ -90,6 +136,7 @@ const ManualReg = sequelize.define("ManualReg", {
       },
     },
   },
+
   schoolName: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -118,15 +165,10 @@ const ManualReg = sequelize.define("ManualReg", {
     },
   },
   dateOfBirth: {
-    type: DataTypes.DATEONLY,
+    type: DataTypes.STRING,
     allowNull: false,
-    validate: {
-      isDate: {
-        msg: "Please provide a valid date of birth.",
-      },
-    },
   },
-  Email: {
+  email: {
     type: DataTypes.STRING,
     allowNull: false,
     validate: {

@@ -1,6 +1,6 @@
 import express from "express";
 import crypto from "crypto";
-// import { randomUUID } from "crypto";
+import { randomUUID } from "crypto";
 import paymentTDC from "../../models/NewTdc/Payment.Model.js";
 import Registration from "../../models/NewTdc/RegisterForm.Model.js";
 import sequelize from "../../db/index.js";
@@ -163,7 +163,7 @@ router.post("/pre-check-registration", async (req, res) => {
       .messages({
         "any.only": "Please select a valid payment method.",
       }),
-//  prn: Joi.string().optional(),
+    prn: Joi.string().optional(),
     notes: Joi.boolean().valid(true).required().messages({
       "any.only": "Please confirm the notes checkbox.",
       "boolean.base": "Notes must be a boolean value.",
@@ -198,21 +198,21 @@ router.post("/pre-check-registration", async (req, res) => {
       });
     }
 
-    // const generatePRN = () => {
-    //   return randomUUID();
-    // };
-    // const prn = generatePRN();
-    // console.log("Generated PRN during registration:", prn);
+    const generatePRN = () => {
+      return randomUUID();
+    };
+    const prn = generatePRN();
+    console.log("Generated PRN during registration:", prn);
 
     // Create a new registration
     const newRegistration = await Registration.create(
       {
         ...value,
-        // prn,
+        prn,
       },
       { transaction }
     );
-    // console.log("PRN stored in database:", newRegistration.prn);
+    console.log("PRN stored in database:", newRegistration.prn);
 
     // Create a pending payment entry
     const newPayment = await paymentTDC.create(
@@ -232,7 +232,7 @@ router.post("/pre-check-registration", async (req, res) => {
       success: true,
       message: "Registration successful! Please proceed with the payment.",
       registrationId: newRegistration.id,
-    //   prn: newRegistration.prn,
+      //   prn: newRegistration.prn,
       paymentId: newPayment.id,
     });
   } catch (err) {
@@ -266,19 +266,16 @@ router.post("/verify-payment", async (req, res) => {
     });
   }
 
-  // Hardcoded SECRET_KEY for testing
+ 
   const SECRET_KEY = "b83ec0267af644a89e7b7e9bf3fb16e0";
 
-  // Construct the verification string as per Fonepay's documentation
+ 
   const verificationString = `${PRN},${PID},${PS},${RC},${UID},${BC},${INI},${P_AMT},${R_AMT}`;
 
   // Debugging logs
-  console.log("Received PRN from frontend:", PRN); 
+  console.log("Received PRN from frontend:", PRN);
   console.log("Type of PRN:", typeof PRN);
   console.log("Length of PRN:", PRN.length);
-//   console.log("Received Request Body:", req.body);
-//   console.log("Hardcoded SECRET_KEY:", SECRET_KEY);
-//   console.log("Backend Received DV:", DV);
 
   const transaction = await sequelize.transaction();
 
@@ -299,13 +296,11 @@ router.post("/verify-payment", async (req, res) => {
       });
     }
 
-
-
-        // Find the registration based on PRN
-        console.log("Searching for registration with PRN:", PRN);
     // Find the registration based on PRN
+    console.log("Searching for registration with PRN:", PRN);
+
     const registration = await Registration.findOne({
-        where: { prn: PRN.trim() }, 
+      where: { prn: PRN},
       transaction,
       logging: console.log,
     });
@@ -372,7 +367,4 @@ router.post("/verify-payment", async (req, res) => {
   }
 });
 
-
-
-  
 export default router;

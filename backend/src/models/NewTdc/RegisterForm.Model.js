@@ -91,7 +91,7 @@ const Registration = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    prn: { type: DataTypes.STRING, allowNull: false, unique: true },
+    prn: { type: DataTypes.STRING, allowNull: true, unique: true },
     notes: { type: DataTypes.BOOLEAN, allowNull: true },
     agreement: { type: DataTypes.BOOLEAN, allowNull: true },
   },

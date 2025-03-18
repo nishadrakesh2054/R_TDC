@@ -16,9 +16,7 @@ const PayForm = () => {
   const merchantCodeenv = import.meta.env.VITE_MERCHANT_CODE;
   const returnUrlenv = import.meta.env.VITE_RETURN_URL;
   const paymentUrlenv = import.meta.env.VITE_PAYMENT_URL;
-  console.log("VITE_MERCHANT_CODE:", merchantCodeenv);
-  console.log("returnUrlenv:", returnUrlenv);
-  console.log("paymentUrlenv:", paymentUrlenv);
+
 
   const PID = merchantCodeenv;
   const MD = "P";
@@ -41,7 +39,6 @@ const PayForm = () => {
       return;
     }
 
-    console.log("PID:", PID);
 
     // Ensure the fields are not undefined
     const requiredFields = { PID, MD, PRN, AMT, CRN, DT, R1, R2, RU };

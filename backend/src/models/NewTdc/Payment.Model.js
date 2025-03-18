@@ -16,7 +16,7 @@ const PaymentTDC = sequelize.define(
     transactionId: {
       type: DataTypes.STRING,
       unique: true,
-      allowNull: false, // Ensures a transaction ID is always recorded
+      allowNull: false,
     },
     amount: {
       type: DataTypes.FLOAT,

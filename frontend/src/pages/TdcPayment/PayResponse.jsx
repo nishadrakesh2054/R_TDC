@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import "./response.scss";
 import Loading from "../../components/loading/Loading";
-import { Alert, Container, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Alert, Container } from "react-bootstrap";
 
 const PayResponse = () => {
   const location = useLocation();
@@ -57,39 +57,47 @@ const PayResponse = () => {
       return;
     }
 
-    const verificationString = `PRN=${PRN}PID=${PID}&RC=${RC}&UID=${UID}&BC=${BC}&INI=${INI}&P_AMT=${P_AMT}&R_AMT=${R_AMT}`;
-
-
     const verifyPayment = async () => {
       if (isVerifyingRef.current) return;
       isVerifyingRef.current = true;
       requestCountRef.current += 1;
-
       setIsLoading(true);
       try {
-            // Log data before sending the request
-    console.log("Sending request to backend with data:", {
-        verificationString,
-        dv: DV,
-        prn: PRN,
-        paidAmount: Number(P_AMT),
-        paymentMethod: "fonepay",
-        formData,
-      });
+        // Log data before sending the request
+        console.log("Sending request to backend with data:", {
+          PRN: PRN.trim(),
+          PID,
+          PS,
+          RC,
+          UID,
+          BC,
+          INI,
+          P_AMT,
+          R_AMT,
+          DV,
+          formData,
+        });
+
         const response = await axios.post(
           "http://localhost:3000/tdc-api/verify-payment",
           {
-            verificationString,
-            dv: DV,
-            prn: PRN,
-            paidAmount: Number(P_AMT),
-            paymentMethod: "fonepay",
+            PRN: PRN.trim(),
+            PID,
+            PS,
+            RC,
+            UID,
+            BC,
+            INI,
+            P_AMT,
+            R_AMT,
+            DV,
             formData,
           }
         );
 
-   // Log the response data after the request
-   console.log("Response data:", response.data);
+        // Log the response data after the request
+        console.log("Response data:", response.data);
+
         if (response.status === 200) {
           const { verified, message } = response.data;
           setIsVerified(verified);
@@ -122,26 +130,6 @@ const PayResponse = () => {
     return () => {};
   }, [location.search]);
 
-  const copyToClipboard = (text) => {
-    if (text) {
-      navigator.clipboard
-        .writeText(text)
-        .then(() => {
-          setCopySuccess(true);
-          setTimeout(() => setCopySuccess(false), 2000);
-        })
-        .catch((err) => {
-          console.error("Failed to copy: ", err);
-        });
-    }
-  };
-
-  const renderTooltip = (props) => (
-    <Tooltip id="button-tooltip" {...props}>
-      {copySuccess ? "Order number copied!" : "Click to copy order number"}
-    </Tooltip>
-  );
-
   if (isLoading) {
     return <Loading />;
   }
@@ -151,30 +139,19 @@ const PayResponse = () => {
       {isSuccess ? (
         <Container>
           <h1>
-            Thank you, <span>{details?.details?.fullName}</span>
+            Thank you, <span>{details?.paymentDetails?.fullName}</span>
           </h1>
           <p className="confirmation-message">
             You will receive a confirmation email shortly.
           </p>
-          <OverlayTrigger
-            placement="right"
-            delay={{ show: 250, hide: 400 }}
-            overlay={renderTooltip}
-          >
-            <h4
-              className="order-number"
-              onClick={() => copyToClipboard(details?.details?.prn)}
-            >
-              Order Number: <strong>{details?.details?.prn}</strong>
-            </h4>
-          </OverlayTrigger>
+
           <div className="box-to-details border">
             <h3 className="game-title">
-              Sports: <span>{details?.details?.sports}</span>
+              Sports: <span>{details?.paymentDetails?.sports}</span>
             </h3>
 
             <h2 className="total-amount">
-              TOTAL: NRP <strong>{details?.details?.paidAmount} /-</strong>
+              TOTAL: NRP <strong>{details?.paymentDetails?.amount} /-</strong>
             </h2>
           </div>
         </Container>

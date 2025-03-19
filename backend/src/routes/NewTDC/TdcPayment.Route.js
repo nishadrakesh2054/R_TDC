@@ -1,6 +1,6 @@
 import express from "express";
 import crypto from "crypto";
-import { randomUUID } from "crypto";
+import { v4 as uuidv4 } from "uuid";
 import paymentTDC from "../../models/NewTdc/Payment.Model.js";
 import Registration from "../../models/NewTdc/RegisterForm.Model.js";
 import sequelize from "../../db/index.js";
@@ -199,29 +199,15 @@ router.post("/pre-check-registration", async (req, res) => {
     }
 
     const generatePRN = () => {
-      return randomUUID();
+      return uuidv4().substring(0, 25);
     };
     const prn = generatePRN();
     console.log("Generated PRN during registration:", prn);
 
-    // Create a new registration
     const newRegistration = await Registration.create(
       {
         ...value,
         prn,
-      },
-      { transaction }
-    );
-    console.log("PRN stored in database:", newRegistration.prn);
-
-    // Create a pending payment entry
-    const newPayment = await paymentTDC.create(
-      {
-        registrationId: newRegistration.id,
-        transactionId: `TXN_${Date.now()}`,
-        amount: value.amount,
-        paymentMethod: value.paymentMethod,
-        status: "pending",
       },
       { transaction }
     );
@@ -230,10 +216,9 @@ router.post("/pre-check-registration", async (req, res) => {
 
     return res.status(201).json({
       success: true,
-      message: "Registration successful! Please proceed with the payment.",
+      message: "Please proceed to payment for Registration",
       registrationId: newRegistration.id,
-      //   prn: newRegistration.prn,
-      paymentId: newPayment.id,
+      prn: newRegistration.prn,
     });
   } catch (err) {
     await transaction.rollback();
@@ -266,17 +251,12 @@ router.post("/verify-payment", async (req, res) => {
     });
   }
 
- 
   const SECRET_KEY = "b83ec0267af644a89e7b7e9bf3fb16e0";
 
- 
   const verificationString = `${PRN},${PID},${PS},${RC},${UID},${BC},${INI},${P_AMT},${R_AMT}`;
 
   // Debugging logs
   console.log("Received PRN from frontend:", PRN);
-  console.log("Type of PRN:", typeof PRN);
-  console.log("Length of PRN:", PRN.length);
-
   const transaction = await sequelize.transaction();
 
   try {
@@ -284,8 +264,6 @@ router.post("/verify-payment", async (req, res) => {
     const hmac = crypto.createHmac("sha512", SECRET_KEY);
     hmac.update(verificationString.trim(), "utf-8");
     const generatedHash = hmac.digest("hex").toUpperCase();
-
-    console.log("Generated Hash:", generatedHash);
 
     // Compare the generated hash with the received DV
     if (generatedHash !== DV.toUpperCase()) {
@@ -300,9 +278,8 @@ router.post("/verify-payment", async (req, res) => {
     console.log("Searching for registration with PRN:", PRN);
 
     const registration = await Registration.findOne({
-      where: { prn: PRN},
+      where: { prn: PRN },
       transaction,
-      logging: console.log,
     });
 
     // If registration not found, return error
@@ -320,7 +297,7 @@ router.post("/verify-payment", async (req, res) => {
     const successfulPaymentRecord = await paymentTDC.create(
       {
         registrationId: registration.id,
-        transactionId: PRN, // Use PRN as the transaction ID
+        transactionId: PRN,
         amount: parseFloat(P_AMT),
         status: "success",
         paymentMethod: "fonepay",

@@ -145,7 +145,7 @@ const RegistrationPage = () => {
         }
       );
       if (
-        response.data.message === "Registration successful! Please proceed with the payment."
+        response.data.message === "Please proceed to payment for Registration"
       ) {
         sessionStorage.setItem("formData", JSON.stringify(formData));
         sessionStorage.setItem("prn", response.data.prn);
@@ -166,7 +166,7 @@ const RegistrationPage = () => {
         setFormError(response.data.message || "Pre-registration check failed.");
       }
 
-      toast.success("Registration successful! Please proceed to payment.");
+      toast.success("Please proceed to payment for Registration");
 
       setFormData({
         fullName: "",

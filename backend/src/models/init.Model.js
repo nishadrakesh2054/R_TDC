@@ -21,15 +21,10 @@ import GameGroup from "./gameGroup.js";
 import Career from "./career.Model.js";
 import Application from "./application.Model.js";
 
-
-
-
 import TDCRegistrationPayment from "./TDCmodel/TDCregistrationPayment.Model.js";
 import TDCGame from "./TDCmodel/TDCgame.Model.js";
 import TDCSchool from "./TDCmodel/TDCSchool.Model.js";
 import TDCParticipation from "./TDCmodel/TDCparticipation.Model.js";
-
-
 
 // Academy and Program
 Academy.hasMany(Program, { foreignKey: "academyId" });
@@ -68,18 +63,6 @@ Participation.belongsTo(Game, { foreignKey: "gameId" });
 GameGroup.hasMany(GamePointsTable, { foreignKey: "groupId" });
 GamePointsTable.belongsTo(Game, { foreignKey: "gameId" });
 GamePointsTable.belongsTo(School, { foreignKey: "schoolId" });
-
-
-
-
-
-
-
-
-
-
-
-
 
 // rakesh sir code enhancement for thunderbolts development center
 TDCRegistrationPayment.belongsTo(TDCParticipation, {

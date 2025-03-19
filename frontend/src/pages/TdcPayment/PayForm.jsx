@@ -3,7 +3,7 @@ import axios from "axios";
 import getCurrentDate from "./newDate";
 
 import { useLocation } from "react-router-dom";
-import { v4 as uuidv4 } from "uuid";
+// import { v4 as uuidv4 } from "uuid";
 import { Container, Button, Alert } from "react-bootstrap";
 import "./payment.scss";
 
@@ -11,12 +11,11 @@ const PayForm = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const location = useLocation();
-  const { formData, fee } = location.state;
+  const { formData, fee, prn } = location.state;
 
   const merchantCodeenv = import.meta.env.VITE_MERCHANT_CODE;
   const returnUrlenv = import.meta.env.VITE_RETURN_URL;
   const paymentUrlenv = import.meta.env.VITE_PAYMENT_URL;
-
 
   const PID = merchantCodeenv;
   const MD = "P";
@@ -26,7 +25,10 @@ const PayForm = () => {
   const R1 = String(formData?.fullName || "").substring(0, 160);
   const R2 = String(JSON.stringify(formData?.sports) || "N/A").substring(0, 50);
   const RU = `${returnUrlenv}/#/tdc-payment-response`;
-  const PRN = uuidv4().substring(0, 25);
+  //   const PRN = uuidv4().substring(0, 25);
+  const PRN = prn;
+  console.log("Received PRN from location:", PRN);
+
 
   const generatePaymentUrl = async () => {
     setLoading(true);
@@ -38,7 +40,6 @@ const PayForm = () => {
       setLoading(false);
       return;
     }
-
 
     // Ensure the fields are not undefined
     const requiredFields = { PID, MD, PRN, AMT, CRN, DT, R1, R2, RU };
@@ -67,7 +68,7 @@ const PayForm = () => {
         },
         {
           headers: {
-            "Content-Type": "application/json", 
+            "Content-Type": "application/json",
           },
         }
       );

@@ -24,6 +24,9 @@ import TableFixture from "../models/RKmodel/tableFixture.Model.js";
 import gameTeam from "../models/RKmodel/team.Model.js";
 import Player from "../models/RKmodel/player.Model.js";
 import FootballManualRegistration from "../models/RKmodel/Registration.Model.js";
+
+
+
 import FootballManualReg from "../models/NewTdc/manualReg.Model.js";
 import ThunderBoltsReg from "../models/NewTdc/RegisterForm.Model.js";
 import NewPaymentTDC from "../models/NewTdc/Payment.Model.js";

@@ -21,11 +21,6 @@ import GameGroup from "./gameGroup.js";
 import Career from "./career.Model.js";
 import Application from "./application.Model.js";
 
-import TDCRegistrationPayment from "./TDCmodel/TDCregistrationPayment.Model.js";
-import TDCGame from "./TDCmodel/TDCgame.Model.js";
-import TDCSchool from "./TDCmodel/TDCSchool.Model.js";
-import TDCParticipation from "./TDCmodel/TDCparticipation.Model.js";
-
 // Academy and Program
 Academy.hasMany(Program, { foreignKey: "academyId" });
 Program.belongsTo(Academy, { foreignKey: "academyId" });
@@ -65,34 +60,6 @@ GamePointsTable.belongsTo(Game, { foreignKey: "gameId" });
 GamePointsTable.belongsTo(School, { foreignKey: "schoolId" });
 
 // rakesh sir code enhancement for thunderbolts development center
-TDCRegistrationPayment.belongsTo(TDCParticipation, {
-  foreignKey: "participationId",
-});
-TDCParticipation.hasOne(TDCRegistrationPayment, {
-  foreignKey: "participationId",
-});
-
-// **Many-to-Many Relationship Between School and Game via Participation**
-TDCSchool.belongsToMany(TDCGame, {
-  through: TDCParticipation,
-  foreignKey: "schoolId",
-  otherKey: "gameId",
-  as: "TDCgames", // Alias for association
-});
-
-TDCGame.belongsToMany(TDCSchool, {
-  through: TDCParticipation,
-  foreignKey: "gameId",
-  otherKey: "schoolId",
-  as: "TDCschools", // Alias for association
-});
-// TDCSchool and TDCParticipation
-TDCSchool.hasMany(TDCParticipation, { foreignKey: "schoolId" });
-TDCParticipation.belongsTo(TDCSchool, { foreignKey: "schoolId" });
-
-// TDCGame and TDCParticipation
-TDCGame.hasMany(TDCParticipation, { foreignKey: "gameId" });
-TDCParticipation.belongsTo(TDCGame, { foreignKey: "gameId" });
 
 export {
   Academy,
@@ -115,10 +82,4 @@ export {
   GameGroup,
   Career,
   Application,
-
-  //   rakesh tdc model
-  TDCGame,
-  TDCParticipation,
-  TDCSchool,
-  TDCRegistrationPayment,
 };

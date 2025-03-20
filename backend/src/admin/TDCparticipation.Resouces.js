@@ -13,13 +13,13 @@ export const TDCparticipationResource = {
       list: {
         isAccessible: ({ currentAdmin }) =>
           currentAdmin &&
-          (currentAdmin.role === "Admin" || currentAdmin.role === "Front desk"),
-      },
+        (currentAdmin.role === "Admin" || currentAdmin.role === "Front desk" || currentAdmin.role === "Finance Manager"),
+    },
       show: {
         isAccessible: ({ currentAdmin }) =>
           currentAdmin &&
-          (currentAdmin.role === "Admin" || currentAdmin.role === "Front desk"),
-      },
+        (currentAdmin.role === "Admin" || currentAdmin.role === "Front desk" || currentAdmin.role === "Finance Manager"),
+    },
       edit: {
         isAccessible: ({ currentAdmin }) =>
           currentAdmin && currentAdmin.role === "Admin",
@@ -50,8 +50,8 @@ export const TDCparticipationResource = {
         },
         isAccessible: ({ currentAdmin }) =>
           currentAdmin &&
-          (currentAdmin.role === "Admin" || currentAdmin.role === "Front desk"),
-      },
+        (currentAdmin.role === "Admin" || currentAdmin.role === "Front desk" || currentAdmin.role === "Finance Manager"),
+    },
     },
     properties: {
       id: {

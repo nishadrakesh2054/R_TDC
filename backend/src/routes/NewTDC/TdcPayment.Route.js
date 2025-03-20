@@ -119,6 +119,7 @@ router.post("/pre-check-registration", async (req, res) => {
       }),
     parentAddress: Joi.string().min(3).max(255).required(),
     sports: Joi.string().required(),
+    time: Joi.string().required(),
     category: Joi.string().required(),
     emergencyContactname: Joi.string().min(3).max(255).required(),
     emergencyContactNumber: Joi.string()
@@ -204,21 +205,22 @@ router.post("/pre-check-registration", async (req, res) => {
     const prn = generatePRN();
     console.log("Generated PRN during registration:", prn);
 
-    const newRegistration = await Registration.create(
-      {
-        ...value,
-        prn,
-      },
-      { transaction }
-    );
+    // const newRegistration = await Registration.create(
+    //   {
+    //     ...value,
+    //     prn,
+    //   },
+    //   { transaction }
+    // );
 
     await transaction.commit();
 
     return res.status(201).json({
       success: true,
       message: "Please proceed to payment for Registration",
-      registrationId: newRegistration.id,
-      prn: newRegistration.prn,
+    //   registrationId: newRegistration.id,
+    //   prn: newRegistration.prn,
+    prn: prn,
     });
   } catch (err) {
     await transaction.rollback();
@@ -229,119 +231,231 @@ router.post("/pre-check-registration", async (req, res) => {
   }
 });
 
+// router.post("/verify-payment", async (req, res) => {
+//   const { PRN, PID, PS, RC, UID, BC, INI, P_AMT, R_AMT, DV } = req.body;
+
+//   // Check if all required parameters are present
+//   if (
+//     !PRN ||
+//     !PID ||
+//     !PS ||
+//     !RC ||
+//     !UID ||
+//     !BC ||
+//     !INI ||
+//     !P_AMT ||
+//     !R_AMT ||
+//     !DV
+//   ) {
+//     return res.status(400).json({
+//       verified: false,
+//       message: "Missing required parameters from backend",
+//     });
+//   }
+
+//   const SECRET_KEY = "b83ec0267af644a89e7b7e9bf3fb16e0";
+
+//   const verificationString = `${PRN},${PID},${PS},${RC},${UID},${BC},${INI},${P_AMT},${R_AMT}`;
+
+//   // Debugging logs
+//   console.log("Received PRN from frontend:", PRN);
+//   const transaction = await sequelize.transaction();
+
+//   try {
+//     // Generate HMAC-SHA512 hash for verification
+//     const hmac = crypto.createHmac("sha512", SECRET_KEY);
+//     hmac.update(verificationString.trim(), "utf-8");
+//     const generatedHash = hmac.digest("hex").toUpperCase();
+
+//     // Compare the generated hash with the received DV
+//     if (generatedHash !== DV.toUpperCase()) {
+//       await transaction.rollback();
+//       return res.status(400).json({
+//         verified: false,
+//         message: "Invalid verification. Hashes do not match.",
+//       });
+//     }
+
+
+
+
+//     // Find the registration based on PRN
+//     console.log("Searching for registration with PRN:", PRN);
+
+//     const registration = await Registration.findOne({
+//       where: { prn: PRN },
+//       transaction,
+//     });
+
+//     // If registration not found, return error
+//     if (!registration) {
+//       await transaction.rollback();
+//       console.error("Registration not found for PRN:", PRN);
+
+//       return res.status(404).json({
+//         verified: false,
+//         message: "Registration not found.",
+//       });
+//     }
+
+//     // Create a payment record if the verification is successful
+//     const successfulPaymentRecord = await paymentTDC.create(
+//       {
+//         registrationId: registration.id,
+//         transactionId: PRN,
+//         amount: parseFloat(P_AMT),
+//         status: "success",
+//         paymentMethod: "fonepay",
+//         paymentDate: new Date(),
+//         email: registration.email,
+//         fullName: registration.fullName,
+//         sports: registration.sports,
+//       },
+//       { transaction }
+//     );
+
+//     await transaction.commit();
+
+//     // Send payment confirmation email to the user
+//     await sendPaymentConfirmationEmail(
+//       registration.email,
+//       registration.fullName,
+//       parseFloat(P_AMT),
+//       registration.contactNo,
+//       registration.sports,
+//       registration.category
+//     );
+
+//     res.status(200).json({
+//       verified: true,
+//       message: "Payment verified successfully.",
+//       paymentDetails: {
+//         id: successfulPaymentRecord.id,
+//         status: "success",
+//         amount: parseFloat(R_AMT),
+//         paymentMethod: "fonepay",
+//         fullName: registration.fullName,
+//         sports: registration.sports,
+//         category: registration.category,
+//       },
+//     });
+//   } catch (error) {
+//     // Rollback transaction in case of an error
+//     await transaction.rollback();
+//     console.error("Error during payment verification:", error);
+//     return res
+//       .status(500)
+//       .json({ verified: false, message: "Internal server error." });
+//   }
+// });
+
 router.post("/verify-payment", async (req, res) => {
-  const { PRN, PID, PS, RC, UID, BC, INI, P_AMT, R_AMT, DV } = req.body;
-
-  // Check if all required parameters are present
-  if (
-    !PRN ||
-    !PID ||
-    !PS ||
-    !RC ||
-    !UID ||
-    !BC ||
-    !INI ||
-    !P_AMT ||
-    !R_AMT ||
-    !DV
-  ) {
-    return res.status(400).json({
-      verified: false,
-      message: "Missing required parameters from backend",
-    });
-  }
-
-  const SECRET_KEY = "b83ec0267af644a89e7b7e9bf3fb16e0";
-
-  const verificationString = `${PRN},${PID},${PS},${RC},${UID},${BC},${INI},${P_AMT},${R_AMT}`;
-
-  // Debugging logs
-  console.log("Received PRN from frontend:", PRN);
-  const transaction = await sequelize.transaction();
-
-  try {
-    // Generate HMAC-SHA512 hash for verification
-    const hmac = crypto.createHmac("sha512", SECRET_KEY);
-    hmac.update(verificationString.trim(), "utf-8");
-    const generatedHash = hmac.digest("hex").toUpperCase();
-
-    // Compare the generated hash with the received DV
-    if (generatedHash !== DV.toUpperCase()) {
-      await transaction.rollback();
+    const { PRN, PID, PS, RC, UID, BC, INI, P_AMT, R_AMT, DV, formData } = req.body;
+  
+    // Check if all required parameters are present
+    if (
+      !PRN ||
+      !PID ||
+      !PS ||
+      !RC ||
+      !UID ||
+      !BC ||
+      !INI ||
+      !P_AMT ||
+      !R_AMT ||
+      !DV ||
+      !formData
+    ) {
       return res.status(400).json({
         verified: false,
-        message: "Invalid verification. Hashes do not match.",
+        message: "Missing required parameters from backend",
       });
     }
-
-    // Find the registration based on PRN
-    console.log("Searching for registration with PRN:", PRN);
-
-    const registration = await Registration.findOne({
-      where: { prn: PRN },
-      transaction,
-    });
-
-    // If registration not found, return error
-    if (!registration) {
+  
+    // const SECRET_KEY = "b83ec0267af644a89e7b7e9bf3fb16e0";
+  
+    const verificationString = `${PRN},${PID},${PS},${RC},${UID},${BC},${INI},${P_AMT},${R_AMT}`;
+  
+    // Debugging logs
+    console.log("Received PRN from frontend:", PRN);
+    const transaction = await sequelize.transaction();
+  
+    try {
+      // Generate HMAC-SHA512 hash for verification
+      const hmac = crypto.createHmac("sha512", process.env.SECRET_KEY);
+      hmac.update(verificationString.trim(), "utf-8");
+      const generatedHash = hmac.digest("hex").toUpperCase();
+  
+      // Compare the generated hash with the received DV
+      if (generatedHash !== DV.toUpperCase()) {
+        await transaction.rollback();
+        return res.status(400).json({
+          verified: false,
+          message: "Invalid verification. Hashes do not match.",
+        });
+      }
+  
+      // Save the form data to the database
+      const newRegistration = await Registration.create(
+        {
+          ...formData,
+          prn: PRN,
+        },
+        { transaction }
+      );
+  
+      // Create a payment record
+      const successfulPaymentRecord = await paymentTDC.create(
+        {
+          registrationId: newRegistration.id,
+          transactionId: PRN,
+          amount: parseFloat(P_AMT),
+          status: "success",
+          paymentMethod: "fonepay",
+          paymentDate: new Date(),
+          email: newRegistration.email,
+          fullName: newRegistration.fullName,
+          sports: newRegistration.sports,
+          time: newRegistration.time,
+          category: newRegistration.category,
+        },
+        { transaction }
+      );
+  
+      await transaction.commit();
+  
+      // Send payment confirmation email to the user
+      await sendPaymentConfirmationEmail(
+        newRegistration.email,
+        newRegistration.fullName,
+        parseFloat(P_AMT),
+        newRegistration.sports,
+        newRegistration.category,
+        newRegistration.time
+      );
+  
+      res.status(200).json({
+        verified: true,
+        message: "Payment verified successfully.",
+        paymentDetails: {
+          id: successfulPaymentRecord.id,
+          status: "success",
+          amount: parseFloat(P_AMT),
+          paymentMethod: "fonepay",
+          fullName: newRegistration.fullName,
+          sports: newRegistration.sports,
+          category: newRegistration.category,
+          time: newRegistration.time,
+        },
+      });
+    } catch (error) {
+      // Rollback transaction in case of an error
       await transaction.rollback();
-      console.error("Registration not found for PRN:", PRN);
-
-      return res.status(404).json({
-        verified: false,
-        message: "Registration not found.",
-      });
+      console.error("Error during payment verification:", error);
+      return res
+        .status(500)
+        .json({ verified: false, message: "Internal server error." });
     }
-
-    // Create a payment record if the verification is successful
-    const successfulPaymentRecord = await paymentTDC.create(
-      {
-        registrationId: registration.id,
-        transactionId: PRN,
-        amount: parseFloat(P_AMT),
-        status: "success",
-        paymentMethod: "fonepay",
-        paymentDate: new Date(),
-        email: registration.email,
-        fullName: registration.fullName,
-        sports: registration.sports,
-      },
-      { transaction }
-    );
-
-    await transaction.commit();
-
-    // Send payment confirmation email to the user
-    await sendPaymentConfirmationEmail(
-      registration.email,
-      registration.fullName,
-      parseFloat(P_AMT),
-      registration.contactNo,
-      registration.sports,
-      registration.category
-    );
-
-    res.status(200).json({
-      verified: true,
-      message: "Payment verified successfully.",
-      paymentDetails: {
-        id: successfulPaymentRecord.id,
-        status: "success",
-        amount: parseFloat(R_AMT),
-        paymentMethod: "fonepay",
-        fullName: registration.fullName,
-        sports: registration.sports,
-        category: registration.category,
-      },
-    });
-  } catch (error) {
-    // Rollback transaction in case of an error
-    await transaction.rollback();
-    console.error("Error during payment verification:", error);
-    return res
-      .status(500)
-      .json({ verified: false, message: "Internal server error." });
-  }
-});
+  });
 
 export default router;

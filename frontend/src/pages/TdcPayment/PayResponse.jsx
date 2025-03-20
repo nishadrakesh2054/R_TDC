@@ -45,6 +45,7 @@ const PayResponse = () => {
     const formData = sessionStorage.getItem("formData")
       ? JSON.parse(sessionStorage.getItem("formData"))
       : null;
+    //   const prn = sessionStorage.getItem("prn");
 
     // Ensure all required parameters exist
     if (
@@ -139,21 +140,25 @@ const PayResponse = () => {
       {isSuccess ? (
         <Container>
           <h1>
-            Thank you, <span>{details?.paymentDetails?.fullName}</span>
+            Thank you, <span>{details?.paymentDetails?.fullName}</span>!
           </h1>
           <p className="confirmation-message">
-            You will receive a confirmation email shortly.
+            Your registration has been successfully completed, and your payment
+            has been recieved. You will shortly receive a confirmation email
+            with further details.
           </p>
 
           <div className="box-to-details border">
-            <h3 className="game-title">
-              Sports: <span>{details?.paymentDetails?.sports}</span>
-            </h3>
-
             <h2 className="total-amount">
-              TOTAL: NRP <strong>{details?.paymentDetails?.amount} /-</strong>
+              Total Paid: NRP &nbsp;
+              <strong>{details?.paymentDetails?.amount} /-</strong>
             </h2>
           </div>
+
+          <p className="success-message">
+            We look forward to seeing you at the academy. If you have any
+            questions, please contact our team.
+          </p>
         </Container>
       ) : (
         <Container>

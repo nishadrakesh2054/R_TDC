@@ -48,13 +48,22 @@ const PaymentTDC = sequelize.define(
       allowNull: true,
     },
     sports: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    // new added
+    time: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
       },
+    category: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   },
   {
     tableName: "PaymentThunder",
-    freezeTableName: true, 
+    freezeTableName: true,
     timestamps: true,
   }
 );

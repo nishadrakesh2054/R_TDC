@@ -1,9 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import getCurrentDate from "./newDate";
-
 import { useLocation } from "react-router-dom";
-// import { v4 as uuidv4 } from "uuid";
 import { Container, Button, Alert } from "react-bootstrap";
 import "./payment.scss";
 
@@ -28,7 +26,6 @@ const PayForm = () => {
   //   const PRN = uuidv4().substring(0, 25);
   const PRN = prn;
   console.log("Received PRN from location:", PRN);
-
 
   const generatePaymentUrl = async () => {
     setLoading(true);
@@ -104,7 +101,11 @@ const PayForm = () => {
         <h1 className="form-title">Processed Fonepay Payment</h1>
 
         <h2 className="total-amount">
-          TOTAL AMOUNT: <span>{fee}</span>
+          TOTAL AMOUNT:
+          <small className="text-muted">
+            <em>NPR.&nbsp;</em>
+          </small>
+          <span>{fee}</span>
         </h2>
 
         {error && (

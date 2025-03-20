@@ -12,9 +12,6 @@ import {
   RegistrationPayment,
   School,
   SpecialCamps,
-  TDCGame,
-  TDCRegistrationPayment,
-  TDCSchool,
 } from "../models/init.Model.js";
 import authenticate from "./authenticateUser.js";
 import { galleryResource } from "./gallery.Resource.js";
@@ -35,15 +32,12 @@ import {
   gameTeamResource,
   playerResource,
   GameFixtureResource,
-  TDCmanualReg,
   FootballManualRegistrationResource,
   TDCManualRegResource,
   ThundersRegistration,
   PaymentTDC,
 } from "./models.Resource.js";
 import { componentLoader } from "./components.js";
-import { TDCparticipationResource } from "./TDCparticipation.Resouces.js";
-import { CourseResource } from "./course.Resourcse.js";
 
 AdminJS.registerAdapter(AdminJSSequelize);
 // Local provider configuration for file uploads
@@ -59,110 +53,7 @@ const admin = new AdminJS({
   componentLoader,
 
   resources: [
-    /*----------------- Thunderbolts Development  resources start----------- */
-    {
-      resource: TDCRegistrationPayment,
-      options: {
-        navigation: {
-          name: "Thunderbolts Dev Center",
-          icon: "Money",
-        },
-        actions: {
-          new: {
-            isAccessible: ({ currentAdmin }) =>
-              currentAdmin && currentAdmin.role === "Admin",
-          },
-          edit: {
-            isAccessible: ({ currentAdmin }) =>
-              currentAdmin && currentAdmin.role === "Admin",
-          },
-          delete: {
-            isAccessible: ({ currentAdmin }) =>
-              currentAdmin && currentAdmin.role === "Admin",
-          },
-          show: {
-            isAccessible: ({ currentAdmin }) =>
-              currentAdmin && currentAdmin.role === "Admin",
-          },
-          list: {
-            isAccessible: ({ currentAdmin }) =>
-              currentAdmin && currentAdmin.role === "Admin",
-          },
-        },
-      },
-    },
-    TDCmanualReg,
-    {
-      resource: TDCGame,
-      options: {
-        navigation: {
-          name: "Thunderbolts Dev Center",
-          icon: "Event",
-        },
-        actions: {
-          list: {
-            isAccessible: ({ currentAdmin }) =>
-              currentAdmin &&
-              (currentAdmin.role === "Admin" ||
-                currentAdmin.role === "Front desk"),
-          },
-          edit: {
-            isAccessible: ({ currentAdmin }) =>
-              currentAdmin && currentAdmin.role === "Admin",
-          },
-          new: {
-            isAccessible: ({ currentAdmin }) =>
-              currentAdmin && currentAdmin.role === "Admin",
-          },
-          show: {
-            isAccessible: ({ currentAdmin }) =>
-              currentAdmin &&
-              (currentAdmin.role === "Admin" ||
-                currentAdmin.role === "Front desk"),
-          },
-          delete: {
-            isAccessible: ({ currentAdmin }) =>
-              currentAdmin && currentAdmin.role === "Admin",
-          },
-        },
-      },
-    },
-    {
-      resource: TDCSchool,
-      options: {
-        navigation: {
-          name: "Thunderbolts Dev Center",
-          icon: "Event",
-        },
-        actions: {
-          list: {
-            isAccessible: ({ currentAdmin }) =>
-              currentAdmin &&
-              (currentAdmin.role === "Admin" ||
-                currentAdmin.role === "Front desk"),
-          },
-          edit: {
-            isAccessible: ({ currentAdmin }) =>
-              currentAdmin && currentAdmin.role === "Admin",
-          },
-          new: {
-            isAccessible: ({ currentAdmin }) =>
-              currentAdmin && currentAdmin.role === "Admin",
-          },
-          show: {
-            isAccessible: ({ currentAdmin }) =>
-              currentAdmin &&
-              (currentAdmin.role === "Admin" ||
-                currentAdmin.role === "Front desk"),
-          },
-          delete: {
-            isAccessible: ({ currentAdmin }) =>
-              currentAdmin && currentAdmin.role === "Admin",
-          },
-        },
-      },
-    },
-    TDCparticipationResource,
+    /*----------------- Thunderbolts Development  Center Registration  start----------- */
     TDCManualRegResource,
     ThundersRegistration,
     PaymentTDC,
@@ -177,10 +68,6 @@ const admin = new AdminJS({
     gameTeamResource,
     playerResource,
     /*----------------- Football League  resources end   RAKESH CODE   ----------- */
-
-    /*----------------- Course  resources start  CODE   ----------- */
-    CourseResource,
-    /*----------------- Course  resources end   RAKESH CODE   ----------- */
 
     /*----------------- Thunderbolts cup resources start----------- */
     {
@@ -228,7 +115,8 @@ const admin = new AdminJS({
             isAccessible: ({ currentAdmin }) =>
               currentAdmin &&
               (currentAdmin.role === "Admin" ||
-                currentAdmin.role === "Front desk"),
+                currentAdmin.role === "Front desk" ||
+                currentAdmin.role === "Finance Manager"),
           },
           edit: {
             isAccessible: ({ currentAdmin }) =>
@@ -242,7 +130,8 @@ const admin = new AdminJS({
             isAccessible: ({ currentAdmin }) =>
               currentAdmin &&
               (currentAdmin.role === "Admin" ||
-                currentAdmin.role === "Front desk"),
+                currentAdmin.role === "Front desk" ||
+                currentAdmin.role === "Finance Manager"),
           },
           delete: {
             isAccessible: ({ currentAdmin }) =>
@@ -262,8 +151,8 @@ const admin = new AdminJS({
           list: {
             isAccessible: ({ currentAdmin }) =>
               currentAdmin &&
-              (currentAdmin.role === "Admin" ||
-                currentAdmin.role === "Front desk"),
+            (currentAdmin.role === "Admin" || currentAdmin.role === "Front desk" || currentAdmin.role === "Finance Manager"),
+
           },
           edit: {
             isAccessible: ({ currentAdmin }) =>
@@ -276,8 +165,8 @@ const admin = new AdminJS({
           show: {
             isAccessible: ({ currentAdmin }) =>
               currentAdmin &&
-              (currentAdmin.role === "Admin" ||
-                currentAdmin.role === "Front desk"),
+            (currentAdmin.role === "Admin" || currentAdmin.role === "Front desk" || currentAdmin.role === "Finance Manager"),
+
           },
           delete: {
             isAccessible: ({ currentAdmin }) =>
@@ -528,28 +417,33 @@ const admin = new AdminJS({
         actions: {
           list: {
             isAccessible: ({ currentAdmin }) =>
-                currentAdmin &&
-            (currentAdmin.role === "Admin" || currentAdmin.role === "Front desk"),
-        },
+              currentAdmin &&
+            (currentAdmin.role === "Admin" || currentAdmin.role === "Front desk" || currentAdmin.role === "Finance Manager"),
+
+          },
           edit: {
             isAccessible: ({ currentAdmin }) =>
-                currentAdmin &&
-            (currentAdmin.role === "Admin" || currentAdmin.role === "Front desk")
+              currentAdmin &&
+            (currentAdmin.role === "Admin" || currentAdmin.role === "Front desk" || currentAdmin.role === "Finance Manager"),
+
           },
           new: {
             isAccessible: ({ currentAdmin }) =>
-           currentAdmin &&
-          (currentAdmin.role === "Admin" || currentAdmin.role === "Front desk")
+              currentAdmin &&
+            (currentAdmin.role === "Admin" || currentAdmin.role === "Front desk" || currentAdmin.role === "Finance Manager"),
+
           },
           show: {
             isAccessible: ({ currentAdmin }) =>
-           currentAdmin &&
-          (currentAdmin.role === "Admin" || currentAdmin.role === "Front desk")
+              currentAdmin &&
+            (currentAdmin.role === "Admin" || currentAdmin.role === "Front desk" || currentAdmin.role === "Finance Manager"),
+
           },
           delete: {
             isAccessible: ({ currentAdmin }) =>
-           currentAdmin &&
-          (currentAdmin.role === "Admin" || currentAdmin.role === "Front desk")
+              currentAdmin &&
+            (currentAdmin.role === "Admin" || currentAdmin.role === "Front desk" || currentAdmin.role === "Finance Manager"),
+
           },
         },
 

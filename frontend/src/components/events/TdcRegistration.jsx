@@ -30,6 +30,7 @@ const RegistrationPage = () => {
     parentContactNo: "",
     parentAddress: "",
     sports: "",
+    time: "",
     category: "",
     emergencyContactname: "",
     emergencyContactNumber: "",
@@ -72,14 +73,14 @@ const RegistrationPage = () => {
         category = "Senior";
       } else if (calculatedAge > 19) {
         // alert("You are not eligible  to participate");
-        toast.warning("You are not eligible  to participate");
+        toast.warning("Your age  must be between 6 and 19 years old.");
         return;
       }
       setFormData((prevFormData) => ({
         ...prevFormData,
         dob: value,
         age: calculatedAge.toString(),
-        category, // Auto-set category
+        category,
       }));
     } else {
       setFormData((prevFormData) => ({
@@ -105,6 +106,7 @@ const RegistrationPage = () => {
       !formData.parentContactNo ||
       !formData.parentAddress ||
       !formData.sports ||
+      !formData.time ||
       !formData.category ||
       !formData.emergencyContactNumber ||
       !formData.emergencyContactname ||
@@ -122,6 +124,96 @@ const RegistrationPage = () => {
 
     return true;
   };
+
+  //   const handleSubmit = async (e) => {
+  //     e.preventDefault();
+  //     setFormError(null);
+
+  //     if (!validateForm()) return;
+
+  //     setIsSubmitting(true);
+
+  //     const amount = 1;
+
+  //     const dataToSend = { ...formData, amount };
+  //     try {
+  //       const response = await axios.post(
+  //         "http://localhost:3000/tdc-api/pre-check-registration",
+  //         dataToSend,
+  //         {
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //           },
+  //         }
+  //       );
+  //       if (
+  //         response.data.message === "Please proceed to payment for Registration"
+  //       ) {
+  //         sessionStorage.setItem("formData", JSON.stringify(formData));
+  //         sessionStorage.setItem("prn", response.data.prn);
+  //         sessionStorage.setItem("registrationId", response.data.registrationId);
+  //         sessionStorage.setItem("paymentId", response.data.paymentId);
+
+  //         navigate("/tdc-payment-form", {
+  //           state: {
+  //             formData,
+  //             fee: amount,
+  //             prn: response.data.prn,
+  //             registrationId: response.data.registrationId,
+  //             paymentId: response.data.paymentId,
+  //           },
+  //         });
+  //       } else {
+  //         // If pre-check fails, display the error message
+  //         setFormError(response.data.message || "Pre-registration check failed.");
+  //       }
+
+  //       toast.success("Please proceed to payment for Registration");
+
+  //       setFormData({
+  //         fullName: "",
+  //         address: "",
+  //         contactNo: "",
+  //         email: "",
+  //         dob: "",
+  //         age: "",
+  //         gender: "",
+  //         schoolName: "",
+  //         parentName: "",
+  //         parentEmail: "",
+  //         parentContactNo: "",
+  //         parentAddress: "",
+  //         sports: "",
+  //         category: "",
+  //         emergencyContactname: "",
+  //         emergencyContactNumber: "",
+  //         hasMedicalConditions: "",
+  //         medicalDetails: "",
+  //         hasMedicalInsurance: "",
+  //         insuranceNo: "",
+  //         transportation: "",
+  //         paymentMethod: "fonepay",
+  //         notes: "",
+  //         agreement: "",
+  //       });
+  //     } catch (error) {
+  //       console.error(
+  //         "Error submitting form:",
+  //         error.response?.data || error.message
+  //       );
+
+  //       if (error.response && error.response.data) {
+  //         setFormError(
+  //           error.response.data.message ||
+  //             "Failed to submit the form. Please try again."
+  //         );
+  //       } else {
+  //         setFormError("Failed to submit the form. Please try again.");
+  //       }
+  //     } finally {
+  //       setIsSubmitting(false);
+  //     }
+  //   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -144,21 +236,18 @@ const RegistrationPage = () => {
           },
         }
       );
-      if (
-        response.data.message === "Please proceed to payment for Registration"
-      ) {
+
+      if (response.data.success) {
+        // Store form data and PRN in sessionStorage
         sessionStorage.setItem("formData", JSON.stringify(formData));
         sessionStorage.setItem("prn", response.data.prn);
-        sessionStorage.setItem("registrationId", response.data.registrationId);
-        sessionStorage.setItem("paymentId", response.data.paymentId);
 
+        // Navigate to the payment page
         navigate("/tdc-payment-form", {
           state: {
             formData,
             fee: amount,
             prn: response.data.prn,
-            registrationId: response.data.registrationId,
-            paymentId: response.data.paymentId,
           },
         });
       } else {
@@ -166,34 +255,7 @@ const RegistrationPage = () => {
         setFormError(response.data.message || "Pre-registration check failed.");
       }
 
-      toast.success("Please proceed to payment for Registration");
-
-      setFormData({
-        fullName: "",
-        address: "",
-        contactNo: "",
-        email: "",
-        dob: "",
-        age: "",
-        gender: "",
-        schoolName: "",
-        parentName: "",
-        parentEmail: "",
-        parentContactNo: "",
-        parentAddress: "",
-        sports: "",
-        category: "",
-        emergencyContactname: "",
-        emergencyContactNumber: "",
-        hasMedicalConditions: "",
-        medicalDetails: "",
-        hasMedicalInsurance: "",
-        insuranceNo: "",
-        transportation: "",
-        paymentMethod: "fonepay",
-        notes: "",
-        agreement: "",
-      });
+      toast.info("Please proceed to payment for Registration");
     } catch (error) {
       console.error(
         "Error submitting form:",
@@ -311,12 +373,11 @@ const RegistrationPage = () => {
                     required
                   >
                     <option value="">Choose...</option>
-                    <option value="male">male</option>
-                    <option value="female">female</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
                   </Form.Select>
                 </Form.Group>
               </Row>
-
               <Row xs={1} md={3}>
                 <Form.Group as={Col} controlId="formGridDob" className="mb-3">
                   <Form.Label>Date Of Birth</Form.Label>
@@ -326,6 +387,7 @@ const RegistrationPage = () => {
                     className="form-input text-secondary"
                     value={formData.dob}
                     onChange={handleChange}
+                    max={new Date().toISOString().split("T")[0]}
                     required
                   />
                 </Form.Group>
@@ -357,6 +419,7 @@ const RegistrationPage = () => {
                     required
                   />
                 </Form.Group>
+                <small> </small>
               </Row>
 
               {/* parent info */}
@@ -386,7 +449,7 @@ const RegistrationPage = () => {
                   controlId="formGridParentContactNo"
                   className="mb-3"
                 >
-                  <Form.Label>Contact No</Form.Label>
+                  <Form.Label>Contact Number</Form.Label>
                   <Form.Control
                     type="text"
                     name="parentContactNo"
@@ -404,7 +467,7 @@ const RegistrationPage = () => {
                   controlId="formGridParentAddress"
                   className="mb-3"
                 >
-                  <Form.Label>Address</Form.Label>
+                  <Form.Label>Home Address </Form.Label>
                   <Form.Control
                     type="text"
                     name="parentAddress"
@@ -421,7 +484,7 @@ const RegistrationPage = () => {
                   controlId="formGridParentEmail"
                   className="mb-3"
                 >
-                  <Form.Label>Email</Form.Label>
+                  <Form.Label>Email Address</Form.Label>
                   <Form.Control
                     type="email"
                     name="parentEmail"
@@ -435,7 +498,7 @@ const RegistrationPage = () => {
               </Row>
 
               <h5 className="parallelogram-bg mt-4">Sports Selection</h5>
-              <Row xs={1} md={2}>
+              <Row xs={1} md={3}>
                 <Form.Group
                   as={Col}
                   controlId="formGridSports"
@@ -449,7 +512,7 @@ const RegistrationPage = () => {
                     className="form-input text-secondary"
                     required
                   >
-                    <option value="">Choose...</option>
+                    <option value="">Select a Sport ...</option>
                     <option value="football">Football</option>
                     <option value="futsal">Futsal</option>
                     <option value="cricket">Cricket</option>
@@ -472,9 +535,26 @@ const RegistrationPage = () => {
                     readOnly
                   />
                 </Form.Group>
+
+                <Form.Group as={Col} controlId="formGridTime" className="mb-3">
+                  <Form.Label>Preferred Training Time</Form.Label>
+                  <Form.Select
+                    name="time"
+                    value={formData.time}
+                    onChange={handleChange}
+                    className="form-input text-secondary"
+                    required
+                  >
+                    <option value="">Select from available slots </option>
+                    <option value="3:00 PM - 4:30 PM">3:00 PM - 4:30 PM</option>
+                    <option value="4:30 PM - 6:00 PM">4:30 PM - 6:00 PM</option>
+                  </Form.Select>
+                </Form.Group>
               </Row>
 
-              <h5 className="mt-4 parallelogram-bg">Medical Information</h5>
+              <h5 className="mt-4 parallelogram-bg">
+                MEDICAL & EMERGENCY INFORMATION
+              </h5>
               <Row xs={1} md={2}>
                 {/* Medical Conditions or Allergies */}
                 <Form.Group
@@ -483,14 +563,14 @@ const RegistrationPage = () => {
                   className="mb-3"
                 >
                   <Form.Label>
-                    Does your child have any medical conditions or allergies?
+                    Does the participant have any medical conditions or
+                    allergies?
                   </Form.Label>
                   <div>
                     <Form.Check
                       type="radio"
                       label="Yes"
                       name="hasMedicalConditions"
-
                       value="yes"
                       onChange={handleChange}
                       className="custom-radio"
@@ -525,7 +605,9 @@ const RegistrationPage = () => {
                   controlId="formGridMedicalInsurance"
                   className="mb-3"
                 >
-                  <Form.Label>Do You Have Medical Insurance ?</Form.Label>
+                  <Form.Label>
+                    Does the participant have medical insurance?
+                  </Form.Label>
                   <div>
                     <Form.Check
                       type="radio"
@@ -570,7 +652,9 @@ const RegistrationPage = () => {
                   controlId="formGridTransportation"
                   className="mb-3"
                 >
-                  <Form.Label>Do You Require Transportation ?</Form.Label>
+                  <Form.Label>
+                    Do You Require Transportation services?
+                  </Form.Label>
                   <div>
                     <Form.Check
                       type="radio"
@@ -638,7 +722,7 @@ const RegistrationPage = () => {
                 <Form.Group as={Col} controlId="formGridNotes" className="mb-3">
                   <Form.Check
                     type="checkbox"
-                    label="Keep me updated on new features, program updates, and special offers from Thunderbolts Development Center."
+                    label=" I want to receive updates about new programs, special offers, and announcements from Thunderbolts Development Center."
                     checked={formData.notes}
                     className="custom-radio"
                     onChange={(e) =>
@@ -655,7 +739,7 @@ const RegistrationPage = () => {
                 >
                   <Form.Check
                     type="checkbox"
-                    label="I acknowledge and accept the agreement terms."
+                    label="I acknowledge and accept the agreement terms for participation in Thunderbolts Development Center sports programs."
                     checked={formData.agreement}
                     className="custom-radio"
                     onChange={(e) =>

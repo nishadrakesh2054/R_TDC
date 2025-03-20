@@ -164,8 +164,8 @@ const ManualReg = sequelize.define("ManualReg", {
       },
     },
   },
-  dateOfBirth: {
-    type: DataTypes.STRING,
+  DOB: {
+    type: DataTypes.DATE,
     allowNull: false,
   },
   email: {

@@ -25,13 +25,6 @@ import {
 import rateLimit from "express-rate-limit";
 import gameFixture from "./src/routes/fixture.Route.js";
 import ResultFixture from "./src/routes/fixture.Route.js";
-
-import TDCGame from "./src/routes/TDC-Route/TDCgame.Route.js";
-import TDCparticipation from "./src/routes/TDC-Route/TDCparticipation.Route.js";
-import TDCPayment from "./src/routes/TDC-Route/TDCpayment.Route.js";
-import TDCPDFGenerater from "./src/routes/TDC-Route/TDCpdfGenerator.Router.js";
-import TDCschool from "./src/routes/TDC-Route/TDCschool.Route.js";
-// import TDCRegister from "./src/routes/NewTDC/registration.Route.js";
 import ThundersPayment from "./src/routes/NewTDC/TdcPayment.Route.js";
 
 const app = express();
@@ -107,12 +100,7 @@ app.use("/api", Career);
 app.use("/api", gameFixture);
 app.use("/api", ResultFixture);
 
-// TDC routes defines
-app.use("/api", TDCschool);
-app.use("/api", TDCparticipation);
-app.use("/api", TDCPayment);
-app.use("/api", TDCPDFGenerater);
-app.use("/api", TDCGame);
+
 
 // New TDC routes defines
 // app.use("/api", TDCRegister);

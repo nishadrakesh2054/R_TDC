@@ -15,7 +15,6 @@ import {
 import { generateCertificates } from "./certificateGenerator.js";
 import { Components, componentLoader } from "./components.js"; // Import your component loader
 import fs from "fs";
-import TDCmanualRegistration from "../models/TDCmodel/TDCmanaulRegistration.Model.js";
 
 import Fixture from "../models/RKmodel/dateFixtures.Model.js";
 import ResultFixture from "../models/RKmodel/resultFixture.Model.js";
@@ -25,15 +24,11 @@ import gameTeam from "../models/RKmodel/team.Model.js";
 import Player from "../models/RKmodel/player.Model.js";
 import FootballManualRegistration from "../models/RKmodel/Registration.Model.js";
 
-
-
 import FootballManualReg from "../models/NewTdc/manualReg.Model.js";
 import ThunderBoltsReg from "../models/NewTdc/RegisterForm.Model.js";
 import NewPaymentTDC from "../models/NewTdc/Payment.Model.js";
 
-
 AdminJS.registerAdapter(AdminJSSequelize);
-
 
 // Local provider configuration for file uploads
 const localProvider = {
@@ -48,7 +43,7 @@ export const ThundersRegistration = {
   resource: ThunderBoltsReg,
   options: {
     navigation: {
-      name: "REGISTRATION TDC",
+      name: "TDC REGISTRATION",
     },
     listProperties: [
       "fullName",
@@ -58,7 +53,7 @@ export const ThundersRegistration = {
       "age",
       "sports",
       "category",
-      "prn",
+      "time",
     ],
     editProperties: [
       "fullName",
@@ -75,6 +70,7 @@ export const ThundersRegistration = {
       "parentAddress",
       "sports",
       "category",
+      "time",
       "emergencyContactname",
       "emergencyContactNumber",
       "hasMedicalConditions",
@@ -84,6 +80,7 @@ export const ThundersRegistration = {
       "transportation",
       "notes",
       "agreement",
+
       "prn",
     ],
     showProperties: [
@@ -101,6 +98,7 @@ export const ThundersRegistration = {
       "parentAddress",
       "sports",
       "category",
+      "time",
       "emergencyContactname",
       "emergencyContactNumber",
       "hasMedicalConditions",
@@ -112,6 +110,31 @@ export const ThundersRegistration = {
       "agreement",
       "prn",
     ],
+
+    actions: {
+        list: {
+          isAccessible: ({ currentAdmin }) =>
+            currentAdmin &&
+            (currentAdmin.role === "Admin"),
+        },
+        edit: {
+          isAccessible: ({ currentAdmin }) =>
+            currentAdmin && currentAdmin.role === "Admin",
+        },
+        new: {
+          isAccessible: ({ currentAdmin }) =>
+            currentAdmin && currentAdmin.role === "Admin",
+        },
+        show: {
+          isAccessible: ({ currentAdmin }) =>
+            currentAdmin &&
+            (currentAdmin.role === "Admin" ),
+        },
+        delete: {
+          isAccessible: ({ currentAdmin }) =>
+            currentAdmin && currentAdmin.role === "Admin",
+        },
+      },
   },
 };
 
@@ -119,7 +142,7 @@ export const PaymentTDC = {
   resource: NewPaymentTDC,
   options: {
     navigation: {
-      name: "REGISTRATION TDC",
+      name: "TDC REGISTRATION",
     },
     listProperties: [
       "id",
@@ -127,6 +150,8 @@ export const PaymentTDC = {
       "email",
       "sports",
       "amount",
+      "category",
+      "time",
       "paymentMethod",
       "status",
     ],
@@ -136,8 +161,31 @@ export const PaymentTDC = {
       createdAt: { isVisible: false },
     },
     actions: {
+      list: {
+        isAccessible: ({ currentAdmin }) =>
+          currentAdmin &&
+          (currentAdmin.role === "Admin" ||
+            currentAdmin.role === "Front desk" ||
+            currentAdmin.role === "Finance Manager"),
+      },
       edit: {
-        isAccessible: ({ currentAdmin }) => currentAdmin.role === "admin",
+        isAccessible: ({ currentAdmin }) =>
+          currentAdmin && currentAdmin.role === "Admin",
+      },
+      new: {
+        isAccessible: ({ currentAdmin }) =>
+          currentAdmin && currentAdmin.role === "Admin",
+      },
+      show: {
+        isAccessible: ({ currentAdmin }) =>
+          currentAdmin &&
+          (currentAdmin.role === "Admin" ||
+            currentAdmin.role === "Front desk" ||
+            currentAdmin.role === "Finance Manager"),
+      },
+      delete: {
+        isAccessible: ({ currentAdmin }) =>
+          currentAdmin && currentAdmin.role === "Admin",
       },
     },
   },
@@ -146,7 +194,7 @@ export const TDCManualRegResource = {
   resource: FootballManualReg,
   options: {
     navigation: {
-      name: "REGISTRATION TDC",
+      name: "TDC REGISTRATION",
     },
     properties: {
       agreement: { isVisible: true },
@@ -195,7 +243,7 @@ export const TDCManualRegResource = {
       gender: { isVisible: true },
       age: { isVisible: true },
       email: { isVisible: true },
-      dateOfBirth: { isVisible: true },
+      DOB: { isVisible: true },
       ContactNo: { isVisible: true },
       address: { isVisible: true },
       fullName: { isVisible: true },
@@ -283,7 +331,9 @@ export const manualRegistration = {
       new: {
         isAccessible: ({ currentAdmin }) =>
           currentAdmin &&
-          (currentAdmin.role === "Admin" || currentAdmin.role === "Front desk"),
+          (currentAdmin.role === "Admin" ||
+            currentAdmin.role === "Front desk" ||
+            currentAdmin.role === "Finance Manager"),
         before: async (request) => {
           if (request.payload.gameType === "Individual") {
             request.payload.totalAmount =
@@ -314,108 +364,16 @@ export const manualRegistration = {
       show: {
         isAccessible: ({ currentAdmin }) =>
           currentAdmin &&
-          (currentAdmin.role === "Admin" || currentAdmin.role === "Front desk"),
+          (currentAdmin.role === "Admin" ||
+            currentAdmin.role === "Front desk" ||
+            currentAdmin.role === "Finance Manager"),
       },
       list: {
         isAccessible: ({ currentAdmin }) =>
           currentAdmin &&
-          (currentAdmin.role === "Admin" || currentAdmin.role === "Front desk"),
-      },
-    },
-  },
-};
-
-export const TDCmanualReg = {
-  resource: TDCmanualRegistration,
-  options: {
-    navigation: {
-      name: "Thunderbolts Dev Center",
-    },
-    properties: {
-      noOfParticipants: {
-        isVisible: ({ record }) => record && record.gameType === "Individual",
-      },
-      totalAmount: {
-        isVisible: true,
-        isDisabled: true,
-      },
-      updatedAt: {
-        isVisible: {
-          list: false,
-          filter: false,
-          show: true,
-          edit: false,
-        },
-      },
-      schoolEmail: {
-        isVisible: {
-          list: false,
-          filter: true,
-          show: true,
-          edit: true,
-        },
-      },
-      createdAt: {
-        isVisible: {
-          list: false,
-          filter: false,
-          show: true,
-          edit: false,
-        },
-      },
-    },
-    listProperties: [
-      "id",
-      "schoolName",
-      "schoolContactNo",
-      "gameName",
-      "gameType",
-      "gameCategory",
-      "noOfParticipants",
-      "gameFee",
-      "totalAmount",
-    ],
-    actions: {
-      new: {
-        isAccessible: ({ currentAdmin }) =>
-          currentAdmin &&
-          (currentAdmin.role === "Admin" || currentAdmin.role === "Front desk"),
-        before: async (request) => {
-          if (request.payload.gameType === "Individual") {
-            request.payload.totalAmount =
-              request.payload.gameFee * (request.payload.noOfParticipants || 1);
-          } else {
-            request.payload.totalAmount = request.payload.gameFee;
-          }
-          return request;
-        },
-      },
-      edit: {
-        isAccessible: ({ currentAdmin }) =>
-          currentAdmin && currentAdmin.role === "Admin",
-        before: async (request) => {
-          if (request.payload.gameType === "Individual") {
-            request.payload.totalAmount =
-              request.payload.gameFee * (request.payload.noOfParticipants || 1);
-          } else {
-            request.payload.totalAmount = request.payload.gameFee;
-          }
-          return request;
-        },
-      },
-      delete: {
-        isAccessible: ({ currentAdmin }) =>
-          currentAdmin && currentAdmin.role === "Admin",
-      },
-      show: {
-        isAccessible: ({ currentAdmin }) =>
-          currentAdmin &&
-          (currentAdmin.role === "Admin" || currentAdmin.role === "Front desk"),
-      },
-      list: {
-        isAccessible: ({ currentAdmin }) =>
-          currentAdmin &&
-          (currentAdmin.role === "Admin" || currentAdmin.role === "Front desk"),
+          (currentAdmin.role === "Admin" ||
+            currentAdmin.role === "Front desk" ||
+            currentAdmin.role === "Finance Manager"),
       },
     },
   },
@@ -465,12 +423,16 @@ export const pointsTableResource = {
       show: {
         isAccessible: ({ currentAdmin }) =>
           currentAdmin &&
-          (currentAdmin.role === "Admin" || currentAdmin.role === "Front desk"),
+          (currentAdmin.role === "Admin" ||
+            currentAdmin.role === "Front desk" ||
+            currentAdmin.role === "Finance Manager"),
       },
       list: {
         isAccessible: ({ currentAdmin }) =>
           currentAdmin &&
-          (currentAdmin.role === "Admin" || currentAdmin.role === "Front desk"),
+          (currentAdmin.role === "Admin" ||
+            currentAdmin.role === "Front desk" ||
+            currentAdmin.role === "Finance Manager"),
       },
     },
   },
@@ -741,12 +703,16 @@ export const gamePointsTableResource = {
       show: {
         isAccessible: ({ currentAdmin }) =>
           currentAdmin &&
-          (currentAdmin.role === "Admin" || currentAdmin.role === "Front desk"),
+          (currentAdmin.role === "Admin" ||
+            currentAdmin.role === "Front desk" ||
+            currentAdmin.role === "Finance Manager"),
       },
       list: {
         isAccessible: ({ currentAdmin }) =>
           currentAdmin &&
-          (currentAdmin.role === "Admin" || currentAdmin.role === "Front desk"),
+          (currentAdmin.role === "Admin" ||
+            currentAdmin.role === "Front desk" ||
+            currentAdmin.role === "Finance Manager"),
       },
     },
   },
@@ -786,12 +752,16 @@ export const gameGroupResource = {
       show: {
         isAccessible: ({ currentAdmin }) =>
           currentAdmin &&
-          (currentAdmin.role === "Admin" || currentAdmin.role === "Front desk"),
+          (currentAdmin.role === "Admin" ||
+            currentAdmin.role === "Front desk" ||
+            currentAdmin.role === "Finance Manager"),
       },
       list: {
         isAccessible: ({ currentAdmin }) =>
           currentAdmin &&
-          (currentAdmin.role === "Admin" || currentAdmin.role === "Front desk"),
+          (currentAdmin.role === "Admin" ||
+            currentAdmin.role === "Front desk" ||
+            currentAdmin.role === "Finance Manager"),
       },
     },
   },

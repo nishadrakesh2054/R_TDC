@@ -23,14 +23,14 @@ const Users = sequelize.define(
       },
     },
     role: {
-      type: DataTypes.ENUM("Admin", "Front desk"),
+      type: DataTypes.ENUM("Admin", "Front desk","Finance Manager"),
       allowNull: false,
       validate: {
         notNull: {
           msg: "Role is a required field.",
         },
         isIn: {
-          args: [["Admin", "Front desk"]],
+          args: [["Admin", "Front desk","Finance Manager"]],
           msg: "Role must be either 'Admin' or 'Front desk'.",
         },
       },

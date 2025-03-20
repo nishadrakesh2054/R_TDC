@@ -10,7 +10,7 @@ import SquadProgramsPage from "./pages/academy/squad/SquadProgramsPage";
 import Academy from "./pages/academy/Academy";
 import Career from "./pages/career/Career";
 import CareerDec from "./pages/career/CareerDec";
-import FootballLeague from "./components/Rfootball/FootballLeague";
+// import FootballLeague from "./components/Rfootball/FootballLeague";
 import Course from "./pages/course/Course";
 import PayForm from "./pages/TdcPayment/PayForm";
 import PayResponse from "./pages/TdcPayment/PayResponse";
@@ -74,7 +74,7 @@ function App() {
           <Route path="/special-camps" element={<SpecialCamp />} />
           <Route path="/e-sports" element={<Esports />} />
           <Route path="/events/thunderboltscup" element={<Events />} />
-          <Route path="/events/footballleague/*" element={<FootballLeague />} />
+          {/* <Route path="/events/footballleague/*" element={<FootballLeague />} /> */}
 
           {/* <Route
             path="/register-thunderbolts-cup"

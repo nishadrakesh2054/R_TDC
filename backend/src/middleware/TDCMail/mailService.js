@@ -18,48 +18,7 @@ export const sendPaymentConfirmationEmail = async (
   category,
   time
 ) => {
-//   const mailOptions = {
-//     from: `"THUNDERBOLTS" <${process.env.EMAIL_USER}>`,
-//     to: recipientEmail,
-//     subject: "Registration Successful - Thunderbolts Development Center",
-//     html: `
-//         <html>
-//           <body style="margin:0; padding:0; font-family: Arial, sans-serif; background-color: #f4f4f4;">
-//             <div style="max-width:600px; margin:20px auto; background-color:#ffffff; padding:20px; border:1px solid #ddd; border-radius:8px;">
-//               <h2 style="color:#007BFF; text-align:center;">Payment Confirmation</h2>
-//               <p>Dear <strong>${participantName}</strong>,</p>
-//               <p>We are pleased to confirm that your payment of <strong>NPR ${amount}</strong> for the <strong>THUNDERBOLTS DEVELOPMENT CENTER</strong> has been successfully processed.</p>
-//               <p>Your registration details are as follows:</p>
-//               <table style="width:100%; border-collapse:collapse; margin:20px 0;">
-//                 <tr>
-//                   <td style="border:1px solid #ddd; padding:8px;"><strong>Sport</strong></td>
-//                   <td style="border:1px solid #ddd; padding:8px;">${sports}</td>
-//                 </tr>
-//                 <tr>
-//                   <td style="border:1px solid #ddd; padding:8px;"><strong>Category</strong></td>
-//                   <td style="border:1px solid #ddd; padding:8px;">${category}</td>
-//                 </tr>
-//                    <tr>
-//                   <td style="border:1px solid #ddd; padding:8px;"><strong>Time</strong></td>
-//                   <td style="border:1px solid #ddd; padding:8px;">${time}</td>
-//                 </tr>
-              
-//               </table>
-//               <p>Thank you for completing your payment. We look forward to your participation in the event.</p>
-//               <div style="text-align:center; margin:20px 0;">
-//                 <a href="https://thunderbolts.com.np/" style="background-color:#007BFF; color:#fff; padding:10px 20px; text-decoration:none; border-radius:5px;">Visit Our Website</a>
-//               </div>
-//               <p style="text-align:center; font-size:14px; color:#777; margin-top:30px;">
-//                 Best regards,<br>
-//                 <strong>Sports & Curricular Activities Department</strong><br>
-//                 GEMS School<br>
-//                 Dhapakhel, Lalitpur
-//               </p>
-//             </div>
-//           </body>
-//         </html>
-//       `,
-//   };
+
 
 const mailOptions = {
     from: `"THUNDERBOLTS" <${process.env.EMAIL_USER}>`,
@@ -71,7 +30,7 @@ const mailOptions = {
             <div style="max-width:600px; margin:20px auto; background-color:#ffffff; padding:20px; border:1px solid #ddd; border-radius:8px;">
               <h2 style="color:#007BFF; text-align:center;">Registration Successful</h2>
               <p>Dear <strong>${participantName}</strong>,</p>
-              <p>Congratulations on successfully registering for the <strong>${sports}</strong> Program at <strong>Thunderbolts Development Center</strong>! We are thrilled to welcome you to our <strong>${category}</strong> level and are excited to have you join our growing community of passionate ${sports} enthusiasts.</p>
+              <p>Congratulations on successfully registering for the <strong>${sports.charAt(0).toUpperCase() + sports.slice(1)}</strong> Program at <strong>Thunderbolts Development Center</strong>! We are thrilled to welcome you to our <strong>${category}</strong> level and are excited to have you join our growing community of passionate ${sports} enthusiasts.</p>
               <p>We are pleased to confirm that your payment of <strong>NPR ${amount}</strong> has been successfully processed and received. Thank you for completing your registration!</p>
               <p>Your journey with Thunderbolts Development Center is about to begin, and we are committed to providing you with the best training, guidance, and support to help you grow both on and off the field.</p>
               <p>Here are  Your registration details:</p>
@@ -82,8 +41,8 @@ const mailOptions = {
                 </tr>
                 <tr>
                   <td style="border:1px solid #ddd; padding:8px;"><strong>Sport</strong></td>
-                  <td style="border:1px solid #ddd; padding:8px;">${sports}</td>
-                </tr>
+                  <td style="border:1px solid #ddd; padding:8px; ">${sports.charAt(0).toUpperCase() + sports.slice(1)}</td>
+                </tr> 
                 <tr>
                   <td style="border:1px solid #ddd; padding:8px;"><strong>Category</strong></td>
                   <td style="border:1px solid #ddd; padding:8px;">${category}</td>

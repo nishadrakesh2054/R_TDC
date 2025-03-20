@@ -552,6 +552,8 @@ const RegistrationPage = () => {
                 </Form.Group>
               </Row>
 
+              
+
               <h5 className="mt-4 parallelogram-bg">
                 MEDICAL & EMERGENCY INFORMATION
               </h5>

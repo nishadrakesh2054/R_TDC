@@ -60,13 +60,13 @@ const NavigationSec = () => {
             </Offcanvas.Header>
             <Offcanvas.Body className="thunder_body">
               <Nav className=" flex-grow-1  nav-menu">
-                {/* <NavLink
+                <NavLink
                   activeclassname="active"
                   to="/"
                   onClick={handleClose}
                 >
                  Home
-                </NavLink> */}
+                </NavLink>
                 <NavLink
                   activeclassname="active"
                   to="/about"
@@ -104,13 +104,13 @@ const NavigationSec = () => {
                   Special Camps
                 </NavLink>
 
-                <NavLink
+                {/* <NavLink
                   activeclassname="active"
                   to="/e-sports"
                   onClick={handleClose}
                 >
                   E-Sports
-                </NavLink>
+                </NavLink> */}
                 <NavLink
                   activeclassname="active"
                   to="/"
@@ -130,14 +130,14 @@ const NavigationSec = () => {
                   >
                     Thunderbolts Cup
                   </NavLink>
-                  <NavDropdown.Divider />
+                  {/* <NavDropdown.Divider />
                   <NavLink
                     activeclassname="active"
                     to="/events/footballleague"
                     onClick={handleClose}
                   >
                     Football League
-                  </NavLink>
+                  </NavLink> */}
                 </NavDropdown>
 
                 <NavLink

@@ -60,6 +60,10 @@ const PaymentTDC = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    days: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
   },
   {
     tableName: "PaymentThunder",

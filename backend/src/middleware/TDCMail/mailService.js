@@ -16,7 +16,8 @@ export const sendPaymentConfirmationEmail = async (
   amount,
   sports,
   category,
-  time
+  time,
+  days
 ) => {
 
 
@@ -51,10 +52,11 @@ const mailOptions = {
                   <td style="border:1px solid #ddd; padding:8px;"><strong>Time</strong></td>
                   <td style="border:1px solid #ddd; padding:8px;">${time}</td>
                 </tr>
-                <tr>
-                  <td style="border:1px solid #ddd; padding:8px;"><strong>Days</strong></td>
-                  <td style="border:1px solid #ddd; padding:8px;">Grassroots:Tuesday & Thursday , Intermediate or Senior:'Monday, Wednesday & Friday'}</td>
+                 <tr>
+                  <td style="border:1px solid #ddd; padding:8px;"><strong>Training Days</strong></td>
+                  <td style="border:1px solid #ddd; padding:8px;">${days}</td>
                 </tr>
+               
                 <tr>
                   <td style="border:1px solid #ddd; padding:8px;"><strong>Location</strong></td>
                   <td style="border:1px solid #ddd; padding:8px;">Dhapakhel, Lalitpur</td>

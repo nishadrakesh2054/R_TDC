@@ -121,6 +121,7 @@ router.post("/pre-check-registration", async (req, res) => {
     sports: Joi.string().required(),
     time: Joi.string().required(),
     category: Joi.string().required(),
+    days: Joi.string().required(),
     emergencyContactname: Joi.string().min(3).max(255).required(),
     emergencyContactNumber: Joi.string()
       .pattern(/^\d+$/)
@@ -418,6 +419,7 @@ router.post("/verify-payment", async (req, res) => {
           sports: newRegistration.sports,
           time: newRegistration.time,
           category: newRegistration.category,
+          days: newRegistration.days,
         },
         { transaction }
       );
@@ -431,7 +433,8 @@ router.post("/verify-payment", async (req, res) => {
         parseFloat(P_AMT),
         newRegistration.sports,
         newRegistration.category,
-        newRegistration.time
+        newRegistration.time,
+        newRegistration.days
       );
   
       res.status(200).json({
@@ -446,6 +449,7 @@ router.post("/verify-payment", async (req, res) => {
           sports: newRegistration.sports,
           category: newRegistration.category,
           time: newRegistration.time,
+          days: newRegistration.days,
         },
       });
     } catch (error) {

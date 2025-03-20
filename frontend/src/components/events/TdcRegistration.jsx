@@ -32,6 +32,7 @@ const RegistrationPage = () => {
     sports: "",
     time: "",
     category: "",
+    days: "",
     emergencyContactname: "",
     emergencyContactNumber: "",
     hasMedicalConditions: "",
@@ -65,12 +66,16 @@ const RegistrationPage = () => {
 
       // Determine the category based on age
       let category = "";
+      let days = "";
       if (calculatedAge >= 6 && calculatedAge <= 11) {
         category = "Grassroots";
+        days = "Tuesday & Thursday";
       } else if (calculatedAge >= 12 && calculatedAge <= 15) {
         category = "Intermediate";
+        days = "Monday, Wednesday & Friday";
       } else if (calculatedAge >= 16 && calculatedAge <= 19) {
         category = "Senior";
+        days = "Monday, Wednesday & Friday";
       } else if (calculatedAge > 19) {
         // alert("You are not eligible  to participate");
         toast.warning("Your age  must be between 6 and 19 years old.");
@@ -81,6 +86,7 @@ const RegistrationPage = () => {
         dob: value,
         age: calculatedAge.toString(),
         category,
+        days,
       }));
     } else {
       setFormData((prevFormData) => ({
@@ -124,96 +130,6 @@ const RegistrationPage = () => {
 
     return true;
   };
-
-  //   const handleSubmit = async (e) => {
-  //     e.preventDefault();
-  //     setFormError(null);
-
-  //     if (!validateForm()) return;
-
-  //     setIsSubmitting(true);
-
-  //     const amount = 1;
-
-  //     const dataToSend = { ...formData, amount };
-  //     try {
-  //       const response = await axios.post(
-  //         "http://localhost:3000/tdc-api/pre-check-registration",
-  //         dataToSend,
-  //         {
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //           },
-  //         }
-  //       );
-  //       if (
-  //         response.data.message === "Please proceed to payment for Registration"
-  //       ) {
-  //         sessionStorage.setItem("formData", JSON.stringify(formData));
-  //         sessionStorage.setItem("prn", response.data.prn);
-  //         sessionStorage.setItem("registrationId", response.data.registrationId);
-  //         sessionStorage.setItem("paymentId", response.data.paymentId);
-
-  //         navigate("/tdc-payment-form", {
-  //           state: {
-  //             formData,
-  //             fee: amount,
-  //             prn: response.data.prn,
-  //             registrationId: response.data.registrationId,
-  //             paymentId: response.data.paymentId,
-  //           },
-  //         });
-  //       } else {
-  //         // If pre-check fails, display the error message
-  //         setFormError(response.data.message || "Pre-registration check failed.");
-  //       }
-
-  //       toast.success("Please proceed to payment for Registration");
-
-  //       setFormData({
-  //         fullName: "",
-  //         address: "",
-  //         contactNo: "",
-  //         email: "",
-  //         dob: "",
-  //         age: "",
-  //         gender: "",
-  //         schoolName: "",
-  //         parentName: "",
-  //         parentEmail: "",
-  //         parentContactNo: "",
-  //         parentAddress: "",
-  //         sports: "",
-  //         category: "",
-  //         emergencyContactname: "",
-  //         emergencyContactNumber: "",
-  //         hasMedicalConditions: "",
-  //         medicalDetails: "",
-  //         hasMedicalInsurance: "",
-  //         insuranceNo: "",
-  //         transportation: "",
-  //         paymentMethod: "fonepay",
-  //         notes: "",
-  //         agreement: "",
-  //       });
-  //     } catch (error) {
-  //       console.error(
-  //         "Error submitting form:",
-  //         error.response?.data || error.message
-  //       );
-
-  //       if (error.response && error.response.data) {
-  //         setFormError(
-  //           error.response.data.message ||
-  //             "Failed to submit the form. Please try again."
-  //         );
-  //       } else {
-  //         setFormError("Failed to submit the form. Please try again.");
-  //       }
-  //     } finally {
-  //       setIsSubmitting(false);
-  //     }
-  //   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -498,7 +414,7 @@ const RegistrationPage = () => {
               </Row>
 
               <h5 className="parallelogram-bg mt-4">Sports Selection</h5>
-              <Row xs={1} md={3}>
+              <Row xs={1} md={2}>
                 <Form.Group
                   as={Col}
                   controlId="formGridSports"
@@ -536,6 +452,21 @@ const RegistrationPage = () => {
                   />
                 </Form.Group>
 
+                <Form.Group
+                  as={Col}
+                  controlId="formGridCategory"
+                  className="mb-3"
+                >
+                  <Form.Label>Training  Days</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="days"
+                    className="form-input"
+                    value={formData.days}
+                    readOnly
+                  />
+                </Form.Group>
+
                 <Form.Group as={Col} controlId="formGridTime" className="mb-3">
                   <Form.Label>Preferred Training Time</Form.Label>
                   <Form.Select
@@ -551,8 +482,6 @@ const RegistrationPage = () => {
                   </Form.Select>
                 </Form.Group>
               </Row>
-
-              
 
               <h5 className="mt-4 parallelogram-bg">
                 MEDICAL & EMERGENCY INFORMATION

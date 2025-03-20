@@ -172,6 +172,10 @@ const Registration = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    days: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     emergencyContactname: {
       type: DataTypes.STRING,
       allowNull: false,

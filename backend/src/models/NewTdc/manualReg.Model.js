@@ -7,10 +7,12 @@ const ManualReg = sequelize.define("ManualReg", {
     allowNull: false,
     defaultValue: false,
   },
+  
   paymentType: {
     type: DataTypes.ENUM("Cash", "QR"),
     allowNull: false,
   },
+
   totalAmount: {
     type: DataTypes.FLOAT,
     allowNull: false,
@@ -24,6 +26,7 @@ const ManualReg = sequelize.define("ManualReg", {
       },
     },
   },
+
   gameFee: {
     type: DataTypes.FLOAT,
     allowNull: false,
@@ -37,6 +40,7 @@ const ManualReg = sequelize.define("ManualReg", {
       },
     },
   },
+
   emergencyContactPersonName: {
     type: DataTypes.STRING,
     allowNull: true,
@@ -87,6 +91,17 @@ const ManualReg = sequelize.define("ManualReg", {
     allowNull: false,
   },
 
+
+
+  TrainingTime: {
+    type: DataTypes.ENUM("3:00 PM - 4:30 PM ", " 4:30 PM - 6:00 PM "),
+    allowNull: false,
+  },
+  TrainingDays: {
+    type: DataTypes.ENUM("Tuesday & Thursday ", "Monday, Wednesday & Friday "),
+    allowNull: false,
+  },
+
   sportsCategory: {
     type: DataTypes.ENUM("Grassroots ", "Intermediate ", "Senior "),
     allowNull: false,
@@ -96,6 +111,9 @@ const ManualReg = sequelize.define("ManualReg", {
     type: DataTypes.ENUM("Football", "Futsal", "Cricket", "Swimming", "Tennis"),
     allowNull: false,
   },
+
+
+
 
   parentAddress: {
     type: DataTypes.STRING,
@@ -136,6 +154,8 @@ const ManualReg = sequelize.define("ManualReg", {
       },
     },
   },
+
+
 
   schoolName: {
     type: DataTypes.STRING,
